@@ -39,7 +39,7 @@ export default function Item({ title = "Untitled", score, overview = "", backdro
             title="More info"
             onClick={(e) => { e.stopPropagation(); onOpen && onOpen(); }}
           >
-            ⌄
+            ℹ
           </button>
         </div>
 
