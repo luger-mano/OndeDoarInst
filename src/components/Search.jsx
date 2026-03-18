@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 
 export default function Search({ onSearch }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [value, setValue] = useState("");
   const inputRef = useRef(null);
 
@@ -47,7 +47,7 @@ export default function Search({ onSearch }) {
       <input
         ref={inputRef}
         type="search"
-        placeholder="Titles, people, genres"
+        placeholder="Endereço, CEP, Bairro"
         value={value}
         onChange={handleChange}
         onBlur={handleBlur}
