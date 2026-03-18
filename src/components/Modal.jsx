@@ -55,7 +55,6 @@ export default function Modal({ item, onClose }) {
             <h2 className="modal-title">{title}</h2>
             <div className="modal-btns">
               <HeroButton primary={true} text="Play" icon="▶" />
-              <HeroButton primary={false} text="My List" icon="+" />
             </div>
           </div>
         </div>
@@ -64,12 +63,13 @@ export default function Modal({ item, onClose }) {
         <div className="modal-body">
           {/* Left: details */}
           <div className="modal-left">
+            
             <div className="modal-meta-row">
+              <img className="modal-hd" width="25" height="25" src="public/drop.svg" alt="logo" />
               {score && (
-                <span className="modal-match">{score}% Match</span>
+                <span className="modal-match">{score}% Estoque alto</span>
               )}
-              {year && <span className="modal-year">{year}</span>}
-              <span className="modal-hd">HD</span>
+              {year && <span className="modal-year">Bancos: </span>}
             </div>
             <p className="modal-overview">
               {item.overview || "No description available."}
@@ -80,31 +80,33 @@ export default function Modal({ item, onClose }) {
           <div className="modal-right">
             {item.vote_average && (
               <div>
-                <strong style={{ color: "#000000" }}>Rating: </strong>
+                <strong style={{ color: "#000000" }}>Município: </strong>
                 {item.vote_average.toFixed(1)} / 10
               </div>
             )}
             {item.original_language && (
               <div>
-                <strong style={{ color: "#000000" }}>Language: </strong>
+                <strong style={{ color: "#000000" }}>Fundação: </strong>
                 {item.original_language.toUpperCase()}
               </div>
             )}
             {item.popularity && (
               <div>
-                <strong style={{ color: "#000000" }}>Popularity: </strong>
+                <strong style={{ color: "#000000" }}>População: </strong>
                 {Math.round(item.popularity)}
               </div>
             )}
             {item.media_type && (
               <div>
-                <strong style={{ color: "#000000" }}>Type: </strong>
+                <strong style={{ color: "#000000" }}>Bairro: </strong>
                 {item.media_type === "tv" ? "TV Show" : "Movie"}
               </div>
             )}
           </div>
         </div>
+        
       </div>
     </div>
+    
   );
 }
