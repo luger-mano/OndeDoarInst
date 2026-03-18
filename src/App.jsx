@@ -60,7 +60,7 @@ export default function App() {
       ) : (
         /* ── Normal home view ── */
         <>
-          <Hero onMoreInfo={setModalItem} />
+          <Hero onMoreInfo={setModalItem} onSearch={handleSearch} />
 
           {ROWS.map((row) => (
             <TitleList

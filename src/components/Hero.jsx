@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import HeroButton from "./HeroButton";
+import Search from "./Search";
 
 const API_KEY = "87dfa1c669eea853da609d4968d294be";
 const IMG_ORIGINAL = "https://image.tmdb.org/t/p/original";
 
-export default function Hero({ onMoreInfo }) {
+export default function Hero({ onMoreInfo, onSearch }) {
   const [featured, setFeatured] = useState([]);
   const [idx, setIdx] = useState(0);
   const timerRef = useRef(null);
@@ -41,7 +42,7 @@ export default function Hero({ onMoreInfo }) {
   const item = featured[idx];
 
   if (!item) {
-    return <div className="Hero" style={{ background: "#000" }} />;
+    return <div className="Hero" style={{ background: "#ffffff" }} />;
   }
 
   const title = item.name || item.title || "Untitled";
@@ -64,47 +65,21 @@ export default function Hero({ onMoreInfo }) {
 
       {/* Main content */}
       <div className="content">
-        <div className="badge">Series • Trending</div>
-
-        <h1>{title}</h1>
-
-        <div className="meta">
-          {score && <span className="match">{score}% Match</span>}
-          {year && <span>{year}</span>}
-          <span className="rating-badge">TV-MA</span>
-        </div>
-
-        <p>{item.overview}</p>
 
         <div className="button-wrapper">
-          <HeroButton primary={true} text="Play" icon="▶" />
+
+          <Search onSearch={onSearch} />
+          {/* <HeroButton primary={true} text="Test" icon="" /> */}
           <HeroButton
             primary={false}
-            text="More Info"
-            icon="ⓘ"
+            text="Filtrar por: "
+            filter="São Paulo"
+            icon="▾"
             onClick={() => onMoreInfo && onMoreInfo(item)}
           />
         </div>
       </div>
 
-      {/* Maturity rating */}
-      <div className="maturity">
-        <span className="maturity-rating">TV-MA</span>
-      </div>
-
-      {/* Dot navigation */}
-      {featured.length > 1 && (
-        <div className="dots">
-          {featured.map((_, i) => (
-            <button
-              key={i}
-              className={`dot ${i === idx ? "active" : ""}`}
-              onClick={() => goTo(i)}
-              aria-label={`Go to slide ${i + 1}`}
-            />
-          ))}
-        </div>
-      )}
     </div>
   );
 }

@@ -14,6 +14,7 @@ export default function Item({ title = "Untitled", score, overview = "", backdro
       aria-label={title}
       onClick={() => onOpen && onOpen()}
     >
+      
       {/* Thumbnail */}
       <img
         className="thumb"
@@ -22,6 +23,7 @@ export default function Item({ title = "Untitled", score, overview = "", backdro
         loading="lazy"
         onError={(e) => { e.target.src = PLACEHOLDER; }}
       />
+      
 
       {/* Hover overlay — appears below the card */}
       <div className="overlay">

@@ -42,7 +42,7 @@ export default function SearchResults({ results, onOpen }) {
                   style={{
                     width: "100%",
                     height: "100%",
-                    background: "#2a2a2a",
+                    background: "#050505",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
