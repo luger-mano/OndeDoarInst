@@ -9,8 +9,8 @@ export default function Hero({ onMoreInfo, onSearch }) {
   const [featured, setFeatured] = useState([]);
   const [idx, setIdx] = useState(0);
   const timerRef = useRef(null);
+  const videoRef = useRef(null);
 
-  // Fetch trending items for hero carousel
   useEffect(() => {
     fetch(
       `https://api.themoviedb.org/3/trending/all/day?api_key=${API_KEY}`
@@ -25,7 +25,6 @@ export default function Hero({ onMoreInfo, onSearch }) {
       .catch(console.error);
   }, []);
 
-  // Auto-cycle hero every 8 seconds
   useEffect(() => {
     if (!featured.length) return;
     timerRef.current = setInterval(() => {
@@ -33,6 +32,12 @@ export default function Hero({ onMoreInfo, onSearch }) {
     }, 8000);
     return () => clearInterval(timerRef.current);
   }, [featured.length]);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 10.0;
+    }
+  }, []);
 
   function goTo(i) {
     setIdx(i);
@@ -45,31 +50,28 @@ export default function Hero({ onMoreInfo, onSearch }) {
     return <div className="Hero" style={{ background: "#ffffff" }} />;
   }
 
-  const title = item.name || item.title || "Untitled";
-  const backdrop = `${IMG_ORIGINAL}${item.backdrop_path}`;
-  const year = (item.release_date || item.first_air_date || "").slice(0, 4);
-  const score = item.vote_average
-    ? Math.round(item.vote_average * 10)
-    : null;
-
   return (
     <div className="Hero">
-      {/* Background image */}
-      <div
+      <video
+        ref={videoRef}
         className="bg"
-        style={{ backgroundImage: `url(${backdrop})` }}
+        src="/home.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+        onLoadedMetadata={() => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 0.6;
+    }
+  }}
       />
 
-      {/* Gradient overlays */}
       <div className="vignette" />
 
-      {/* Main content */}
       <div className="content">
-
         <div className="button-wrapper">
-
           <Search onSearch={onSearch} />
-          {/* <HeroButton primary={true} text="Test" icon="" /> */}
           <HeroButton
             primary={false}
             text="Filtrar por: "
@@ -79,7 +81,6 @@ export default function Hero({ onMoreInfo, onSearch }) {
           />
         </div>
       </div>
-
     </div>
   );
 }
