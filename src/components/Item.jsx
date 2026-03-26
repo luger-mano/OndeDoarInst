@@ -14,28 +14,31 @@ export default function Item({ title = "Untitled", score, overview = "", backdro
       aria-label={title}
       onClick={() => onOpen && onOpen()}
     >
-      
+
       {/* Thumbnail */}
-      <img
-        className="thumb"
-        src={bg}
-        alt={title}
-        loading="lazy"
-        onError={(e) => { e.target.src = PLACEHOLDER; }}
-      />
-      
+      <div className="thumb-wrapper">
+        <img
+          className="thumb"
+          src={bg}
+          alt={title}
+          loading="lazy"
+          onError={(e) => { e.target.src = PLACEHOLDER; }}
+        />
+
+        <div className="status-bar">Unidades Fechadas - Reabrem Amanhã</div>
+      </div>
 
       {/* Hover overlay — appears below the card */}
       <div className="overlay">
         {/* Action buttons */}
         <div className="actions">
-          <button className="card-btn play" title="Play" onClick={(e) => e.stopPropagation()}>
+          {/* <button className="card-btn play" title="Play" onClick={(e) => e.stopPropagation()}>
             ▶
           </button>
           <ListToggle />
           <button className="card-btn" title="Thumbs up" onClick={(e) => e.stopPropagation()}>
             👍
-          </button>
+          </button> */}
           <button
             className="card-btn more"
             title="More info"
@@ -45,14 +48,13 @@ export default function Item({ title = "Untitled", score, overview = "", backdro
           </button>
         </div>
 
-        {/* Title */}
-        <div className="title">{title}</div>
-
         {/* Rating row */}
         <div className="rating">
-          {matchPct && <span className="match">{matchPct}% Match</span>}
-          <span className="hd-badge">HD</span>
+          {matchPct && <span className="match">97% Estoque Alto</span>}
         </div>
+        {/* Title */}
+        <div className="title">33km de distância</div>
+
 
         {/* Plot */}
         {overview && <div className="plot">{overview}</div>}
