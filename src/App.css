@@ -265,7 +265,7 @@
   object-fit: cover;
   object-position: center;
 
-  transform: scale(0.45);
+  transform: scale(0.5);
 
   z-index: 0;
 }
@@ -547,7 +547,7 @@
   font-size: 8px;
   font-weight: 600;
 
-  padding: 6px 8px;
+  padding: 8px 10px;
   text-align: center;
 
   border-radius: 0 0 4px 4px;

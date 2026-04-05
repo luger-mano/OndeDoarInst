@@ -1,63 +1,59 @@
 import React from "react";
-import ListToggle from "./ListToggle";
 
-const PLACEHOLDER = "https://via.placeholder.com/400x225?text=No+Image";
+const PLACEHOLDER = "https://via.placeholder.com/400x225?text=Hemocentro";
 
-export default function Item({ title = "Untitled", score, overview = "", backdrop = "", onOpen }) {
-  const bg = backdrop && backdrop.trim() ? backdrop : PLACEHOLDER;
-  const matchPct = score ? Math.round(score * 10) : null;
+export default function Item({ title, score, address, phones, operation, onOpen }) {
+  const bg = PLACEHOLDER;
+
+  const getStockStatus = (stock) => {
+    if (stock == null) return "Sem dados";
+    if (stock < 30) return "🔴 Estoque Baixo";
+    if (stock < 70) return "🟡 Estoque Médio";
+    return "🟢 Estoque Alto";
+  };
+
+  // Lógica de exibição exclusiva: Bairro OU Município
+  const getExclusiveLocation = () => {
+    if (!address) return "Localização não informada";
+    
+    const { bairro, municipio, zone } = address;
+    const hasBairro = bairro && bairro.toLowerCase() !== "s/b";
+    const hasMunicipio = municipio && municipio.toLowerCase() !== "s/m";
+
+    let location = "";
+    if (hasBairro) {
+      location = bairro;
+    } else if (hasMunicipio) {
+      location = municipio;
+    }
+
+    const zoneText = (zone && zone !== "null") ? ` | Zona ${zone}` : "";
+    return location ? `${location}${zoneText}` : "Localização disponível";
+  };
 
   return (
-    <div
-      className="Item"
-      role="article"
-      aria-label={title}
-      onClick={() => onOpen && onOpen()}
-    >
-
-      {/* Thumbnail */}
+    <div className="Item" onClick={() => onOpen && onOpen()}>
       <div className="thumb-wrapper">
-        <img
-          className="thumb"
-          src={bg}
-          alt={title}
-          loading="lazy"
-          onError={(e) => { e.target.src = PLACEHOLDER; }}
-        />
-
-        <div className="status-bar">Unidades Fechadas - Reabrem Amanhã</div>
+        <img className="thumb" src={bg} alt={title} loading="lazy" />
+        <div className="status-bar">
+          🕒 {operation ? `Abre às: ${operation.substring(0, 5)}` : "Consulte"}
+        </div>
       </div>
 
-      {/* Hover overlay — appears below the card */}
       <div className="overlay">
-        {/* Action buttons */}
         <div className="actions">
-          {/* <button className="card-btn play" title="Play" onClick={(e) => e.stopPropagation()}>
-            ▶
-          </button>
-          <ListToggle />
-          <button className="card-btn" title="Thumbs up" onClick={(e) => e.stopPropagation()}>
-            👍
-          </button> */}
-          <button
-            className="card-btn more"
-            title="More info"
-            onClick={(e) => { e.stopPropagation(); onOpen && onOpen(); }}
-          >
-            ℹ
-          </button>
+          <button className="card-btn more" title="Ver Detalhes">ℹ</button>
         </div>
-
-        {/* Rating row */}
         <div className="rating">
-          {matchPct && <span className="match">97% Estoque Alto</span>}
+          <span className="match">{getStockStatus(score)}</span>
         </div>
-        {/* Title */}
-        <div className="title">33km de distância</div>
-
-
-        {/* Plot */}
-        {overview && <div className="plot">{overview}</div>}
+        <div className="title">{title}</div>
+        <div className="plot">
+          <p>📍 {address?.fullAddress || "Endereço não informado"}</p>
+          <p style={{ fontSize: '0.85rem', opacity: 0.9, color: '#e5e5e5' }}>
+            {getExclusiveLocation()}
+          </p>
+        </div>
       </div>
     </div>
   );

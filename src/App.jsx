@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import TitleList from "./components/TitleList";
@@ -6,74 +6,86 @@ import SearchResults from "./components/SearchResults";
 import Modal from "./components/Modal";
 import "./App.css";
 
-const API_KEY = "87dfa1c669eea853da609d4968d294be";
-
-// All content rows shown on the homepage
-const ROWS = [
-  { title: "Top Picks for You", url: "trending/all/week" },
-  { title: "Trending Now", url: "trending/movie/day" },
-  { title: "Netflix Originals", url: "discover/tv?with_networks=213&sort_by=popularity.desc" },
-  { title: "Popular on Netflix", url: "discover/movie?sort_by=popularity.desc&page=1" },
-  { title: "Most Watched in Horror", url: "discover/movie?with_genres=27&sort_by=popularity.desc&page=1" },
-  { title: "Sci-Fi Greats", url: "discover/movie?with_genres=878&sort_by=popularity.desc&page=1" },
-  { title: "Comedy Magic", url: "discover/movie?with_genres=35&sort_by=popularity.desc&page=1" },
-  { title: "Action & Adventure", url: "discover/movie?with_genres=28&sort_by=popularity.desc&page=1" },
-  { title: "Top Rated", url: "movie/top_rated" },
-];
-
 export default function App() {
-  const [searchResults, setSearchResults] = useState(null); // null = not searching
+  const [allCenters, setAllCenters] = useState([]);
+  const [searchResults, setSearchResults] = useState(null);
   const [modalItem, setModalItem] = useState(null);
+  const [groups, setGroups] = useState({}); // Novo estado para grupos
 
-  // Called by Search component whenever query changes
-  const handleSearch = useCallback(async (query) => {
+  useEffect(() => {
+    fetch("http://localhost:8080/centers")
+      .then((res) => res.json())
+      .then((data) => {
+        setAllCenters(data || []);
+
+        const grouped = (data || []).reduce((acc, center) => {
+          
+          const zone = center.address?.zone;
+
+          let zoneKey = "Outras Regiões";
+          if (zone && zone !== "null") {
+            zoneKey = `ZONA ${zone.toUpperCase()}`;  
+          }
+
+          if (!acc[zoneKey]) acc[zoneKey] = [];
+          acc[zoneKey].push(center);
+          return acc;
+        }, {});
+
+        setGroups(grouped);
+      })
+      .catch((err) => console.error("Erro:", err));
+  }, []);
+
+
+  // 2. Busca local: Filtra o array 'allCenters' em vez de chamar o backend
+  const handleSearch = useCallback((query) => {
     if (!query || !query.trim()) {
       setSearchResults(null);
       return;
     }
 
-    const url = `https://api.themoviedb.org/3/search/multi?query=${encodeURIComponent(
-      query
-    )}&api_key=${API_KEY}`;
+    const lowerQuery = query.toLowerCase();
 
-    try {
-      const res = await fetch(url);
-      const json = await res.json();
-      // Only show results that have an image
-      const filtered = (json.results || []).filter(
-        (x) => x.backdrop_path || x.poster_path
-      );
-      setSearchResults(filtered);
-    } catch (err) {
-      console.error("Search error:", err);
-    }
-  }, []);
+    // Filtra por nome, bairro ou município dentro do que já temos no state
+    const filtered = allCenters.filter((center) => {
+      const nameMatch = center.name?.toLowerCase().includes(lowerQuery);
+      const bairroMatch = center.address?.bairro?.toLowerCase().includes(lowerQuery);
+      const municipioMatch = center.address?.municipio?.toLowerCase().includes(lowerQuery);
 
+      return nameMatch || bairroMatch || municipioMatch;
+    });
+
+    setSearchResults(filtered);
+  }, [allCenters]);
+
+  // ... dentro do seu componente App
   return (
     <div>
-      {/* Fixed top navigation */}
       <Header onSearch={handleSearch} />
 
       {searchResults ? (
-        /* ── Search results view ── */
         <SearchResults results={searchResults} onOpen={setModalItem} />
       ) : (
-        /* ── Normal home view ── */
         <>
-          <Hero onMoreInfo={setModalItem} onSearch={handleSearch} />
+          <Hero onMoreInfo={setModalItem} />
 
-          {ROWS.map((row) => (
-            <TitleList
-              key={row.url}
-              title={row.title}
-              url={row.url}
-              onOpen={setModalItem}
-            />
-          ))}
+          {/* Percorre as chaves do objeto 'groups' (ex: Vila Ema, Itaquera...) */}
+          {Object.keys(groups).length > 0 ? (
+            Object.keys(groups).map((locationName) => (
+              <TitleList
+                key={locationName}
+                title={locationName} // Passa o nome do bairro como título
+                initialItems={groups[locationName]} // Passa a lista daquele bairro
+                onOpen={setModalItem}
+              />
+            ))
+          ) : (
+            <div className="loading-message">Carregando hemocentros...</div>
+          )}
         </>
       )}
 
-      {/* ── Footer ── */}
       <footer className="Footer">
         <div className="footer-logo">
           {/* Inline Netflix wordmark */}
@@ -144,9 +156,11 @@ export default function App() {
             © {new Date().getFullYear()} Onde Doar.
           </div>
         </div>
+        <div className="copyright">
+          © {new Date().getFullYear()} Onde Doar.
+        </div>
       </footer>
 
-      {/* ── Detail Modal ── */}
       {modalItem && (
         <Modal item={modalItem} onClose={() => setModalItem(null)} />
       )}
