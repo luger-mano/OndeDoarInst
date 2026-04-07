@@ -1,15 +1,18 @@
 import React from "react";
 
-export default function HeroButton({ primary, text, icon, filter, onClick }) {
+const HeroButton = React.forwardRef(({ primary, text, icon, filter, onClick }, ref) => {
   return (
     <button
+      ref={ref}
       className="Button"
       data-primary={primary}
       onClick={onClick}
     >
       {text}
-      {filter && <span className="filter">{filter}</span>}
-      {icon && <span className="btn-icon">{icon}</span>}
+      {filter && <span className="filter" style={{ fontWeight: 'bold', marginLeft: '5px' }}>{filter}</span>}
+      {icon && <span className="caret" style={{ marginLeft: '8px' }}>{icon}</span>}
     </button>
   );
-}
+});
+
+export default HeroButton;
