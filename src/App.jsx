@@ -10,7 +10,7 @@ export default function App() {
   const [allCenters, setAllCenters] = useState([]);
   const [searchResults, setSearchResults] = useState(null);
   const [modalItem, setModalItem] = useState(null);
-  const [groups, setGroups] = useState({}); // Novo estado para grupos
+  const [groups, setGroups] = useState({});
 
   useEffect(() => {
     fetch("http://localhost:8080/centers")
@@ -38,7 +38,7 @@ export default function App() {
   }, []);
 
 
-  // 2. Busca local: Filtra o array 'allCenters' em vez de chamar o backend
+
   const handleSearch = useCallback((query) => {
     if (!query || !query.trim()) {
       setSearchResults(null);
@@ -47,7 +47,7 @@ export default function App() {
 
     const lowerQuery = query.toLowerCase();
 
-    // Filtra por nome, bairro ou município dentro do que já temos no state
+    // Filtro
     const filtered = allCenters.filter((center) => {
       const nameMatch = center.name?.toLowerCase().includes(lowerQuery);
       const bairroMatch = center.address?.bairro?.toLowerCase().includes(lowerQuery);
@@ -59,7 +59,7 @@ export default function App() {
     setSearchResults(filtered);
   }, [allCenters]);
 
-  // ... dentro do seu componente App
+  
   return (
     <div>
       <Header onSearch={handleSearch} />
@@ -75,13 +75,13 @@ export default function App() {
             Object.keys(groups).map((locationName) => (
               <TitleList
                 key={locationName}
-                title={locationName} // Passa o nome do bairro como título
-                initialItems={groups[locationName]} // Passa a lista daquele bairro
+                title={locationName}
+                initialItems={groups[locationName]}
                 onOpen={setModalItem}
               />
             ))
           ) : (
-            <div className="loading-message">Carregando hemocentros...</div>
+            <div className="loading">Carregando hemocentros...</div>
           )}
         </>
       )}
@@ -155,9 +155,6 @@ export default function App() {
           <div className="copyright">
             © {new Date().getFullYear()} Onde Doar.
           </div>
-        </div>
-        <div className="copyright">
-          © {new Date().getFullYear()} Onde Doar.
         </div>
       </footer>
 

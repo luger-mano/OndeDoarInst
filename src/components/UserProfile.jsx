@@ -117,7 +117,7 @@ export default function UserProfile() {
         <hr className="UserProfile-menu-divider" />
         <div
           className="UserProfile-menu-item"
-          style={{ color: "rgba(255,255,255,0.55)" }}
+          style={{ color: "rgba(105, 105, 105, 0.55)" }}
         >
           Sign out of Netflix
         </div>

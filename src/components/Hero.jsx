@@ -117,7 +117,7 @@ export default function Hero({ onMoreInfo, onSearch, onFilterChange }) {
                       src={opt.img} 
                       alt={opt.name} 
                       style={{ 
-                        filter: 'brightness(0) invert(1)', 
+                        filter: 'brightness(0) invert(0.2)', 
                         opacity: 0.8,
                         objectFit: 'contain' 
                       }} 

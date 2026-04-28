@@ -1,4 +1,10 @@
 /* ── HEADER ── */
+.loading {
+  padding: 0 0 20px 60px;
+  font-weight: 400;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
 .Header {
   position: fixed;
   top: 0;
@@ -86,18 +92,18 @@
   display: flex;
   align-items: center;
   border: 1px solid transparent;
-  border-radius: 2px;
   padding: 4px 8px;
   gap: 5px;
   transition: all 0.25s ease;
   background: transparent;
+  border-radius: 5px;
+  border-color: rgba(255, 255, 255, 0.8);
 }
 
 
 .Search.open {
-  background: rgb(255, 255, 255); 
-  border-color: rgba(0, 0, 0, 0.75);
-
+  background: rgb(255, 255, 255);
+  border-color: rgba(86, 86, 86, 0.8);
 }
 
 .Search .search-icon {
@@ -185,7 +191,7 @@
   position: absolute;
   top: calc(100% + 10px);
   right: 0;
-  background: rgba(255, 0, 0, 0.92);
+  background: rgba(255, 255, 255, 0.92);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 4px;
   min-width: 210px;
@@ -195,6 +201,7 @@
   transform: translateY(-4px);
   transition: all 0.15s ease;
   z-index: 200;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
 }
 
 .UserProfile-menu::before {
@@ -208,6 +215,7 @@
 }
 
 .UserProfile.open .UserProfile-menu {
+  background-color: white;
   opacity: 1;
   pointer-events: all;
   transform: translateY(0);
@@ -219,7 +227,7 @@
   gap: 10px;
   padding: 8px 16px;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(86, 86, 86, 0.8);
   cursor: pointer;
   transition: color 0.15s;
 }
@@ -229,15 +237,15 @@
 }
 
 .UserProfile-menu-item img {
-  width: 28px;
-  height: 28px;
+  width: 20px;
+  height: 20px;
   border-radius: 3px;
   object-fit: cover;
 }
 
 .UserProfile-menu-divider {
   border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid rgba(206, 206, 206, 0.12);
   margin: 6px 0;
 }
 
@@ -374,6 +382,7 @@
   transition: background 0.15s, opacity 0.15s;
   white-space: nowrap;
   text-decoration: none;
+  box-shadow: rgba(27, 31, 35, 0.04) 0px 1px 0px, rgba(255, 255, 255, 0.25) 0px 1px 0px inset;
 }
 
 .Button[data-primary='true'] {
@@ -386,12 +395,13 @@
 }
 
 .Button[data-primary='false'] {
-  background: rgba(109, 109, 110, 0.5);
-  color: var(--black);
+  background: rgba(255, 255, 255, 0.918);
+  color: rgba(86, 86, 86, 0.8);
 }
 
 .Button[data-primary='false']:hover {
-  background: rgba(82, 82, 83, 0.5);
+  background:rgba(126, 126, 126, 0.12);
+  color: var(--black);
 }
 
 .Button .btn-icon {
@@ -782,13 +792,13 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(1); /* 👈 deixa menor dentro do container */
+  transform: scale(1);
 }
 
 .Modal .modal-hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, #ededed 0%, transparent 60%);
+  background: linear-gradient(to top, #ffffff 0%, transparent 60%);
 }
 
 .Modal .modal-hero-content {
