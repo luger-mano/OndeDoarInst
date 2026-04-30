@@ -1,0 +1,20 @@
+.Info {
+  padding: 80px 20px;
+  color: white;
+}
+
+.info-section {
+  max-width: 800px;
+  margin: 0 auto 80px auto;
+}
+
+.info-section h1 {
+  font-size: 32px;
+  margin-bottom: 16px;
+}
+
+.info-section p,
+.info-section li {
+  font-size: 18px;
+  line-height: 1.6;
+}
