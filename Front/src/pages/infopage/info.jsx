@@ -1,8 +1,12 @@
 import Header from "../../components/Header";
-import "./Info.css";
+
+import "../infopage/info.css";
+
+
 
 export default function Info() {
   return (
+     
     <div className="Info">
       <Header/>
       <section id="quem-somos" className="info-section">
@@ -11,6 +15,7 @@ export default function Info() {
           Somos uma plataforma que conecta pessoas a hemocentros próximos,
           facilitando o acesso à doação de sangue e incentivando a solidariedade.
         </p>
+       
       </section>
 
       <section id="porque-doar" className="info-section">

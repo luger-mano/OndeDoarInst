@@ -1,6 +1,7 @@
 .Info {
   padding: 80px 20px;
-  color: white;
+  color: rgb(0, 0, 0);
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .info-section {
@@ -18,3 +19,4 @@
   font-size: 18px;
   line-height: 1.6;
 }
+

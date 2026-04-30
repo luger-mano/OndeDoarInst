@@ -6,7 +6,7 @@ import SearchResults from "./components/SearchResults";
 import Modal from "./components/Modal";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Info from "./pages/infopage/info";
+import Info from "./pages/infopage/info.jsx";
 
 export default function App() {
   const [allCenters, setAllCenters] = useState([]);
@@ -94,8 +94,7 @@ export default function App() {
 
             <footer className="Footer">
               <div className="footer-logo">
-                {/* seu SVG continua igual */}
-                {/* ... (não mexi em nada aqui) */}
+             
               </div>
 
               <div className="Footer-links">
@@ -156,8 +155,7 @@ export default function App() {
         }
       />
 
-      {/* NOVA ROTA */}
-      <Route path="/info" element={<Info />} />
+     <Route path="/info" element={<Info />} />
     </Routes>
   </BrowserRouter>
 );
