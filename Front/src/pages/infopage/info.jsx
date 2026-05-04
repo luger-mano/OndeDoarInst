@@ -1,14 +1,13 @@
-import "../../App.css"
+import Header from "../../components/Header";
 import "./info.css";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import Header from "../../components/Header";
+
 
 
 export default function Info() {
   const location = useLocation();
 
-  // Scroll automático ao acessar /info#secao
   useEffect(() => {
     if (location.hash) {
       const el = document.querySelector(location.hash);
@@ -23,7 +22,7 @@ export default function Info() {
   return (
     <div className="Info">
 
-        <Header onSearch={() => {}} />
+        <Header />
 
       {/* HERO */}
       <section className="info-hero">

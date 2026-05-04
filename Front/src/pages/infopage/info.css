@@ -1,13 +1,14 @@
 .Info {
-  margin-top: 80px;
+  /* margin-top: 80px; */
   background: #141414;
-  color: white;
+  /* color: white; */
   font-family: Arial, Helvetica, sans-serif;
 }
 
 /* HERO */
 .info-hero {
   text-align: center;
+  color: white;
   padding: 100px 20px;
 }
 
@@ -48,14 +49,20 @@
   background: #f6121d;
 }
 
+.btn-primary-b:hover {
+  background: #f6121d;
+}
+
 /* SECTIONS */
 .info-section {
+ color: #ccc;
   max-width: 1000px;
   margin: 0 auto 80px auto;
   padding: 0 20px;
 }
 
 .info-section h2 {
+  color: white;
   font-size: 32px;
   margin-bottom: 20px;
 }
@@ -80,6 +87,7 @@
 
 /* CTA FINAL */
 .info-cta {
+  color: white;
   text-align: center;
   padding: 100px 200px;
   /* background-color: gray; */
@@ -93,78 +101,11 @@
 
 }
 
-.Info {
-  margin-top: 80px;
-  background: #141414;
-  color: white;
-}
 
-/* HERO */
-.info-hero {
-  text-align: center;
-  padding: 100px 20px;
-}
 
-.info-hero h1 {
-  font-size: 48px;
-}
 
-.info-hero p {
-  color: #ccc;
-  margin: 20px 0;
-}
 
-/* BOTÃO */
-.btn-primary {
-  background: #e50914;
-  padding: 12px 24px;
-  color: white;
-  text-decoration: none;
-  border-radius: 6px;
-}
 
-.btn-primary:hover {
-  background: #f6121d;
-}
 
-/* SECTIONS */
-.info-section {
-  max-width: 1000px;
-  margin: 80px auto;
-  padding: 0 20px;
 
-  /* ESSENCIAL pro scroll */
-  scroll-margin-top: 100px;
-}
-
-/* CARDS */
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-}
-
-.card {
-  background: #1f1f1f;
-  padding: 20px;
-  border-radius: 10px;
-  transition: 0.3s;
-}
-
-.card:hover {
-  transform: scale(1.05);
-}
-
-/* CTA */
-.info-cta {
-  text-align: center;
-  padding: 80px 20px;
-}
-.cta-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-
-}
 
