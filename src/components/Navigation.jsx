@@ -1,25 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Navigation() {
-  const items = ["Quem Somos", "Por que doar?", "Requisitos de Doação", "Contato", "Outras formas de apoiar"];
-  const [active, setActive] = useState(0);
+  const items = [
+    { label: "Quem Somos", path: "/info#quem-somos" },
+    { label: "Por que doar?", path: "/info#porque-doar" },
+    { label: "Requisitos de Doação", path: "/info#requisitos" },
+  ];
 
   return (
     <div className="Navigation">
       <nav aria-label="Main navigation">
         <ul>
-          {items.map((label, i) => (
-            <li key={label}>
-              <a
-                href="#"
-                className={`nav-link ${active === i ? "active" : ""}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setActive(i);
-                }}
+          {items.map((item) => (
+            <li key={item.label}>
+              <Link
+                to={item.path}
+                className="nav-link"
               >
-                {label}
-              </a>
+                {item.label}
+              </Link>
             </li>
           ))}
         </ul>
