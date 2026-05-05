@@ -2,7 +2,7 @@ import Header from "../../components/Header";
 import "./info.css";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-
+import doacaoimg from "../../assets/doacaoimg.jpg"
 
 
 export default function Info() {
@@ -26,19 +26,35 @@ export default function Info() {
 
       {/* HERO */}
       <section className="info-hero">
-        <h1>Doe sangue, salve vidas</h1>
+        <div className="info-hero-box">
+        <div className="info-hero-left">
+        <h1>Doe sangue, <br/><span className="span-hero"> salve vidas</span></h1>
         <p>
           Um gesto simples pode fazer toda a diferença. Encontre hemocentros próximos.
         </p>
-        <a href="/" className="btn-primary">Encontrar hemocentros</a>
+         <a href="/" className="btn-primary">
+          Quero ajudar agora
+          <span>→</span>
+        </a>
+        </div>
+        <div className="info-hero-right">
+            <img className="imgdoacao" src={doacaoimg} alt="imagem de um doador de sangue" />
+        </div>
+        </div>
+       
       </section>
 
       {/* QUEM SOMOS */}
       <section id="quem-somos" className="info-section">
         <h2>Quem Somos</h2>
         <p>
-          Somos uma plataforma que conecta pessoas a hemocentros próximos,
-          facilitando o acesso à doação de sangue.
+         Somos uma plataforma criada para facilitar o acesso à doação de sangue no Brasil.
+         Conectamos doadores a hemocentros próximos de forma simples, rápida e confiável.
+        </p>
+
+        <p>
+        Nosso objetivo é aumentar o número de doadores e reduzir a falta de sangue nos bancos,
+        tornando o processo mais acessível para qualquer pessoa que queira ajudar.
         </p>
       </section>
 
@@ -49,17 +65,23 @@ export default function Info() {
         <div className="cards">
           <div className="card">
             <h3>❤️ Salva vidas</h3>
-            <p>Uma única doação pode ajudar até 4 pessoas.</p>
+            <p className="card-p">Uma única doação pode beneficiar até 4 pessoas que dependem de transfusões
+  em situações de emergência, cirurgias ou tratamentos.</p>
           </div>
 
           <div className="card">
-            <h3>⚡ Rápido</h3>
-            <p>Processo simples e rápido.</p>
+            <h3>🏥 Sempre necessário</h3>
+          <p className="card-p">
+            Os estoques de sangue precisam ser constantemente repostos.
+            Sua doação faz diferença todos os dias, não só em emergências.
+          </p>
           </div>
 
           <div className="card">
-            <h3>🤝 Solidário</h3>
-            <p>Ajude quem precisa.</p>
+            <h3>🔄 Ciclo de ajuda</h3>
+            <p className="card-p">
+              Hoje você doa, amanhã alguém pode doar por você. A doação mantém esse ciclo funcionando.
+            </p>
           </div>
         </div>
       </section>
@@ -69,10 +91,29 @@ export default function Info() {
         <h2>Requisitos</h2>
 
         <div className="cards">
-          <div className="card">16 a 69 anos</div>
-          <div className="card">Mais de 50kg</div>
-          <div className="card">Boa saúde</div>
-          <div className="card">Alimentado</div>
+          <div className="card">
+            <span className="card-icon">🎂</span>
+            <strong>Idade</strong>
+            <p>Entre 16 e 69 anos</p>
+          </div>
+
+          <div className="card">
+            <span className="card-icon">⚖️</span>
+            <strong>Peso mínimo</strong>
+            <p>Acima de 50kg</p>
+          </div>
+
+          <div className="card">
+            <span className="card-icon">💚</span>
+            <strong>Saúde</strong>
+            <p>Estar em boas condições no dia da doação</p>
+          </div>
+
+          <div className="card">
+            <span className="card-icon">🍽️</span>
+            <strong>Alimentação</strong>
+            <p>Estar alimentado (evitar alimentos gordurosos)</p>
+          </div>
         </div>
       </section>
 
@@ -80,6 +121,7 @@ export default function Info() {
       <section className="info-cta">
         <div className="cta-content">
         <h2>Pronto para ajudar?</h2>
+        <p className="cta-p">Encontre o hemocentro mais próximo e faça a diferença hoje.</p>
         <a href="/" className="btn-primary-b">Encontrar locais</a>
         </div>
       </section>
