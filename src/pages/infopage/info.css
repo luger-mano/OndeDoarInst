@@ -1,6 +1,6 @@
 .Info {
   /* margin-top: 80px; */
-  background: #141414;
+  background: white;
   /* color: white; */
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -8,7 +8,7 @@
 /* HERO */
 .info-hero {
   text-align: center;
-  color: white;
+  color: #000000;
   padding: 100px 20px;
 }
 
@@ -20,7 +20,7 @@
 .info-hero p {
   font-size: 20px;
   margin-bottom: 30px;
-  color: #ccc;
+  color: rgb(86, 86, 86, 0.8);
 }
 
 /* BOTÃO */
@@ -55,14 +55,14 @@
 
 /* SECTIONS */
 .info-section {
- color: #ccc;
+ color: rgb(86, 86, 86, 0.8);
   max-width: 1000px;
   margin: 0 auto 80px auto;
   padding: 0 20px;
 }
 
 .info-section h2 {
-  color: white;
+  color: #000000;
   font-size: 32px;
   margin-bottom: 20px;
 }
@@ -75,7 +75,8 @@
 }
 
 .card {
-  background: #1f1f1f;
+  background: var(--card-bg);
+  color: var(--lightness);
   padding: 20px;
   border-radius: 10px;
   transition: 0.3s;
@@ -87,7 +88,7 @@
 
 /* CTA FINAL */
 .info-cta {
-  color: white;
+  color: #000000;
   text-align: center;
   padding: 100px 200px;
   /* background-color: gray; */
