@@ -93,7 +93,7 @@ export default function Info() {
         <div className="cards">
           <div className="card">
             <span className="card-icon">🎂</span>
-            <strong>Idade</strong>
+            <strong>Faixa etária</strong>
             <p>Entre 16 e 69 anos</p>
           </div>
 
