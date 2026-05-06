@@ -7,6 +7,7 @@ import Modal from "./components/Modal";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Info from "./pages/infopage/info.jsx";
+import Footer from "./components/Footer/Footer.jsx";
 
 export default function App() {
   const [allCenters, setAllCenters] = useState([]);
@@ -92,61 +93,7 @@ export default function App() {
               </>
             )}
 
-            <footer className="Footer">
-              <div className="footer-logo">
-             
-              </div>
-
-              <div className="Footer-links">
-                <div className="col">
-                  <ul>
-                    <li>FAQ</li>
-                    <li>Investor Relations</li>
-                    <li>Privacy</li>
-                    <li>Speed Test</li>
-                  </ul>
-                </div>
-                <div className="col">
-                  <ul>
-                    <li>Help Center</li>
-                    <li>Jobs</li>
-                    <li>Cookie Preferences</li>
-                    <li>Legal Notices</li>
-                  </ul>
-                </div>
-                <div className="col">
-                  <ul>
-                    <li>Account</li>
-                    <li>Ways to Watch</li>
-                    <li>Corporate Information</li>
-                    <li>Only on Netflix</li>
-                  </ul>
-                </div>
-                <div className="col">
-                  <ul>
-                    <li>Media Center</li>
-                    <li>Terms of Use</li>
-                    <li>Contact Us</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="Footer-bottom">
-                <div className="language">
-                  <select defaultValue="en" aria-label="Language">
-                    <option value="pt-BR">Português</option>
-                    <option value="en">🌐 English</option>
-                    <option value="hi">हिन्दी</option>
-                    <option value="es">Español</option>
-                    <option value="fr">Français</option>
-                    <option value="de">Deutsch</option>
-                  </select>
-                </div>
-                <div className="copyright">
-                  © {new Date().getFullYear()} Onde Doar.
-                </div>
-              </div>
-            </footer>
+           <Footer/>
 
             {modalItem && (
               <Modal item={modalItem} onClose={() => setModalItem(null)} />

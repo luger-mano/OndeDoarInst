@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import LoginModal from "../../components/ModalLogin/ModalLogin.jsx";
 import RegisterModal from "../../components/ModalCadastro/ModalCadastro.jsx";
 import doacaoimg from "../../assets/doacaoimg.jpg"
-
+import Footer from "../../components/Footer/Footer.jsx"
 
 export default function Info() {
   const location = useLocation();
@@ -141,6 +141,8 @@ export default function Info() {
         <a href="/" className="btn-primary-b">Encontrar locais</a>
         </div>
       </section>
+
+      <Footer/>
 
     </div>
   );
