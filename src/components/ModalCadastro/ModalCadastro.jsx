@@ -10,7 +10,8 @@ export default function ModalCadastro({ isOpen, onClose }) {
     tipoSanguineo: "",
     whatsapp: "",
     estado: "",
-    senha: ""
+    senha: "",
+    confirmarSenha: ""
   });
 
   if (!isOpen) return null;
@@ -31,7 +32,7 @@ export default function ModalCadastro({ isOpen, onClose }) {
           <input name="sobrenome" placeholder="Sobrenome" onChange={handleChange} />
         </div>
 
-        <input name="email" placeholder="Email" onChange={handleChange} />
+        <input name="email" type="email" placeholder="Email" onChange={handleChange} />
 
         <select name="tipoSanguineo" onChange={handleChange}>
           <option value="">Tipo sanguíneo (opcional)</option>
@@ -43,15 +44,23 @@ export default function ModalCadastro({ isOpen, onClose }) {
           <option>AB-</option>
           <option>O+</option>
           <option>O-</option>
+          <option>Não sei meu tipo sanguíneo</option>
         </select>
 
-        <input name="whatsapp" placeholder="WhatsApp" onChange={handleChange} />
-        <input name="estado" placeholder="Estado" onChange={handleChange} />
+        <input name="whatsapp"  placeholder="WhatsApp" onChange={handleChange} />
+        <input name="estado"  placeholder="Estado" onChange={handleChange} />
 
         <input
           type="password"
           name="senha"
           placeholder="Senha"
+          onChange={handleChange}
+        />
+
+        <input
+          type="password"
+          name="confirmarSenha"
+          placeholder="Confirmar Senha"
           onChange={handleChange}
         />
 

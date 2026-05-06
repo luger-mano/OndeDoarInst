@@ -34,7 +34,7 @@ export default function Info() {
       <section className="info-hero">
         
          <button onClick={() => setLoginOpen(true)}>Login</button>
-
+        <button onClick={() => setRegisterOpen(true)}>Cadastre-se</button>
       <LoginModal
         isOpen={loginOpen}
         onClose={() => setLoginOpen(false)}

@@ -82,3 +82,14 @@
     transform: scale(1);
   }
 }
+
+.link-register{
+  color: #e50914;
+  cursor: pointer;
+  
+}
+
+.linkg-register:hover{
+  color: #f6121d;
+  font-weight: bold;
+}
