@@ -1,12 +1,17 @@
 import Header from "../../components/Header";
 import "./info.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import LoginModal from "../../components/ModalLogin/ModalLogin.jsx";
+import RegisterModal from "../../components/ModalCadastro/ModalCadastro.jsx";
 import doacaoimg from "../../assets/doacaoimg.jpg"
 
 
 export default function Info() {
   const location = useLocation();
+
+    const [loginOpen, setLoginOpen] = useState(false);
+  const [registerOpen, setRegisterOpen] = useState(false);
 
   useEffect(() => {
     if (location.hash) {
@@ -24,8 +29,22 @@ export default function Info() {
 
         <Header />
 
+
       {/* HERO */}
       <section className="info-hero">
+        
+         <button onClick={() => setLoginOpen(true)}>Login</button>
+
+      <LoginModal
+        isOpen={loginOpen}
+        onClose={() => setLoginOpen(false)}
+      />
+
+      <RegisterModal
+        isOpen={registerOpen}
+        onClose={() => setRegisterOpen(false)}
+      />
+
         <div className="info-hero-box">
         <div className="info-hero-left">
         <h1>Doe sangue, <br/><span className="span-hero"> salve vidas</span></h1>
