@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import LoginModal from "../../components/ModalLogin/ModalLogin.jsx";
 import RegisterModal from "../../components/ModalCadastro/ModalCadastro.jsx";
+import ModalEdicao from "../../components/ModalEdicao/ModalEdicao.jsx";
 import doacaoimg from "../../assets/doacaoimg.jpg"
 import Footer from "../../components/Footer/Footer.jsx"
 
@@ -12,6 +13,7 @@ export default function Info() {
 
     const [loginOpen, setLoginOpen] = useState(false);
   const [registerOpen, setRegisterOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
 
   useEffect(() => {
     if (location.hash) {
@@ -40,6 +42,14 @@ export default function Info() {
         onClose={() => setLoginOpen(false)}
       />
 
+       <button onClick={() => setEditOpen(true)}>
+        Abrir edição
+      </button>
+
+      <ModalEdicao
+        isOpen={editOpen}
+        onClose={() => setEditOpen(false)}
+      />
       
 
         <div className="info-hero-box">
