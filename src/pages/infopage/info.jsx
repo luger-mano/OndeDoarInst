@@ -11,9 +11,9 @@ import Footer from "../../components/Footer/Footer.jsx"
 export default function Info() {
   const location = useLocation();
 
-    const [loginOpen, setLoginOpen] = useState(false);
-  const [registerOpen, setRegisterOpen] = useState(false);
-  const [editOpen, setEditOpen] = useState(false);
+  //   const [loginOpen, setLoginOpen] = useState(false);
+  // const [registerOpen, setRegisterOpen] = useState(false);
+  // const [editOpen, setEditOpen] = useState(false);
 
   useEffect(() => {
     if (location.hash) {
@@ -35,7 +35,7 @@ export default function Info() {
       {/* HERO */}
       <section className="info-hero">
         
-         <button onClick={() => setLoginOpen(true)}>Login</button>
+         {/* <button onClick={() => setLoginOpen(true)}>Login</button>
         
       <LoginModal
         isOpen={loginOpen}
@@ -49,7 +49,7 @@ export default function Info() {
       <ModalEdicao
         isOpen={editOpen}
         onClose={() => setEditOpen(false)}
-      />
+      /> */}
       
 
         <div className="info-hero-box">

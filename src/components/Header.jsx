@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Logo from "./Logo";
 import Navigation from "./Navigation";
 import Search from "./Search";
-import UserProfile from "./UserProfile";
+import UserProfile from "./UserProfile/UserProfile";
 
 export default function Header({ onSearch }) {
   const [scrolled, setScrolled] = useState(false);
