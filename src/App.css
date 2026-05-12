@@ -25,7 +25,6 @@
 .Header:not(.scrolled) {
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0.85) 80%);
 }
-
 /* ── LOGO ── */
 .Logo {
   flex-shrink: 0;
@@ -38,46 +37,6 @@
   transition: fill 0.15s ease;
 }
 
-/* ── NAVIGATION ── */
-.Navigation {
-  display: flex;
-  align-items: center;
-  margin-left: 25px;
-}
-
-.Navigation nav ul {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.Navigation nav ul li {
-  margin: 0;
-}
-
-.nav-link {
-  display: inline-block;
-  padding: 4px 10px;
-  color: rgba(19, 19, 19, 0.75);
-  font-size: 13px;
-  font-weight: 400;
-  text-decoration: none;
-  border-radius: 3px;
-  transition: color 0.15s ease;
-  white-space: nowrap;
-}
-
-.nav-link:hover {
-  color: var(----light);
-}
-
-.nav-link.active {
-  color: var(--black);
-  font-weight: 500;
-}
 
 /* ── HEADER RIGHT ── */
 .Header-right {

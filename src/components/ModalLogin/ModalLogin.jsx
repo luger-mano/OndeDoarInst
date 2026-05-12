@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./ModalLogin.css";
 import RegisterModal from "../ModalCadastro/ModalCadastro.jsx";
+import "../../pages/infopage/info.css"
 
 export default function ModalLogin({ isOpen, onClose }) {
   const [email, setEmail] = useState("");

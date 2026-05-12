@@ -79,13 +79,13 @@
 
 /* CARDS */
 .cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  display: flex;
+  justify-content: space-between;
   gap: 20px;
 }
 
 .card {
-  background: #f8f8f8;
+  background: #ffffff;
   color: #222;
   padding: 20px;
   border-radius: 12px;
