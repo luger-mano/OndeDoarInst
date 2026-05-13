@@ -46,7 +46,7 @@
 .menuOp3 {
   position: absolute;
   left: 0;
-  top: 68px;
+  top: 48px;
 
   width: 1200px;
   min-height: 250px;
@@ -80,7 +80,7 @@
 
 /* SCROLL */
 .menuScrolled {
-  background: white;
+  background: var(--lightness);
 }
 
 /* ───────── TAG ───────── */
@@ -250,6 +250,14 @@
   display: block;
   margin-bottom: 8px;
 }
+
+.nav-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+
 
 /* ───────── RESPONSIVIDADE ───────── */
 
