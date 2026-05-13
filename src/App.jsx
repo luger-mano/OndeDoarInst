@@ -93,7 +93,7 @@ export default function App() {
               </>
             )}
 
-           <Footer/>
+           {/* <Footer/> */}
 
             {modalItem && (
               <Modal item={modalItem} onClose={() => setModalItem(null)} />

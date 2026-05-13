@@ -6,18 +6,18 @@ export default function Navigation() {
   const items = [
     {
       label: "Quem Somos",
-      path: "/info#quem-somos",
-      menu: "menu1"
+      path: "",
+      menu: "menu1",
     },
     {
       label: "Por que doar?",
-      path: "/info#porque-doar",
-      menu: "menu2"
+      path: "",
+      menu: "menu2",
     },
     {
       label: "Requisitos de Doação",
-      path: "/info#requisitos",
-      menu: "menu3"
+      path: "",
+      menu: "menu3",
     },
   ];
 
@@ -37,7 +37,7 @@ export default function Navigation() {
       className="navigation-wrapper"
       onMouseLeave={() => setActiveMenu(null)}
     >
-      {/* NAV */}
+      {/* NAVIGATION */}
       <div className="Navigation">
         <nav aria-label="Main navigation">
           <ul>
@@ -59,29 +59,62 @@ export default function Navigation() {
       <div
         className={`menuOp1 
         ${activeMenu === "menu1" ? "menuVisible" : ""}
-        ${scrolled ? "menuOp1Scrolled" : ""}`}
+        ${scrolled ? "menuScrolled" : ""}`}
       >
-        <h2>Quem Somos</h2>
+        <div className="menu-about-left">
+          <span className="menu-tag">HEMODOAÇÃO</span>
 
-        <p>
-          Somos uma plataforma criada para facilitar o acesso à doação de sangue
-          no Brasil. Conectamos doadores a hemocentros próximos de forma simples,
-          rápida e confiável.
-        </p>
+          <h2>Quem Somos</h2>
 
-        <p>
-          Nosso objetivo é aumentar o número de doadores e reduzir a falta de
-          sangue nos bancos, tornando o processo mais acessível para qualquer
-          pessoa que queira ajudar.
-        </p>
+          <p>
+            Somos uma plataforma criada para aproximar pessoas da doação de
+            sangue, facilitando o acesso aos hemocentros de forma rápida,
+            simples e segura.
+          </p>
+
+          <p>
+            Nosso objetivo é incentivar mais doações e ajudar bancos de sangue
+            a manterem seus estoques abastecidos para salvar vidas diariamente.
+          </p>
+        </div>
+
+        <div className="menu-about-right">
+          <div className="contact-card">
+            <h3>Informações de contato</h3>
+
+            <div className="contact-item">
+              <span>📞</span>
+              <p>11 96926-6214</p>
+            </div>
+
+            <div className="contact-item">
+              <span>✉️</span>
+              <p>contato@hugosevero.com</p>
+            </div>
+
+            <div className="contact-item">
+              <span>💼</span>
+
+              <Link
+                to="https://www.linkedin.com/in/hugosevero/"
+                target="_blank"
+                className="linkedin-link"
+              >
+                Linkedin
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* MENU 2 */}
       <div
         className={`menuOp2
         ${activeMenu === "menu2" ? "menuVisible" : ""}
-        ${scrolled ? "menuOp2Scrolled" : ""}`}
+        ${scrolled ? "menuScrolled" : ""}`}
       >
+        <span className="menu-tag">IMPORTÂNCIA DA DOAÇÃO</span>
+
         <h2>Por que doar?</h2>
 
         <div className="info-boxs">
@@ -90,8 +123,8 @@ export default function Navigation() {
               <h3>❤️ Salva vidas</h3>
 
               <p className="card-p">
-                Uma única doação pode beneficiar até 4 pessoas que dependem
-                de transfusões em situações de emergência.
+                Uma única doação pode beneficiar até 4 pessoas que dependem de
+                transfusões em situações de emergência.
               </p>
             </div>
 
@@ -118,36 +151,38 @@ export default function Navigation() {
       <div
         className={`menuOp3
         ${activeMenu === "menu3" ? "menuVisible" : ""}
-        ${scrolled ? "menuOp3Scrolled" : ""}`}
+        ${scrolled ? "menuScrolled" : ""}`}
       >
+        <span className="menu-tag">REQUISITOS PARA DOAÇÃO</span>
+
         <h2>Requisitos</h2>
 
         <div className="info-boxs">
-           <div className="cards">
-          <div className="card">
-            <span className="card-icon">🎂</span>
-            <strong>Faixa etária</strong>
-            <p>Entre 16 e 69 anos</p>
-          </div>
+          <div className="cards">
+            <div className="card">
+              <span className="card-icon">🎂</span>
+              <strong>Faixa etária</strong>
+              <p>Entre 16 e 69 anos</p>
+            </div>
 
-          <div className="card">
-            <span className="card-icon">⚖️</span>
-            <strong>Peso mínimo</strong>
-            <p>Acima de 50kg</p>
-          </div>
+            <div className="card">
+              <span className="card-icon">⚖️</span>
+              <strong>Peso mínimo</strong>
+              <p>Acima de 50kg</p>
+            </div>
 
-          <div className="card">
-            <span className="card-icon">💚</span>
-            <strong>Saúde</strong>
-            <p>Estar em boas condições no dia da doação</p>
-          </div>
+            <div className="card">
+              <span className="card-icon">💚</span>
+              <strong>Saúde</strong>
+              <p>Estar em boas condições no dia da doação</p>
+            </div>
 
-          <div className="card">
-            <span className="card-icon">🍽️</span>
-            <strong>Alimentação</strong>
-            <p>Estar alimentado (evitar alimentos gordurosos)</p>
+            <div className="card">
+              <span className="card-icon">🍽️</span>
+              <strong>Alimentação</strong>
+              <p>Estar alimentado</p>
+            </div>
           </div>
-        </div>
         </div>
       </div>
     </div>

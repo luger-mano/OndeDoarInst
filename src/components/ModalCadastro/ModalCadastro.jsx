@@ -2,7 +2,9 @@ import { useState } from "react";
 import "./ModalCadastro.css";
 
 export default function ModalCadastro({ isOpen, onClose }) {
-  const [form, setForm] = useState({
+
+  // FORM INICIAL
+  const initialForm = {
     nome: "",
     sobrenome: "",
     email: "",
@@ -11,12 +13,19 @@ export default function ModalCadastro({ isOpen, onClose }) {
     estado: "",
     senha: "",
     confirmarSenha: ""
-  });
+  };
+
+  const [form, setForm] = useState(initialForm);
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   if (!isOpen) return null;
+
+  // RESETAR FORM
+  const resetForm = () => {
+    setForm(initialForm);
+  };
 
   // 📱 formatar telefone
   const formatPhone = (value) => {
@@ -34,6 +43,7 @@ export default function ModalCadastro({ isOpen, onClose }) {
   const handleChange = (e) => {
     let { name, value } = e.target;
 
+    // TELEFONE
     if (name === "whatsapp") {
       value = formatPhone(value);
     }
@@ -41,11 +51,13 @@ export default function ModalCadastro({ isOpen, onClose }) {
     setForm({ ...form, [name]: value });
   };
 
-  // ✅ VALIDAÇÃO COMPLETA
+  // ✅ VALIDAÇÃO
   const handleSubmit = () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    // campos obrigatórios
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const nomeRegex = /^[A-Za-zÀ-ÿ\s]+$/;
+
+    // CAMPOS OBRIGATÓRIOS
     if (
       !form.nome ||
       !form.sobrenome ||
@@ -58,41 +70,65 @@ export default function ModalCadastro({ isOpen, onClose }) {
       return setError("Preencha todos os campos obrigatórios.");
     }
 
-    // email
+    // NOME
+    if (!nomeRegex.test(form.nome)) {
+      return setError("O nome deve conter apenas letras.");
+    }
+
+    // SOBRENOME
+    if (!nomeRegex.test(form.sobrenome)) {
+      return setError("O sobrenome deve conter apenas letras.");
+    }
+
+    // EMAIL
     if (!emailRegex.test(form.email)) {
       return setError("Digite um email válido.");
     }
 
-    // senha
+    // SENHA
     if (form.senha.length < 8) {
       return setError("A senha deve ter no mínimo 8 caracteres.");
     }
 
-    // confirmar senha
+    // CONFIRMAR SENHA
     if (form.senha !== form.confirmarSenha) {
       return setError("As senhas não coincidem.");
     }
 
-    // telefone
+    // TELEFONE
     if (form.whatsapp.length < 14) {
       return setError("Digite um telefone válido.");
     }
 
-    // ✅ SUCESSO
+    // SUCESSO
     setError("");
     setSuccess("Cadastro realizado com sucesso!");
   };
 
   return (
     <>
+
       {/* MODAL */}
       <div className="register-overlay">
+
         <div className="register-modal">
-          <button className="register-close" onClick={onClose}>×</button>
+
+          {/* FECHAR */}
+          <button
+            className="register-close"
+            onClick={() => {
+              resetForm();
+              onClose();
+            }}
+          >
+            ×
+          </button>
 
           <h2>Criar conta</h2>
 
+          {/* NOME */}
           <div className="register-grid">
+
             <input
               name="nome"
               placeholder="Nome"
@@ -106,8 +142,10 @@ export default function ModalCadastro({ isOpen, onClose }) {
               value={form.sobrenome}
               onChange={handleChange}
             />
+
           </div>
 
+          {/* EMAIL */}
           <input
             name="email"
             type="email"
@@ -116,19 +154,30 @@ export default function ModalCadastro({ isOpen, onClose }) {
             onChange={handleChange}
           />
 
+          {/* TIPO SANGUÍNEO */}
           <select
             name="tipoSanguineo"
             value={form.tipoSanguineo}
             onChange={handleChange}
           >
             <option value="">Tipo sanguíneo (opcional)</option>
-            <option>A+</option><option>A-</option>
-            <option>B+</option><option>B-</option>
-            <option>AB+</option><option>AB-</option>
-            <option>O+</option><option>O-</option>
+
+            <option>A+</option>
+            <option>A-</option>
+
+            <option>B+</option>
+            <option>B-</option>
+
+            <option>AB+</option>
+            <option>AB-</option>
+
+            <option>O+</option>
+            <option>O-</option>
+
             <option>Não sei</option>
           </select>
 
+          {/* WHATSAPP */}
           <input
             name="whatsapp"
             placeholder="WhatsApp"
@@ -137,12 +186,15 @@ export default function ModalCadastro({ isOpen, onClose }) {
             maxLength={15}
           />
 
+          {/* ESTADO */}
           <select
             name="estado"
             value={form.estado}
             onChange={handleChange}
           >
+
             <option value="">Selecione seu estado</option>
+
             <option value="SP">São Paulo</option>
             <option value="RJ">Rio de Janeiro</option>
             <option value="MG">Minas Gerais</option>
@@ -170,8 +222,10 @@ export default function ModalCadastro({ isOpen, onClose }) {
             <option value="AP">Amapá</option>
             <option value="AC">Acre</option>
             <option value="TO">Tocantins</option>
+
           </select>
 
+          {/* SENHA */}
           <input
             type="password"
             name="senha"
@@ -180,6 +234,7 @@ export default function ModalCadastro({ isOpen, onClose }) {
             onChange={handleChange}
           />
 
+          {/* CONFIRMAR SENHA */}
           <input
             type="password"
             name="confirmarSenha"
@@ -188,38 +243,62 @@ export default function ModalCadastro({ isOpen, onClose }) {
             onChange={handleChange}
           />
 
-          <button className="register-btn" onClick={handleSubmit}>
+          {/* BOTÃO */}
+          <button
+            className="register-btn"
+            onClick={handleSubmit}
+          >
             Cadastrar
           </button>
+
         </div>
+
       </div>
 
       {/* 🔴 POPUP ERRO */}
       {error && (
+
         <div className="error-overlay">
+
           <div className="error-popup">
+
             <p>{error}</p>
-            <button onClick={() => setError("")}>OK</button>
+
+            <button onClick={() => setError("")}>
+              OK
+            </button>
+
           </div>
+
         </div>
+
       )}
 
       {/* ✅ POPUP SUCESSO */}
       {success && (
+
         <div className="success-overlay">
+
           <div className="success-popup">
+
             <p>{success}</p>
+
             <button
               onClick={() => {
                 setSuccess("");
-                onClose(); 
+                resetForm();
+                onClose();
               }}
             >
               OK
             </button>
+
           </div>
+
         </div>
+
       )}
+
     </>
   );
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import ModalLogin from "../ModalLogin/ModalLogin";
 import ModalEdicao from "../ModalEdicao/ModalEdicao";
 import ModalCadastro from "../ModalCadastro/ModalCadastro";
+import logo_without_account from "../../assets/logo_without_account.svg"
 import "./UserProfile.css";
 
 const DEFAULT_PROFILES = [
@@ -83,7 +84,7 @@ export default function UserProfile() {
       >
         <div className="image">
           <img
-            src={current?.img || "https://i.pravatar.cc/96"}
+            src={logo_without_account}
             alt={current?.name || "Profile"}
           />
         </div>
