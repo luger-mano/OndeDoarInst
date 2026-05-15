@@ -168,3 +168,52 @@
     transform: translateY(0);
   }
 }
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+
+  .register-overlay {
+
+    padding: 10px;
+
+    align-items: flex-start;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .register-modal {
+
+    width: 92vw;
+
+    margin-top: 20px;
+
+    padding: 16px;
+
+    border-radius: 10px;
+
+    max-height: calc(100vh - 40px);
+
+    overflow-y: auto;
+
+    position: relative;
+
+    right: 260px;
+
+    box-sizing: border-box;
+  }
+
+  .register-modal * {
+    box-sizing: border-box;
+  }
+
+  .register-grid {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .register-grid input {
+    width: 100%;
+  }
+
+}

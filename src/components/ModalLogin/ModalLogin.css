@@ -1,23 +1,38 @@
 .login-overlay {
   position: fixed;
   inset: 0;
+
   background: rgba(0, 0, 0, 0.5);
+
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
+
+  z-index: 20000;
+
+  padding: 20px;
 }
 
 .login-modal {
   background: white;
+
   padding: 30px;
+
   border-radius: 12px;
+
   width: 380px;
   max-width: 90%;
+
+  max-height: 90vh;
+  overflow-y: auto;
+
   display: flex;
   flex-direction: column;
+
   gap: 14px;
+
   position: relative;
+
   animation: fadeIn 0.3s ease;
 }
 
@@ -27,8 +42,10 @@
 
 .login-modal input {
   padding: 12px;
+
   border-radius: 6px;
   border: 1px solid #ddd;
+
   outline: none;
 }
 
@@ -39,11 +56,16 @@
 .login-btn {
   background: #e50914;
   color: white;
+
   padding: 12px;
+
   border-radius: 6px;
   border: none;
+
   font-weight: bold;
+
   cursor: pointer;
+
   transition: 0.3s;
 }
 
@@ -53,10 +75,14 @@
 
 .login-close {
   position: absolute;
+
   top: 10px;
   right: 15px;
+
   font-size: 22px;
+
   cursor: pointer;
+
   background: none;
   border: none;
 }
@@ -72,19 +98,62 @@
   font-weight: bold;
 }
 
+.link-register {
+  color: #e50914;
+  cursor: pointer;
+  font-weight: bold;
+}
+
 @keyframes fadeIn {
+
   from {
     opacity: 0;
     transform: scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
   }
 }
 
-.link-register{
-  color: #e50914;
-  cursor: pointer;
-  font-weight: bold;
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+
+  .login-overlay {
+
+    padding: 10px;
+
+    align-items: flex-start;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .login-modal {
+
+    width: 92vw;
+
+    margin-top: 20px;
+
+    padding: 16px;
+
+    border-radius: 10px;
+
+    max-height: calc(100vh - 40px);
+
+    overflow-y: auto;
+
+    position: relative;
+
+    right: 260px;
+
+    box-sizing: border-box;
+  }
+
+  .login-modal * {
+    box-sizing: border-box;
+  }
+
 }
