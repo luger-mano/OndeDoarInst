@@ -1079,22 +1079,176 @@
   }
 }
 
-/* MOBILE */
+/* ───────────────── RESPONSIVIDADE EXTRA ───────────────── */
+
+/* ───────── TABLETS ───────── */
+@media (max-width: 900px) {
+
+  .Header {
+    padding: 0 20px;
+    height: 62px;
+  }
+
+  .Hero {
+    height: 70vh;
+    min-height: 420px;
+  }
+
+  .Hero .content {
+    padding: 0 20px 80px;
+    max-width: 100%;
+  }
+
+  .Hero .content h1 {
+    font-size: 2.4rem;
+    line-height: 1.1;
+  }
+
+  .Hero .button-wrapper {
+    gap: 8px;
+  }
+
+  .TitleList {
+    padding: 0 20px;
+  }
+
+  .SearchResults {
+    padding: 90px 20px 30px;
+  }
+
+  .Footer {
+    padding: 40px 20px 24px;
+  }
+
+  .Item {
+    flex: 0 0 calc(33.33% - 4px);
+    min-width: calc(33.33% - 4px);
+  }
+
+  .slider-btn.prev {
+    left: -20px;
+  }
+
+  .slider-btn.next {
+    right: -20px;
+  }
+}
+
+/* ───────── MOBILE ───────── */
 @media (max-width: 768px) {
+
+  /* ESCONDE MENU DESKTOP */
+  .navigation-wrapper {
+    display: none;
+  }
+
+  .Navigation {
+    display: none;
+  }
+
+  .menuOp1,
+  .menuOp2,
+  .menuOp3 {
+    display: none !important;
+  }
 
   /* HEADER */
   .Header {
-    padding: 0 14px;
+
+    padding: 0 10px;
+
     height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    overflow: visible;
+
+    position: relative;
+    z-index: 9999;
   }
 
+  /* LOGO */
+  .div-logo-nav {
+
+    display: flex;
+    align-items: center;
+
+    flex: 1;
+
+    min-width: 0;
+  }
+
+  /* LADO DIREITO */
   .Header-right {
-    gap: 10px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    margin-left: auto;
+
+    flex-shrink: 0;
+
+    position: relative;
+    z-index: 9999;
   }
 
   /* SEARCH */
+  .Search {
+
+    padding: 4px 6px;
+
+    max-width: 115px;
+
+    overflow: hidden;
+  }
+
   .Search.open input {
-    width: 120px;
+    width: 65px;
+  }
+
+  .Search .search-icon {
+    font-size: 14px;
+  }
+
+  /* PERFIL */
+  .UserProfile {
+    flex-shrink: 0;
+    position: relative;
+    z-index: 10000;
+  }
+
+  .UserProfile .User {
+    gap: 0;
+  }
+
+  .UserProfile .User .image img {
+
+    width: 30px;
+    height: 30px;
+
+    border-radius: 4px;
+  }
+
+  .UserProfile .caret {
+    display: none;
+  }
+
+  /* DROPDOWN PERFIL */
+  .UserProfile .dropdown,
+  .UserProfile .menu,
+  .profile-menu {
+
+    position: absolute;
+    right: 0;
+    top: 45px;
+
+    z-index: 10001;
   }
 
   /* HERO */
@@ -1105,6 +1259,7 @@
 
   .Hero .bg {
     transform: none;
+    pointer-events: none;
   }
 
   .Hero .content {
@@ -1249,7 +1404,7 @@
 
 }
 
-/* CELULARES PEQUENOS */
+/* ───────── CELULARES PEQUENOS ───────── */
 @media (max-width: 480px) {
 
   .Hero .content h1 {
@@ -1271,7 +1426,7 @@
   }
 
   .Search.open input {
-    width: 90px;
+    width: 55px;
   }
 
   .SearchResults .grid {
