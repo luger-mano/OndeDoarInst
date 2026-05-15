@@ -1417,7 +1417,7 @@
   }
 
   .Hero .button-wrapper {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .Item {
