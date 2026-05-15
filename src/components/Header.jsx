@@ -15,8 +15,10 @@ export default function Header({ onSearch }) {
 
   return (
     <header className={`Header ${scrolled ? "scrolled" : ""}`}>
+      <div className="div-logo-nav">
       <Logo />
       <Navigation/>
+      </div>
       <div className="Header-right">
         {/* <button className="NotifBtn" title="Notifications" aria-label="Notifications">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="20" height="20">
