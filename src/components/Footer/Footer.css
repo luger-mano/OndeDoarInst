@@ -1,0 +1,76 @@
+/* ── FOOTER ── */
+.Footer {
+  background: var(--light);
+  padding: 50px 60px 30px;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 13px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  margin-top: 20px;
+}
+
+.Footer .footer-logo {
+  margin-bottom: 24px;
+}
+
+.Footer .footer-callout {
+  margin-bottom: 24px;
+  font-size: 13px;
+}
+
+.Footer-links {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.Footer-links .col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.Footer-links .col ul li {
+  display: block;
+  color: rgba(19, 19, 19, 0.5);
+  text-decoration: none;
+  padding: 4px 0;
+  font-size: 13px;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.Footer-links .col ul li:hover {
+  color: rgba(0, 0, 0, 0.911);
+}
+
+.Footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.Footer .language select {
+  background: rgb(255, 255, 255);
+  border: 1px solid var(--black);
+  color: var(--black);
+  padding: 7px 12px;
+  border-radius: 3px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: var(--font);
+}
+
+.Footer .language select:focus {
+  outline: none;
+  border-color: rgba(0, 0, 0, 0.6);
+}
+
+.Footer .copyright {
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 13px;
+}

@@ -72,11 +72,14 @@ export default function TitleList({ title, onOpen, initialItems }) {
             {visible.map((t) => (
               <Item
                 key={t.bloodCenterId}
-                title={t.name}          
-                score={t.bloodStock}    
-                address={t.address}     
-                phones={t.phone}        
-                operation={t.operation} 
+                title={t.name}
+                score={t.bloodStock}
+                address={t.address}
+                phones={t.phone}
+                operation={t.operation}
+                facadeImageUrl={t.facadeImageUrl}
+                municipalityImageUrl={t.municipalityImageUrl}
+                neighborhoodImageUrl={t.neighborhoodImageUrl}
                 onOpen={() => onOpen(t)}
               />
             ))}
