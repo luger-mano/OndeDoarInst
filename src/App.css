@@ -1020,6 +1020,28 @@
 
 }
 
+.titles-wrapper.animating .Item {
+
+  animation: sliderFade 0.25s ease;
+}
+
+@keyframes sliderFade {
+
+  0% {
+
+    opacity: 0.5;
+
+    transform: scale(0.96);
+  }
+
+  100% {
+
+    opacity: 1;
+
+    transform: scale(1);
+  }
+
+}
 /* ── RESPONSIVE ── */
 @media (max-width: 1024px) {
   .Header        { padding: 0 30px; }
