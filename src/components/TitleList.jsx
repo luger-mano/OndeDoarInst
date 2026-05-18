@@ -41,7 +41,9 @@ export default function TitleList({ title, onOpen, initialItems }) {
             <span className="row-title">{title || "Carregando..."}</span>
           </div>
           <div className="slider-wrap">
-            <div className="titles-wrapper">
+            <div
+  className={`titles-wrapper slide-${offset}`}
+>
               {[...Array(VISIBLE)].map((_, i) => (
                 <div key={i} className="Item skeleton" style={{ aspectRatio: "16/9" }} />
               ))}

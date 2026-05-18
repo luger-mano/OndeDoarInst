@@ -1001,6 +1001,24 @@
   0%   { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
+.titles-wrapper {
+
+  animation: sliderChange 0.45s ease;
+}
+
+@keyframes sliderChange {
+
+  0% {
+    opacity: 0.2;
+    transform: scale(0.98) translateX(35px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateX(0);
+  }
+
+}
 
 /* ── RESPONSIVE ── */
 @media (max-width: 1024px) {
