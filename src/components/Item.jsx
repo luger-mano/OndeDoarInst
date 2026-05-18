@@ -1,9 +1,24 @@
 import React from "react";
 
-const PLACEHOLDER = "https://via.placeholder.com/400x225?text=Hemocentro";
+const PLACEHOLDER =
+  "https://via.placeholder.com/400x225?text=Hemocentro";
 
-export default function Item({ title, score, address, phones, operation, onOpen }) {
-  const bg = PLACEHOLDER;
+export default function Item({
+  title,
+  score,
+  address,
+  phones,
+  operation,
+  facadeImageUrl,
+  municipalityImageUrl,
+  neighborhoodImageUrl,
+  onOpen
+}) {
+  const bg =
+    facadeImageUrl ||
+    municipalityImageUrl ||
+    neighborhoodImageUrl ||
+    PLACEHOLDER;
 
   const getStockStatus = (stock) => {
     if (stock == null) return "Sem dados";
@@ -15,7 +30,7 @@ export default function Item({ title, score, address, phones, operation, onOpen 
   // Lógica de exibição exclusiva: Bairro OU Município
   const getExclusiveLocation = () => {
     if (!address) return "Localização não informada";
-    
+
     const { bairro, municipio, zone } = address;
     const hasBairro = bairro && bairro.toLowerCase() !== "s/b";
     const hasMunicipio = municipio && municipio.toLowerCase() !== "s/m";
@@ -34,7 +49,15 @@ export default function Item({ title, score, address, phones, operation, onOpen 
   return (
     <div className="Item" onClick={() => onOpen && onOpen()}>
       <div className="thumb-wrapper">
-        <img className="thumb" src={bg} alt={title} loading="lazy" />
+        <img
+          className="thumb"
+          src={bg}
+          alt={title}
+          loading="lazy"
+          onError={(e) => {
+            e.target.src = PLACEHOLDER;
+          }}
+        />
         <div className="status-bar">
           🕒 {operation ? `Abre às: ${operation.substring(0, 5)}` : "Consulte"}
         </div>
@@ -50,7 +73,7 @@ export default function Item({ title, score, address, phones, operation, onOpen 
         <div className="title">{title}</div>
         <div className="plot">
           <p>📍 {address?.fullAddress || "Endereço não informado"}</p>
-          <p style={{ fontSize: '0.85rem', opacity: 0.9, color: '#e5e5e5' }}>
+          <p style={{ fontSize: '0.70rem', opacity: 0.9, fontWeight: 600, color: '#0b0b0b' }}>
             {getExclusiveLocation()}
           </p>
         </div>

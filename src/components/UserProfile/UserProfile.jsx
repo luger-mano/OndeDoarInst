@@ -69,6 +69,11 @@ export default function UserProfile() {
       
             <ModalEdicao isOpen={editOpen}onClose={() => setEditOpen(false)}/>
 
+              <ModalCadastro
+                            isOpen={registerOpen}
+                            onClose={() => setRegisterOpen(false)}
+                          />
+
 
       {/* Current user trigger */}
       <div
@@ -95,6 +100,7 @@ export default function UserProfile() {
        
         <div className="UserNavigation">
           <div className="UserProfile-menu-item"><button className="botaoLog" onClick={() => setLoginOpen(true)}>Login</button></div>
+          <div className="UserProfile-menu-item"><button className="botaoLog" onClick={() => setRegisterOpen(true)}>Cadastro</button></div>
           <div className="UserProfile-menu-item"><button className="botaoLog" onClick={() => setEditOpen(true)}>Editar Perfil</button></div>
         </div>
 
