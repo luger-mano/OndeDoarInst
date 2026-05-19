@@ -58,9 +58,13 @@ export default function Item({
             e.target.src = PLACEHOLDER;
           }}
         />
-        <div className="status-bar">
-          🕒 {operation ? `Abre às: ${operation.substring(0, 5)}` : "Consulte"}
-        </div>
+        {/* Alterei aqui */}
+        {(operation?.includes("Unidade fechada") ||
+          operation?.includes("Ligar ou acessar o site para conferir")) && (
+            <div className="status-bar">
+              🕒 {operation}
+            </div>
+          )}
       </div>
 
       <div className="overlay">

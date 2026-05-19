@@ -63,10 +63,10 @@ export default function App() {
 
   }, []);
 
-  // PESQUISA
-  const handleSearch = useCallback((query) => {
+  // PESQUISA BACKEND
+  const handleSearch = useCallback(async (query) => {
 
-    // SE ESTIVER VAZIO
+    // LIMPAR PESQUISA
     if (!query || !query.trim()) {
 
       setSearchResults(null);
@@ -74,63 +74,30 @@ export default function App() {
       return;
     }
 
-    const lowerQuery = query.toLowerCase();
+    try {
 
-    // FILTRO
-    const filtered = allCenters.filter((center) => {
+      const response = await fetch(
 
-      const nameMatch =
-        center.name
-          ?.toLowerCase()
-          .includes(lowerQuery);
-
-      const bairroMatch =
-        center.address?.bairro
-          ?.toLowerCase()
-          .includes(lowerQuery);
-
-      const municipioMatch =
-        center.address?.municipio
-          ?.toLowerCase()
-          .includes(lowerQuery);
-
-      const estadoMatch =
-        center.address?.estado
-          ?.toLowerCase()
-          .includes(lowerQuery);
-
-      const zonaMatch =
-        center.address?.zone
-          ?.toLowerCase()
-          .includes(lowerQuery);
-
-      const enderecoMatch =
-        center.address?.fullAddress
-          ?.toLowerCase()
-          .includes(lowerQuery);
-
-      const telefoneMatch =
-        center.phones
-          ?.toLowerCase()
-          .includes(lowerQuery);
-
-      return (
-
-        nameMatch ||
-        bairroMatch ||
-        municipioMatch ||
-        estadoMatch ||
-        zonaMatch ||
-        enderecoMatch ||
-        telefoneMatch
+        `http://localhost:8080/centers/filter/search?search=${encodeURIComponent(query)}`
 
       );
 
-    });
+      const data = await response.json();
 
-    setSearchResults(filtered);
+      setSearchResults(data || []);
 
-  }, [allCenters]);
+    } catch (err) {
+
+      console.error(
+        "Erro ao pesquisar:",
+        err
+      );
+
+      setSearchResults([]);
+
+    }
+
+  }, []);
 
   return (
 
@@ -154,7 +121,7 @@ export default function App() {
                 onSearch={handleSearch}
               />
 
-              {/* RESULTADOS DA PESQUISA */}
+              {/* RESULTADOS */}
               {searchResults ? (
 
                 <SearchResults
