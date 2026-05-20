@@ -26,7 +26,7 @@ export default function SearchResults({ results, onOpen }) {
         {results.map((center) => (
 
           <Item
-            key={center.id}
+            key={center.bloodCenterId}
 
             title={center.name}
 

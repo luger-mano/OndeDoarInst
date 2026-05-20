@@ -68,7 +68,7 @@ export default function Modal({ item, onClose }) {
         </div>
 
         <div className="modal-units">
-          <h3>Unidades</h3>
+          
 
           <div className="units-list">
             {/* {mockUnits.map((unit, index) => (
