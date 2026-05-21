@@ -242,7 +242,7 @@
   /* object-fit: cover; */
   object-position: center;
 
-  transform: scale(0.5);
+  transform: scale(0.7);
 
   z-index: 0;
 }
@@ -486,11 +486,15 @@
 .slider-btn.prev {
 
   left: 10px;
+
+  z-index: 20;
 }
 
 .slider-btn.next {
 
   right: 10px;
+
+  z-index: 20;
 }
 
 .slider-btn.hidden {
@@ -507,15 +511,9 @@
   color: var(--black);
 }
 
-.slider-btn.prev {
-  left: -60px;
-  border-radius: 4px 0 0 4px;
-}
 
-.slider-btn.next {
-  right: -60px;
-  border-radius: 0 4px 4px 0;
-}
+
+
 
 .slider-btn.hidden {
   pointer-events: none;

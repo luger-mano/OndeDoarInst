@@ -1,5 +1,8 @@
 import { useState } from "react";
 import "./ModalCadastro.css";
+import {
+  registerRequest
+} from "../../services/authService";
 
 export default function ModalCadastro({ isOpen, onClose }) {
 
@@ -52,57 +55,154 @@ export default function ModalCadastro({ isOpen, onClose }) {
   };
 
   // ✅ VALIDAÇÃO
-  const handleSubmit = () => {
+const handleSubmit =
+  async () => {
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const nomeRegex = /^[A-Za-zÀ-ÿ\s]+$/;
+    try {
 
-    // CAMPOS OBRIGATÓRIOS
-    if (
-      !form.nome ||
-      !form.sobrenome ||
-      !form.email ||
-      !form.whatsapp ||
-      !form.estado ||
-      !form.senha ||
-      !form.confirmarSenha
-    ) {
-      return setError("Preencha todos os campos obrigatórios.");
+      const emailRegex =
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      const nomeRegex =
+        /^[A-Za-zÀ-ÿ\s]+$/;
+
+      // CAMPOS
+      if (
+
+        !form.nome ||
+
+        !form.sobrenome ||
+
+        !form.email ||
+
+        !form.whatsapp ||
+
+        !form.estado ||
+
+        !form.senha ||
+
+        !form.confirmarSenha
+      ) {
+
+        return setError(
+          "Preencha todos os campos obrigatórios."
+        );
+      }
+
+      // NOME
+      if (
+        !nomeRegex.test(
+          form.nome
+        )
+      ) {
+
+        return setError(
+          "O nome deve conter apenas letras."
+        );
+      }
+
+      // SOBRENOME
+      if (
+        !nomeRegex.test(
+          form.sobrenome
+        )
+      ) {
+
+        return setError(
+          "O sobrenome deve conter apenas letras."
+        );
+      }
+
+      // EMAIL
+      if (
+        !emailRegex.test(
+          form.email
+        )
+      ) {
+
+        return setError(
+          "Digite um email válido."
+        );
+      }
+
+      // SENHA
+      if (
+        form.senha.length < 8
+      ) {
+
+        return setError(
+          "A senha deve ter no mínimo 8 caracteres."
+        );
+      }
+
+      // CONFIRMAR
+      if (
+        form.senha !==
+        form.confirmarSenha
+      ) {
+
+        return setError(
+          "As senhas não coincidem."
+        );
+      }
+
+      // TELEFONE
+      if (
+        form.whatsapp.length < 14
+      ) {
+
+        return setError(
+          "Digite um telefone válido."
+        );
+      }
+
+      // PAYLOAD BACKEND
+      const payload = {
+
+        userName:
+          form.nome,
+
+        middleName:
+          form.sobrenome,
+
+        phone:
+          form.whatsapp.replace(
+            /\D/g,
+            ""
+          ),
+
+        mail:
+          form.email,
+
+        password:
+          form.senha,
+
+        bloodType:
+          form.tipoSanguineo ===
+          "Não sei"
+
+            ? null
+
+            : form.tipoSanguineo,
+
+        state:
+          form.estado
+      };
+
+      await registerRequest(payload);
+
+      setError("");
+
+      setSuccess(
+        "Cadastro realizado com sucesso!"
+      );
+
+    } catch (err) {
+
+      setError(
+        "Erro ao cadastrar usuário."
+      );
     }
-
-    // NOME
-    if (!nomeRegex.test(form.nome)) {
-      return setError("O nome deve conter apenas letras.");
-    }
-
-    // SOBRENOME
-    if (!nomeRegex.test(form.sobrenome)) {
-      return setError("O sobrenome deve conter apenas letras.");
-    }
-
-    // EMAIL
-    if (!emailRegex.test(form.email)) {
-      return setError("Digite um email válido.");
-    }
-
-    // SENHA
-    if (form.senha.length < 8) {
-      return setError("A senha deve ter no mínimo 8 caracteres.");
-    }
-
-    // CONFIRMAR SENHA
-    if (form.senha !== form.confirmarSenha) {
-      return setError("As senhas não coincidem.");
-    }
-
-    // TELEFONE
-    if (form.whatsapp.length < 14) {
-      return setError("Digite um telefone válido.");
-    }
-
-    // SUCESSO
-    setError("");
-    setSuccess("Cadastro realizado com sucesso!");
   };
 
   return (
