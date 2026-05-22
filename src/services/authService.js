@@ -1,5 +1,5 @@
 const API_URL =
-  "api";
+  "/api";
 
 // GERA CHAVE ÚNICA
 function generateKey() {
