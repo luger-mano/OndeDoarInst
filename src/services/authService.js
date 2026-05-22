@@ -1,5 +1,5 @@
 const API_URL =
-  "http://localhost:8080";
+  "http://44.209.168.250:9002";
 
 // GERA CHAVE ÚNICA
 function generateKey() {
