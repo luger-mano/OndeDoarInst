@@ -1,5 +1,5 @@
 const API_URL =
-  "http://44.209.168.250:9002";
+  "http://44.209.168.250:8080";
 
 // GERA CHAVE ÚNICA
 function generateKey() {

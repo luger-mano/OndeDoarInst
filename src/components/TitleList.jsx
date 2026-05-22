@@ -27,7 +27,7 @@ export default function TitleList({
 
     } else {
 
-      const requestUrl = `http://44.209.168.250:9002/centers`;
+      const requestUrl = `http://44.209.168.250:8080/centers`;
 
       fetch(requestUrl)
 
