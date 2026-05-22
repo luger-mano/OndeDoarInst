@@ -67,7 +67,7 @@ export default function App() {
   useEffect(() => {
 
     fetch(
-      "44.209.168.250:8080/centers/filter/zone/neighborhoods"
+      "/api/centers/filter/zone/neighborhoods"
     )
 
       .then((res) => res.json())
@@ -95,7 +95,7 @@ export default function App() {
 
         // BUSCAR TODOS
         fetch(
-          "44.209.168.250:8080/centers"
+          "/api/centers"
         )
 
           .then((res) => res.json())
@@ -164,7 +164,7 @@ export default function App() {
           const response =
             await fetch(
 
-              `http://44.209.168.250:8080/centers/filter/search?search=${encodeURIComponent(query)}`
+              `/api/centers/filter/search?search=${encodeURIComponent(query)}`
 
             );
 
