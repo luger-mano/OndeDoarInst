@@ -67,7 +67,7 @@ export default function App() {
   useEffect(() => {
 
     fetch(
-      "http://localhost:8080/centers/filter/zone/neighborhoods"
+      "http://localhost:/centers/filter/zone/neighborhoods"
     )
 
       .then((res) => res.json())

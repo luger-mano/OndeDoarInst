@@ -262,7 +262,7 @@ const handleSubmit =
           >
             <option value="">Tipo sanguíneo (opcional)</option>
 
-            <option>A+</option>
+            <option>A</option>
             <option>A-</option>
 
             <option>B+</option>
