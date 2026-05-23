@@ -6,17 +6,17 @@ export default function NeighborhoodModal({
   onOpenCenter
 }) {
 
-    useEffect(()=>{
-        document.body.style.overflow = "hidden";
-        return()=>{
-            document.body.style.overflow = "";
-        }
-    }, []);
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    }
+  }, []);
 
-    if(!item) return null;
-    
-    return(
-        <div
+  if (!item) return null;
+
+  return (
+    <div
       className="Modal-overlay"
       onClick={onClose}
     >
@@ -32,7 +32,7 @@ export default function NeighborhoodModal({
         >
           ✕
         </button>
-    
+
         <div className="modal-hero">
 
           <img
@@ -55,7 +55,7 @@ export default function NeighborhoodModal({
 
         </div>
 
-            <div className="modal-units">
+        <div className="modal-units">
 
           <h3>
             Hemocentros do bairro
@@ -85,7 +85,15 @@ export default function NeighborhoodModal({
                     {center.address?.fullAddress}
                   </p>
 
-                  <span>
+                  <span
+                    style={{
+                      color: center.operation?.toLowerCase().startsWith("unidade fechada")
+                        ? "#E21221"
+                        : center.operation?.toLowerCase().startsWith("aberto")
+                          ? "#46d369"
+                          : "#E21221" 
+                    }}
+                  >
                     {center.operation}
                   </span>
 
@@ -114,7 +122,7 @@ export default function NeighborhoodModal({
       </div>
 
     </div>
-    )
+  )
 
 
 }

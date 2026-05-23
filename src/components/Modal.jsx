@@ -8,7 +8,8 @@ export default function Modal({ item, onClose }) {
 
   if (!item) return null;
 
-  const { name, bloodStock, address, phone, operation } = item;
+  // 1. Adicionado o facadeImageUrl na desestruturação
+  const { name, bloodStock, address, phone, operation, facadeImageUrl } = item;
   const { fullAddress, bairro, municipio, zone } = address || {};
 
   // Validação de strings vazias/nulas do backend
@@ -28,7 +29,17 @@ export default function Modal({ item, onClose }) {
         <button className="modal-close" onClick={onClose}>✕</button>
 
         <div className="modal-hero">
-          <div style={{ width: "100%", height: "100%", background: "linear-gradient(to bottom, #bc1823, #222)" }} />
+          {/* 2. Lógica para mostrar a imagem ou o gradiente de fallback */}
+          {facadeImageUrl ? (
+            <img
+              src={facadeImageUrl}
+              alt={name}
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          ) : (
+            <div style={{ width: "100%", height: "100%", background: "linear-gradient(to bottom, #bc1823, #222)" }} />
+          )}
+
           <div className="modal-hero-overlay" />
           <div className="modal-hero-content">
             <h2 className="modal-title">{name}</h2>
@@ -36,52 +47,66 @@ export default function Modal({ item, onClose }) {
         </div>
 
         <div className="modal-body">
+
+          {/* COLUNA DA ESQUERDA: Informações Principais */}
           <div className="modal-left">
-            <div className="modal-meta-row">
-              <img className="modal-hd" width="25" height="25" src="/drop.svg" alt="drop" />
-              <span className="modal-match">{getStockStatus(bloodStock)}</span>
-              {/* Exibe o que for válido (Bairro ou Município) ao lado do status */}
-              <span className="modal-year">{validBairro || validMunicipio || ""}</span>
+
+            <div className="modal-overview-card">
+              <h4 className="section-title">📍 Endereço</h4>
+              <p>{fullAddress || "Informação não disponível."}</p>
             </div>
-            <p className="modal-overview">
-              <strong>Endereço:</strong><br />
-              {fullAddress || "Informação não disponível."}
-            </p>
+
+            <div className="modal-donation-message">
+              <h4>Doe sangue, transforme vidas</h4>
+              <p>
+                Encontre hemocentros próximos, confira informações importantes e ajude a manter
+                os estoques abastecidos. Uma simples doação pode fazer a diferença para quem mais precisa.
+              </p>
+            </div>
+
           </div>
 
+          {/* COLUNA DA DIREITA: Metadados e Detalhes */}
           <div className="modal-right">
-            {/* LÓGICA EXCLUSIVA: Município OU Bairro */}
-            {validBairro ? (
-              <div><strong style={{ color: "#000" }}>Bairro: </strong>{validBairro}</div>
-            ) : validMunicipio ? (
-              <div><strong style={{ color: "#000" }}>Município: </strong>{validMunicipio}</div>
-            ) : null}
+            <div className="metadata-list">
 
-            {zone && zone !== "null" && (
-              <div><strong style={{ color: "#000" }}>Zona: </strong>{zone}</div>
-            )}
-            <div>
-              <strong style={{ color: "#000" }}>Horário: </strong>
-              {operation ? operation.substring(0, 5) : "Sob consulta"}
+              {/* LÓGICA EXCLUSIVA: Município OU Bairro */}
+              {validBairro ? (
+                <div className="metadata-item">
+                  <span className="metadata-label">Bairro:</span>
+                  <span className="metadata-value">{validBairro}</span>
+                </div>
+              ) : validMunicipio ? (
+                <div className="metadata-item">
+                  <span className="metadata-label">Município:</span>
+                  <span className="metadata-value">{validMunicipio}</span>
+                </div>
+              ) : null}
+
+              {/* ZONA */}
+              {zone && zone !== "null" && (
+                <div className="metadata-item">
+                  <span className="metadata-label">Zona:</span>
+                  <span className="metadata-value">{zone}</span>
+                </div>
+              )}
+
+              {/* HORÁRIO */}
+              <div className="metadata-item">
+                <span className="metadata-label">Horário:</span>
+                <span className="metadata-value">
+                  {operation ? operation.substring(0, 15) : "Sob consulta"}
+                </span>
+              </div>
+
             </div>
           </div>
+
         </div>
 
         <div className="modal-units">
-          
-
           <div className="units-list">
-            {/* {mockUnits.map((unit, index) => (
-              <div key={index} className="unit-card">
-                <img src={unit.image} alt={unit.name} />
-
-                <div className="unit-info">
-                  <strong>{unit.name}</strong>
-                  <p>{unit.address}</p>
-                  <span>{unit.hours}</span>
-                </div>
-              </div>
-            ))} */}
+            {/* Mantido como estava */}
           </div>
         </div>
       </div>

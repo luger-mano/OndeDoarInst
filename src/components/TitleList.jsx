@@ -27,7 +27,7 @@ export default function TitleList({
 
     } else {
 
-      const requestUrl = `api/centers`;
+      const requestUrl = `http://localhost:8080/centers/filter/zone/neighborhoods`;
 
       fetch(requestUrl)
 
@@ -161,9 +161,6 @@ export default function TitleList({
             {title}
           </span>
 
-          <span className="row-explore">
-            Ver todos da região ›
-          </span>
 
         </div>
 
