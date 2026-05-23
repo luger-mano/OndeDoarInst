@@ -390,212 +390,19 @@ export default function App() {
 
                   {/* BAIRRO */}
                   {selectedFilter === "bairro" && (
-
-                    <div
-                      style={{
-                        padding: "30px"
-                      }}
-                    >
-
-                      {Object.entries(
-
-                        groupCentersBy(
-                          allCenters,
-                          "bairro"
-                        )
-
-                      ).map(
-                        ([bairro, centers]) => (
-
-                          <div
-                            key={bairro}
-                            style={{
-                              marginBottom: "50px"
-                            }}
-                          >
-
-                            <h1
-                              style={{
-                                color: "black",
-                                marginBottom: "20px"
-                              }}
-                            >
-                              {bairro}
-                            </h1>
-
-                            <div
-                              style={{
-                                display: "flex",
-                                gap: "20px",
-                                flexWrap: "wrap"
-                              }}
-                            >
-
-                              {centers.map((center) => (
-
-                                <Item
-
-                                  key={
-                                    center.bloodCenterId
-                                  }
-
-                                  title={center.name}
-
-                                  score={
-                                    center.bloodStock
-                                  }
-
-                                  address={
-                                    center.address
-                                  }
-
-                                  phones={
-                                    center.phone
-                                  }
-
-                                  operation={
-                                    center.operation
-                                  }
-
-                                  facadeImageUrl={
-                                    center.facadeImageUrl
-                                  }
-
-                                  municipalityImageUrl={
-                                    center.municipalityImageUrl
-                                  }
-
-                                  neighborhoodImageUrl={
-                                    center.neighborhoodImageUrl
-                                  }
-
-                                  onOpen={() =>
-                                    setModalItem(center)
-                                  }
-
-                                />
-
-                              ))}
-
-                            </div>
-
-                          </div>
-
-                        )
-                      )}
-
-                    </div>
-
-                  )}
-
-                  {/* MUNICIPIO */}
-                  {selectedFilter ===
-                    "municipio" && (
-
-                    <div
-                      style={{
-                        padding: "30px"
-                      }}
-                    >
-
-                      {Object.keys(
-
-                        groupCentersBy(
-                          allCenters,
-                          "municipio"
-                        )
-
-                      ).length > 0 ? (
-
-                        Object.entries(
-
-                          groupCentersBy(
-                            allCenters,
-                            "municipio"
-                          )
-
-                        ).map(
-                          ([municipio, centers]) => (
-
-                            <div
-                              key={municipio}
-                              style={{
-                                marginBottom: "50px"
-                              }}
-                            >
-
-                              <h1
-                                style={{
-                                  color: "black",
-                                  marginBottom: "20px"
-                                }}
-                              >
-                                {municipio}
-                              </h1>
-
-                              <div
-                                style={{
-                                  display: "flex",
-                                  gap: "20px",
-                                  flexWrap: "wrap"
-                                }}
-                              >
-
-                                {centers.map((center) => (
-
-                                  <Item
-
-                                    key={
-                                      center.bloodCenterId
-                                    }
-
-                                    title={center.name}
-
-                                    score={
-                                      center.bloodStock
-                                    }
-
-                                    address={
-                                      center.address
-                                    }
-
-                                    phones={
-                                      center.phone
-                                    }
-
-                                    operation={
-                                      center.operation
-                                    }
-
-                                    facadeImageUrl={
-                                      center.facadeImageUrl
-                                    }
-
-                                    municipalityImageUrl={
-                                      center.municipalityImageUrl
-                                    }
-
-                                    neighborhoodImageUrl={
-                                      center.neighborhoodImageUrl
-                                    }
-
-                                    onOpen={() =>
-                                      setModalItem(center)
-                                    }
-
-                                  />
-
-                                ))}
-
-                              </div>
-
-                            </div>
-
+                    <>
+                      {Object.keys(groupCentersBy(allCenters, "bairro")).length > 0 ? (
+                        Object.entries(groupCentersBy(allCenters, "bairro")).map(
+                          ([bairro, centers]) => (
+                            <TitleList
+                              key={bairro}
+                              title={bairro}
+                              initialItems={centers}
+                              onOpen={setModalItem}
+                            />
                           )
                         )
-
                       ) : (
-
                         <div
                           style={{
                             padding: "40px",
@@ -604,14 +411,39 @@ export default function App() {
                             fontWeight: "600"
                           }}
                         >
-                          Nenhum município
-                          disponível nos dados.
+                          Nenhum bairro disponível nos dados.
                         </div>
-
                       )}
+                    </>
+                  )}
 
-                    </div>
-
+                  {/* MUNICIPIO */}
+                  {selectedFilter === "municipio" && (
+                    <>
+                      {Object.keys(groupCentersBy(allCenters, "municipio")).length > 0 ? (
+                        Object.entries(groupCentersBy(allCenters, "municipio")).map(
+                          ([municipio, centers]) => (
+                            <TitleList
+                              key={municipio}
+                              title={municipio}
+                              initialItems={centers}
+                              onOpen={setModalItem}
+                            />
+                          )
+                        )
+                      ) : (
+                        <div
+                          style={{
+                            padding: "40px",
+                            color: "black",
+                            fontSize: "1.2rem",
+                            fontWeight: "600"
+                          }}
+                        >
+                          Nenhum município disponível nos dados.
+                        </div>
+                      )}
+                    </>
                   )}
 
                   {/* ESTADO */}
