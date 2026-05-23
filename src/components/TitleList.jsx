@@ -161,9 +161,6 @@ export default function TitleList({
             {title}
           </span>
 
-          <span className="row-explore">
-            Ver todos da região ›
-          </span>
 
         </div>
 
