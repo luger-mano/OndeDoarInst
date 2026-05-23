@@ -31,7 +31,7 @@ export default function ZoneSection({ title, bairros, onOpenNeighborhood }) {
             ‹
           </button>
 
-          {/* TRACK (Sem o slider-window, diretamente no titles-wrapper como no modelo) */}
+          {/* TRACK */}
           <div className="titles-wrapper">
             {visibleBairros.map((bairro) => (
               <div
