@@ -58,13 +58,29 @@ export default function Item({
             e.target.src = PLACEHOLDER;
           }}
         />
-        {/* Alterei aqui */}
-        {(operation?.includes("Unidade fechada") ||
-          operation?.includes("Ligar ou acessar o site para conferir")) && (
-            <div className="status-bar">
-              🕒 {operation}
+        {operation?.includes("Unidade fechada") && (
+          <div className="status-bar">
+            <div className="status-title">
+              {operation.split("|")[0]}
             </div>
-          )}
+
+            <div className="status-subtitle">
+              {operation.split("|")[1]}
+            </div>
+          </div>
+        )}
+
+        {operation?.includes("Ligar ou acessar o site para conferir") && (
+          <div className="status-bar">
+            <div className="status-title">
+              CONSULTAR
+            </div>
+
+            <div className="status-subtitle">
+              {operation}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="overlay">

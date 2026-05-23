@@ -67,7 +67,7 @@ export default function App() {
   useEffect(() => {
 
     fetch(
-      "/api/centers/filter/zone/neighborhoods"
+      "http://localhost:8080/centers/filter/zone/neighborhoods"
     )
 
       .then((res) => res.json())
@@ -95,7 +95,7 @@ export default function App() {
 
         // BUSCAR TODOS
         fetch(
-          "/api/centers"
+          "http://localhost:8080/centers"
         )
 
           .then((res) => res.json())

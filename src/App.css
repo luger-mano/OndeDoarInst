@@ -446,60 +446,21 @@
 }
 
 .slider-btn {
-
   position: absolute;
-
-  top: 50%;
-
-  transform: translateY(-50%);
-
-  width: 55px;
-
-  height: 55px;
-
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  background: rgba(113, 113, 113, 0.6);
   border: none;
-
-  border-radius: 50%;
-
-  background: rgba(0,0,0,0.75);
-
-  color: white;
-
-  font-size: 2rem;
-
+  color: var(--black);
+  font-size: 28px;
   cursor: pointer;
-
-  z-index: 999;
-
-  transition: 0.25s ease;
-}
-
-.slider-btn:hover {
-
-  background: rgba(0,0,0,0.95);
-
-  transform:
-    translateY(-50%)
-    scale(1.08);
-}
-
-.slider-btn.prev {
-
-  left: 10px;
-
-  z-index: 20;
-}
-
-.slider-btn.next {
-
-  right: 10px;
-
-  z-index: 20;
-}
-
-.slider-btn.hidden {
-
-  display: none;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.2s, background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .slider-wrap:hover .slider-btn {
@@ -507,13 +468,19 @@
 }
 
 .slider-btn:hover {
-  background: rgba(212, 212, 212, 0.6);
-  color: var(--black);
+  background: rgba(0, 0, 0, 0.85);
+  color: var(--white);
 }
 
+.slider-btn.prev {
+  left: -60px;
+  border-radius: 4px 0 0 4px;
+}
 
-
-
+.slider-btn.next {
+  right: -60px;
+  border-radius: 0 4px 4px 0;
+}
 
 .slider-btn.hidden {
   pointer-events: none;
@@ -533,7 +500,7 @@
 }
 
 .Item:hover {
-  transform: scale(1.2);
+  transform: scale(1.12);
   z-index: 10;
   transition: transform 0.3s ease 0.2s, z-index 1ms 0.1s;
 }
@@ -549,7 +516,7 @@
 .Item .thumb {
   width: 100%;
   aspect-ratio: 16 / 9;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 4px;
   display: block;
   background: #1a1a1a;
@@ -561,21 +528,57 @@
 
 .status-bar {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
+  inset: 0;
 
-  backdrop-filter: blur(4px);
-  background: rgba(226, 18, 33, 0.95);
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(226, 18, 32, 0.79);
+
   color: #fff;
-  font-size: 8px;
-  font-weight: 600;
-
-  padding: 8px 10px;
   text-align: center;
 
-  border-radius: 0 0 4px 4px;
+  border-radius: 4px;
+
+  padding: 20px;
+}
+
+.status-bar .status-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.status-bar .status-subtitle {
+  font-size: 11px;
+  font-weight: 400;
+  opacity: 0.95;
+}
+
+/* ── BAIRRO COVER (Sobreposição na imagem) ── */
+.bairro-cover {
+  position: absolute;
+  inset: 0; /* Preenche todo o espaço do card (sobre a imagem) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6); /* Fundo preto transparente */
+  border-radius: 4px;
+  pointer-events: none; /* IMPORTANTE: Garante que o hover e o clique continuem funcionando no .Item */
+  padding: 20px;
+}
+
+.bairro-cover-title {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-align: center;
+  text-transform: uppercase; /* Deixa o nome do bairro todo em maiúsculo (opcional) */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Ajuda na leitura caso a foto seja muito clara */
 }
 
 .Item .overlay {
@@ -638,15 +641,6 @@
   margin-bottom: auto;
 }
 
-.Item .overlay .title {
-  font-size: 10px;
-  font-weight: 700;
-  margin-bottom: 4px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .Item .overlay .rating {
   display: flex;
   align-items: center;
@@ -657,6 +651,7 @@
 
 .Item .overlay .rating .match {
   color: #E21221;
+  font-size: 12px;
   font-weight: 600;
 }
 
