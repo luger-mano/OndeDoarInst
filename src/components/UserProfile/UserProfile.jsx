@@ -1,117 +1,307 @@
-import React, { useState, useEffect, useRef } from "react";
-import ModalLogin from "../ModalLogin/ModalLogin";
-import ModalEdicao from "../ModalEdicao/ModalEdicao";
-import ModalCadastro from "../ModalCadastro/ModalCadastro";
-import logo_without_account from "../../assets/logo_without_account.svg"
+import React, {
+  useState,
+  useEffect,
+  useRef
+} from "react";
+
+import ModalLogin
+from "../ModalLogin/ModalLogin";
+
+import ModalEdicao
+from "../ModalEdicao/ModalEdicao";
+
+import ModalCadastro
+from "../ModalCadastro/ModalCadastro";
+
+import logo_without_account
+from "../../assets/logo_without_account.svg";
+
 import "./UserProfile.css";
 
-const DEFAULT_PROFILES = [
-  {
-    name: "Jack Oliver",
-    img: "https://i.pravatar.cc/96?u=jack",
-  },
-  {
-    name: "Alexander",
-    img: "https://i.pravatar.cc/96?u=alex",
-  },
-  {
-    name: "Mattias",
-    img: "https://i.pravatar.cc/96?u=mattias",
-  },
-];
-
 export default function UserProfile() {
-  const [profiles, setProfiles] = useState(DEFAULT_PROFILES);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [open, setOpen] = useState(false);
-  const ref = useRef(null);
-  const [loginOpen, setLoginOpen] = useState(false);
-  const [registerOpen, setRegisterOpen] = useState(false);
-  const [editOpen, setEditOpen] = useState(false);
 
-  // Close on outside click
+  const [open, setOpen] =
+    useState(false);
+
+  const ref = useRef(null);
+
+  const [loginOpen, setLoginOpen] =
+    useState(false);
+
+  const [registerOpen, setRegisterOpen] =
+    useState(false);
+
+  const [editOpen, setEditOpen] =
+    useState(false);
+
+  const [loggedUser, setLoggedUser] =
+    useState(null);
+
+  // VERIFICA LOGIN
   useEffect(() => {
+
+    const user =
+      localStorage.getItem(
+        "user"
+      );
+
+    if (user) {
+
+      setLoggedUser(
+        JSON.parse(user)
+      );
+    }
+
+  }, []);
+
+  // FECHAR MENU
+  useEffect(() => {
+
     const handleOutside = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) {
+
+      if (
+        ref.current &&
+        !ref.current.contains(
+          e.target
+        )
+      ) {
+
         setOpen(false);
       }
     };
-    document.addEventListener("mousedown", handleOutside);
-    return () => document.removeEventListener("mousedown", handleOutside);
+
+    document.addEventListener(
+      "mousedown",
+      handleOutside
+    );
+
+    return () =>
+      document.removeEventListener(
+        "mousedown",
+        handleOutside
+      );
+
   }, []);
 
-  function handleSelect(i) {
-    setCurrentIndex(i);
+  // LOGOUT
+  function handleLogout() {
+
+    localStorage.removeItem(
+      "token"
+    );
+
+    localStorage.removeItem(
+      "user"
+    );
+
+    setLoggedUser(null);
+
     setOpen(false);
+
+    window.location.reload();
   }
 
-  // function handleAddProfile() {
-  //   const name = prompt("Enter profile name:");
-  //   if (!name) return;
-  //   const img = `https://i.pravatar.cc/96?u=${Date.now()}`;
-  //   setProfiles((prev) => [...prev, { name, img }]);
-  //   setCurrentIndex(profiles.length);
-  //   setOpen(false);
-  // }
+  // DELETAR CONTA
+  async function handleDelete() {
 
-  const current = profiles[currentIndex];
+    const confirmDelete =
+      confirm(
+        "Deseja realmente excluir sua conta?"
+      );
+
+    if (!confirmDelete) return;
+
+    try {
+
+      alert(
+        "Quando backend passar endpoint completo com token/id, conectamos aqui 😄"
+      );
+
+    } catch (err) {
+
+      console.error(err);
+    }
+  }
 
   return (
+
     <div
-      className={`UserProfile ${open ? "open" : ""}`}
+      className={`UserProfile ${
+        open ? "open" : ""
+      }`}
       ref={ref}
     >
-         {/* <button onClick={() => setLoginOpen(true)}>Login</button> */}
-              
-            <ModalLogin isOpen={loginOpen}onClose={() => setLoginOpen(false)}/> 
-      
-             {/* <button onClick={() => setEditOpen(true)}> Abrir edição</button> */}
-      
-            <ModalEdicao isOpen={editOpen}onClose={() => setEditOpen(false)}/>
 
-              <ModalCadastro
-                            isOpen={registerOpen}
-                            onClose={() => setRegisterOpen(false)}
-                          />
+      <ModalLogin
+        isOpen={loginOpen}
+        onClose={() => {
 
+          setLoginOpen(false);
 
-      {/* Current user trigger */}
+          const user =
+            localStorage.getItem(
+              "user"
+            );
+
+          if (user) {
+
+            setLoggedUser(
+              JSON.parse(user)
+            );
+          }
+        }}
+      />
+
+      <ModalEdicao
+        isOpen={editOpen}
+        onClose={() =>
+          setEditOpen(false)
+        }
+      />
+
+      <ModalCadastro
+        isOpen={registerOpen}
+        onClose={() =>
+          setRegisterOpen(false)
+        }
+      />
+
+      {/* BOTÃO USER */}
       <div
         className="User"
-        onClick={() => setOpen((v) => !v)}
-        role="button"
-        tabIndex={0}
-        aria-haspopup="true"
-        aria-expanded={open}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") setOpen((v) => !v);
-        }}
+        onClick={() =>
+          setOpen((v) => !v)
+        }
       >
+
         <div className="image">
+
           <img
-            src={logo_without_account}
-            alt={current?.name || "Profile"}
+            src={
+              logo_without_account
+            }
+            alt="Profile"
           />
+
         </div>
-        <span className="caret">▾</span>
+
+        <span className="caret">
+          ▾
+        </span>
+
       </div>
 
+      {/* MENU */}
       <div className="UserProfile-menu">
-       
+
         <div className="UserNavigation">
-          <div className="UserProfile-menu-item"><button className="botaoLog" onClick={() => setLoginOpen(true)}>Login</button></div>
-          <div className="UserProfile-menu-item"><button className="botaoLog" onClick={() => setRegisterOpen(true)}>Cadastro</button></div>
-          <div className="UserProfile-menu-item"><button className="botaoLog" onClick={() => setEditOpen(true)}>Editar Perfil</button></div>
+
+          {/* NÃO LOGADO */}
+          {!loggedUser && (
+
+            <>
+
+              <div className="UserProfile-menu-item">
+
+                <button
+                  className="botaoLog"
+                  onClick={() => {
+
+                    setLoginOpen(true);
+
+                    setOpen(false);
+                  }}
+                >
+                  Login
+                </button>
+
+              </div>
+
+              <div className="UserProfile-menu-item">
+
+                <button
+                  className="botaoLog"
+                  onClick={() => {
+
+                    setRegisterOpen(true);
+
+                    setOpen(false);
+                  }}
+                >
+                  Cadastro
+                </button>
+
+              </div>
+
+            </>
+
+          )}
+
+          {/* LOGADO */}
+          {loggedUser && (
+
+            <>
+
+              <div
+                className="UserProfile-menu-item"
+              >
+
+                {loggedUser.email}
+
+              </div>
+
+              <div className="UserProfile-menu-item">
+
+                <button
+                  className="botaoLog"
+                  onClick={() => {
+
+                    setEditOpen(true);
+
+                    setOpen(false);
+                  }}
+                >
+                  Editar Perfil
+                </button>
+
+              </div>
+
+              <div className="UserProfile-menu-item">
+
+                <button
+                  className="botaoLog"
+                  onClick={
+                    handleDelete
+                  }
+                >
+                  Excluir Conta
+                </button>
+
+              </div>
+
+              <hr className="UserProfile-menu-divider" />
+
+              <div className="UserProfile-menu-item">
+
+                <button
+                  className="botaoLog"
+                  onClick={
+                    handleLogout
+                  }
+                >
+                  Sair
+                </button>
+
+              </div>
+
+            </>
+
+          )}
+
         </div>
 
-        <hr className="UserProfile-menu-divider" />
-        <div
-          className="UserProfile-menu-item"
-          style={{ color: "rgba(105, 105, 105, 0.55)" }}
-        >
-          Sair
-        </div>
       </div>
+
     </div>
   );
 }

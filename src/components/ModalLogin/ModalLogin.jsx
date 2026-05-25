@@ -54,6 +54,17 @@ export default function ModalLogin({
         response.accessToken
       );
 
+      // SALVA USUÁRIO
+localStorage.setItem(
+
+  "user",
+
+  JSON.stringify({
+
+    email: email
+  })
+);
+
       console.log(
         "TOKEN:",
         response.accessToken
