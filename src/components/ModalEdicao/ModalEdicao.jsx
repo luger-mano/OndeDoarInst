@@ -1,48 +1,141 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
 import "./ModalEdicao.css";
 
-export default function ModalEdicao({ isOpen, onClose }) {
+export default function ModalEdicao({
+  isOpen,
+  onClose
+}) {
 
-  const [form, setForm] = useState({
-    nome: "Robson",
-    sobrenome: "Rioki",
-    email: "robson@email.com",
-    tipoSanguineo: "O+",
-    whatsapp: "(11) 99999-9999",
-    estado: "SP",
+  const [form, setForm] =
+    useState({
 
-    senhaAtual: "",
-    novaSenha: "",
-    confirmarNovaSenha: ""
-  });
+      nome: "",
 
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+      sobrenome: "",
+
+      email: "",
+
+      tipoSanguineo: "",
+
+      whatsapp: "",
+
+      estado: "",
+
+      senhaAtual: "",
+
+      novaSenha: "",
+
+      confirmarNovaSenha: ""
+    });
+
+  const [error, setError] =
+    useState("");
+
+  const [success, setSuccess] =
+    useState("");
+
+  // CARREGA USER
+  useEffect(() => {
+
+    if (!isOpen) return;
+
+    const user =
+      JSON.parse(
+
+        localStorage.getItem(
+          "user"
+        )
+      );
+
+    if (user) {
+
+      // MOCK TEMPORÁRIO
+      const email =
+        user.email || "";
+
+      const nome =
+        email.split("@")[0];
+
+      setForm({
+
+        nome: nome,
+
+        sobrenome: "",
+
+        email: email,
+
+        tipoSanguineo: "A+",
+
+        whatsapp: "",
+
+        estado: "SP",
+
+        senhaAtual: "",
+
+        novaSenha: "",
+
+        confirmarNovaSenha: ""
+      });
+    }
+
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
   // FORMATAR TELEFONE
-  const formatPhone = (value) => {
-    value = value.replace(/\D/g, "");
+  const formatPhone = (
+    value
+  ) => {
+
+    value =
+      value.replace(
+        /\D/g,
+        ""
+      );
 
     if (value.length <= 11) {
-      value = value.replace(/^(\d{2})(\d)/g, "($1) $2");
-      value = value.replace(/(\d{5})(\d)/, "$1-$2");
+
+      value =
+        value.replace(
+          /^(\d{2})(\d)/g,
+          "($1) $2"
+        );
+
+      value =
+        value.replace(
+          /(\d{5})(\d)/,
+          "$1-$2"
+        );
     }
 
     return value;
   };
 
   // HANDLE INPUTS
-  const handleChange = (e) => {
-    let { name, value } = e.target;
+  const handleChange = (
+    e
+  ) => {
 
-    if (name === "whatsapp") {
-      value = formatPhone(value);
+    let {
+      name,
+      value
+    } = e.target;
+
+    if (
+      name === "whatsapp"
+    ) {
+
+      value =
+        formatPhone(
+          value
+        );
     }
 
     setForm({
+
       ...form,
+
       [name]: value
     });
   };
@@ -50,62 +143,129 @@ export default function ModalEdicao({ isOpen, onClose }) {
   // VALIDAR
   const handleSubmit = () => {
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     // CAMPOS OBRIGATÓRIOS
     if (
+
       !form.nome.trim() ||
-      !form.sobrenome.trim() ||
-      !form.email.trim() ||
-      !form.whatsapp.trim() ||
-      !form.estado.trim()
+
+      !form.email.trim()
     ) {
-      return setError("Preencha todos os campos obrigatórios.");
+
+      return setError(
+        "Preencha os campos obrigatórios."
+      );
     }
 
     // EMAIL
-    if (!emailRegex.test(form.email)) {
-      return setError("Digite um email válido.");
+    if (
+      !emailRegex.test(
+        form.email
+      )
+    ) {
+
+      return setError(
+        "Digite um email válido."
+      );
     }
 
     // TELEFONE
-    if (form.whatsapp.length < 15) {
-      return setError("Digite um número de WhatsApp válido.");
+    if (
+
+      form.whatsapp &&
+
+      form.whatsapp.length < 15
+    ) {
+
+      return setError(
+        "Digite um número de WhatsApp válido."
+      );
     }
 
-    // ALTERAÇÃO DE SENHA (OPCIONAL)
+    // ALTERAÇÃO DE SENHA
     if (
+
       form.senhaAtual ||
+
       form.novaSenha ||
+
       form.confirmarNovaSenha
     ) {
 
-      // TODOS OS CAMPOS DE SENHA
       if (
+
         !form.senhaAtual ||
+
         !form.novaSenha ||
+
         !form.confirmarNovaSenha
       ) {
-        return setError("Preencha todos os campos de senha.");
+
+        return setError(
+          "Preencha todos os campos de senha."
+        );
       }
 
-      // SENHA MIN 8
-      if (form.novaSenha.length < 8) {
-        return setError("A nova senha deve ter no mínimo 8 caracteres.");
+      if (
+        form.novaSenha.length < 8
+      ) {
+
+        return setError(
+          "A nova senha deve ter no mínimo 8 caracteres."
+        );
       }
 
-      // CONFIRMAR SENHA
-      if (form.novaSenha !== form.confirmarNovaSenha) {
-        return setError("As novas senhas não coincidem.");
+      if (
+
+        form.novaSenha !==
+
+        form.confirmarNovaSenha
+      ) {
+
+        return setError(
+          "As novas senhas não coincidem."
+        );
       }
     }
 
-    // SUCESSO
+    // FUTURO PAYLOAD
+    const payload = {
+
+      nome:
+        form.nome,
+
+      sobrenome:
+        form.sobrenome,
+
+      email:
+        form.email,
+
+      tipoSanguineo:
+        form.tipoSanguineo,
+
+      whatsapp:
+        form.whatsapp,
+
+      estado:
+        form.estado
+    };
+
+    console.log(
+      "PAYLOAD UPDATE:",
+      payload
+    );
+
     setError("");
-    setSuccess("Informações atualizadas com sucesso!");
+
+    setSuccess(
+      "Informações atualizadas com sucesso!"
+    );
   };
 
   return (
+
     <>
 
       {/* MODAL */}
@@ -120,7 +280,9 @@ export default function ModalEdicao({ isOpen, onClose }) {
             ×
           </button>
 
-          <h2>Editar Perfil</h2>
+          <h2>
+            Editar Perfil
+          </h2>
 
           <div className="edit-grid">
 
@@ -154,7 +316,9 @@ export default function ModalEdicao({ isOpen, onClose }) {
             onChange={handleChange}
           >
 
-            <option value="">Tipo sanguíneo</option>
+            <option value="">
+              Tipo sanguíneo
+            </option>
 
             <option>A+</option>
             <option>A-</option>
@@ -165,7 +329,9 @@ export default function ModalEdicao({ isOpen, onClose }) {
             <option>O+</option>
             <option>O-</option>
 
-            <option>Não sei</option>
+            <option>
+              Não sei
+            </option>
 
           </select>
 
@@ -183,40 +349,37 @@ export default function ModalEdicao({ isOpen, onClose }) {
             onChange={handleChange}
           >
 
-            <option value="">Selecione seu estado</option>
+            <option value="">
+              Selecione seu estado
+            </option>
 
-            <option value="SP">São Paulo</option>
-            <option value="RJ">Rio de Janeiro</option>
-            <option value="MG">Minas Gerais</option>
-            <option value="RS">Rio Grande do Sul</option>
-            <option value="PR">Paraná</option>
-            <option value="SC">Santa Catarina</option>
-            <option value="BA">Bahia</option>
-            <option value="CE">Ceará</option>
-            <option value="PE">Pernambuco</option>
-            <option value="GO">Goiás</option>
-            <option value="DF">Distrito Federal</option>
-            <option value="AM">Amazonas</option>
-            <option value="PA">Pará</option>
-            <option value="MT">Mato Grosso</option>
-            <option value="MS">Mato Grosso do Sul</option>
-            <option value="ES">Espírito Santo</option>
-            <option value="PB">Paraíba</option>
-            <option value="RN">Rio Grande do Norte</option>
-            <option value="AL">Alagoas</option>
-            <option value="SE">Sergipe</option>
-            <option value="PI">Piauí</option>
-            <option value="MA">Maranhão</option>
-            <option value="RO">Rondônia</option>
-            <option value="RR">Roraima</option>
-            <option value="AP">Amapá</option>
-            <option value="AC">Acre</option>
-            <option value="TO">Tocantins</option>
+            <option value="SP">
+              São Paulo
+            </option>
+
+            <option value="RJ">
+              Rio de Janeiro
+            </option>
+
+            <option value="MG">
+              Minas Gerais
+            </option>
+
+            <option value="RS">
+              Rio Grande do Sul
+            </option>
+
+            <option value="PR">
+              Paraná
+            </option>
+
+            <option value="SC">
+              Santa Catarina
+            </option>
 
           </select>
 
           {/* SENHAS */}
-
           <input
             type="password"
             name="senhaAtual"
@@ -259,9 +422,15 @@ export default function ModalEdicao({ isOpen, onClose }) {
 
           <div className="error-popup">
 
-            <p>{error}</p>
+            <p>
+              {error}
+            </p>
 
-            <button onClick={() => setError("")}>
+            <button
+              onClick={() =>
+                setError("")
+              }
+            >
               OK
             </button>
 
@@ -278,11 +447,15 @@ export default function ModalEdicao({ isOpen, onClose }) {
 
           <div className="success-popup">
 
-            <p>{success}</p>
+            <p>
+              {success}
+            </p>
 
             <button
               onClick={() => {
+
                 setSuccess("");
+
                 onClose();
               }}
             >

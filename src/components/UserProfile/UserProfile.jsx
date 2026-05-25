@@ -13,9 +13,6 @@ from "../ModalEdicao/ModalEdicao";
 import ModalCadastro
 from "../ModalCadastro/ModalCadastro";
 
-import logo_without_account
-from "../../assets/logo_without_account.svg";
-
 import "./UserProfile.css";
 
 export default function UserProfile() {
@@ -37,7 +34,9 @@ export default function UserProfile() {
   const [loggedUser, setLoggedUser] =
     useState(null);
 
-  // VERIFICA LOGIN
+  // MOCK VISUAL
+  const mockBloodType = "A+";
+
   useEffect(() => {
 
     const user =
@@ -101,28 +100,6 @@ export default function UserProfile() {
     window.location.reload();
   }
 
-  // DELETAR CONTA
-  async function handleDelete() {
-
-    const confirmDelete =
-      confirm(
-        "Deseja realmente excluir sua conta?"
-      );
-
-    if (!confirmDelete) return;
-
-    try {
-
-      alert(
-        "Quando backend passar endpoint completo com token/id, conectamos aqui 😄"
-      );
-
-    } catch (err) {
-
-      console.error(err);
-    }
-  }
-
   return (
 
     <div
@@ -166,7 +143,7 @@ export default function UserProfile() {
         }
       />
 
-      {/* BOTÃO USER */}
+      {/* USER */}
       <div
         className="User"
         onClick={() =>
@@ -174,14 +151,28 @@ export default function UserProfile() {
         }
       >
 
-        <div className="image">
+        {/* NOME */}
+        {loggedUser && (
 
-          <img
-            src={
-              logo_without_account
-            }
-            alt="Profile"
-          />
+          <span className="user-name">
+
+            {loggedUser.email
+              .split("@")[0]}
+
+          </span>
+
+        )}
+
+        {/* FOTO */}
+        <div className="blood-avatar">
+
+          <span>
+
+            {loggedUser
+              ? mockBloodType
+              : "?"}
+
+          </span>
 
         </div>
 
@@ -242,9 +233,7 @@ export default function UserProfile() {
 
             <>
 
-              <div
-                className="UserProfile-menu-item"
-              >
+              <div className="UserProfile-menu-item">
 
                 {loggedUser.email}
 
@@ -270,9 +259,6 @@ export default function UserProfile() {
 
                 <button
                   className="botaoLog"
-                  onClick={
-                    handleDelete
-                  }
                 >
                   Excluir Conta
                 </button>

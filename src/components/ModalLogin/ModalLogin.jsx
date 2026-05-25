@@ -31,6 +31,9 @@ export default function ModalLogin({
   const [loading, setLoading] =
     useState(false);
 
+  const [success, setSuccess] =
+    useState(false);
+
   if (!isOpen) return null;
 
   async function handleLogin() {
@@ -55,22 +58,30 @@ export default function ModalLogin({
       );
 
       // SALVA USUÁRIO
-localStorage.setItem(
+      localStorage.setItem(
 
-  "user",
+        "user",
 
-  JSON.stringify({
+        JSON.stringify({
 
-    email: email
-  })
-);
+          email: email
+        })
+      );
 
       console.log(
         "TOKEN:",
         response.accessToken
       );
 
-      onClose();
+      // LIMPA CAMPOS
+      setEmail("");
+
+      setSenha("");
+
+      // POPUP SUCESSO
+      setSuccess(true);
+
+      
 
     } catch (err) {
 
@@ -171,6 +182,39 @@ localStorage.setItem(
         </p>
 
       </div>
+
+      {/* POPUP SUCESSO */}
+{success && (
+
+  <div className="success-overlay">
+
+    <div className="success-popup">
+
+      <p>
+        Login realizado com sucesso!
+      </p>
+
+      <button
+
+        className="success-btn"
+
+        onClick={() => {
+
+          setSuccess(false);
+
+          onClose();
+
+          window.location.reload();
+        }}
+      >
+        OK
+      </button>
+
+    </div>
+
+  </div>
+
+)}
 
     </div>
   );

@@ -1,5 +1,5 @@
 const API_URL =
-  "/api";
+  "http://localhost:8080";
 
 // GERA CHAVE ÚNICA
 function generateKey() {
@@ -79,6 +79,39 @@ export async function registerRequest(
 
     throw new Error(
       "Erro ao cadastrar"
+    );
+  }
+
+  return response.json();
+}
+
+/* EXCLUIR CONTA */
+export async function deleteAccountRequest(
+  userId,
+  token
+) {
+
+  const response =
+    await fetch(
+
+      `http://localhost:8080/user/${userId}`,
+
+      {
+
+        method: "DELETE",
+
+        headers: {
+
+          Authorization:
+            `Bearer ${token}`
+        }
+      }
+    );
+
+  if (!response.ok) {
+
+    throw new Error(
+      "Erro ao excluir conta"
     );
   }
 

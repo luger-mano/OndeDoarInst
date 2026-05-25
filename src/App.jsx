@@ -164,7 +164,7 @@ export default function App() {
           const response =
             await fetch(
 
-              `/api/centers/filter/search?search=${encodeURIComponent(query)}`
+              `http://localhost:8080/centers/filter/search?search=${encodeURIComponent(query)}`
 
             );
 

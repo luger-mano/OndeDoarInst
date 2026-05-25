@@ -103,6 +103,31 @@
   cursor: pointer;
   font-weight: bold;
 }
+.success-btn {
+
+  margin-top: 14px;
+
+  border: none;
+
+  background: white;
+
+  color: #16a34a;
+
+  padding: 8px 18px;
+
+  border-radius: 8px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.success-btn:hover {
+
+  transform: scale(1.03);
+}
 
 @keyframes fadeIn {
 
