@@ -177,17 +177,49 @@ const handleSubmit =
         password:
           form.senha,
 
-        bloodType:
-          form.tipoSanguineo ===
-          "Não sei"
+       bloodType:
 
-            ? null
+  form.tipoSanguineo === "A+"
 
-            : form.tipoSanguineo,
+    ? "A_POSITIVE"
+
+    : form.tipoSanguineo === "A-"
+
+    ? "A_NEGATIVE"
+
+    : form.tipoSanguineo === "B+"
+
+    ? "B_POSITIVE"
+
+    : form.tipoSanguineo === "B-"
+
+    ? "B_NEGATIVE"
+
+    : form.tipoSanguineo === "AB+"
+
+    ? "AB_POSITIVE"
+
+    : form.tipoSanguineo === "AB-"
+
+    ? "AB_NEGATIVE"
+
+    : form.tipoSanguineo === "O+"
+
+    ? "O_POSITIVE"
+
+    : form.tipoSanguineo === "O-"
+
+    ? "O_NEGATIVE"
+
+    : null,
 
         state:
           form.estado
+
+          
       };
+      // LOG PAYLOAD
+// console.log("PAYLOAD CADASTRO:", payload );
 
       await registerRequest(payload);
 
