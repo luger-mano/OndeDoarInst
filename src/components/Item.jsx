@@ -1,9 +1,24 @@
 import React from "react";
 
-const PLACEHOLDER = "https://via.placeholder.com/400x225?text=Hemocentro";
+const PLACEHOLDER =
+  "https://via.placeholder.com/400x225?text=Hemocentro";
 
-export default function Item({ title, score, address, phones, operation, onOpen }) {
-  const bg = PLACEHOLDER;
+export default function Item({
+  title,
+  score,
+  address,
+  phones,
+  operation,
+  facadeImageUrl,
+  municipalityImageUrl,
+  neighborhoodImageUrl,
+  onOpen
+}) {
+  const bg =
+    facadeImageUrl ||
+    municipalityImageUrl ||
+    neighborhoodImageUrl ||
+    PLACEHOLDER;
 
   const getStockStatus = (stock) => {
     if (stock == null) return "Sem dados";
@@ -15,7 +30,7 @@ export default function Item({ title, score, address, phones, operation, onOpen 
   // Lógica de exibição exclusiva: Bairro OU Município
   const getExclusiveLocation = () => {
     if (!address) return "Localização não informada";
-    
+
     const { bairro, municipio, zone } = address;
     const hasBairro = bairro && bairro.toLowerCase() !== "s/b";
     const hasMunicipio = municipio && municipio.toLowerCase() !== "s/m";
@@ -34,24 +49,46 @@ export default function Item({ title, score, address, phones, operation, onOpen 
   return (
     <div className="Item" onClick={() => onOpen && onOpen()}>
       <div className="thumb-wrapper">
-        <img className="thumb" src={bg} alt={title} loading="lazy" />
-        <div className="status-bar">
-          🕒 {operation ? `Abre às: ${operation.substring(0, 5)}` : "Consulte"}
-        </div>
+        <img
+          className="thumb"
+          src={bg}
+          alt={title}
+          loading="lazy"
+          onError={(e) => {
+            e.target.src = PLACEHOLDER;
+          }}
+        />
+        {operation?.includes("Unidade fechada") && (
+          <div className="status-bar">
+            <div className="status-title">
+              {operation.split("|")[0]}
+            </div>
+
+            <div className="status-subtitle">
+              {operation.split("|")[1]}
+            </div>
+          </div>
+        )}
+
+        {operation?.includes("Ligar ou acessar o site para conferir") && (
+          <div className="status-bar">
+            <div className="status-title">
+              CONSULTAR
+            </div>
+
+            <div className="status-subtitle">
+              {operation}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="overlay">
-        <div className="actions">
-          <button className="card-btn more" title="Ver Detalhes">ℹ</button>
-        </div>
-        <div className="rating">
-          <span className="match">{getStockStatus(score)}</span>
-        </div>
         <div className="title">{title}</div>
+
         <div className="plot">
-          <p>📍 {address?.fullAddress || "Endereço não informado"}</p>
-          <p style={{ fontSize: '0.85rem', opacity: 0.9, color: '#e5e5e5' }}>
-            {getExclusiveLocation()}
+          <p className="address">
+            {address?.fullAddress || "Endereço não informado"}
           </p>
         </div>
       </div>

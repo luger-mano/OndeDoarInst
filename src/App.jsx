@@ -1,166 +1,169 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import TitleList from "./components/TitleList";
-import SearchResults from "./components/SearchResults";
+import ZoneSection from "./components/ZoneSection/ZoneSection";
+import SearchResults from "./components/SearchResults/SearchResults.jsx";
 import Modal from "./components/Modal";
+import NeighborhoodModal from "./components/NeighborhoodModal";
+import Info from "./pages/infopage/info.jsx";
+
 import "./App.css";
 
+// 1. MOVIDO PARA FORA: Função auxiliar de agrupamento
+function groupCentersBy(items, field) {
+  const grouped = {};
+  items.forEach((center) => {
+    let key = null;
+
+    if (field === "bairro") {
+      const bairro = center.address?.bairro;
+      if (bairro && bairro !== "s/b") key = bairro;
+    } else if (field === "municipio") {
+      const municipio = center.address?.municipio;
+      if (municipio && municipio !== "s/m") key = municipio;
+    } else if (field === "estado") {
+      key = "São Paulo";
+    } else if (field === "abertos") {
+      const op = center.operation?.toLowerCase() || "";
+      if (!op.includes("fechada") && !op.includes("conferir")) {
+        key = "Unidades abertas";
+      }
+    }
+
+    if (!key) return;
+    if (!grouped[key]) grouped[key] = [];
+    grouped[key].push(center);
+  });
+  return grouped;
+}
+
 export default function App() {
+  const [zones, setZones] = useState([]);
   const [allCenters, setAllCenters] = useState([]);
   const [searchResults, setSearchResults] = useState(null);
   const [modalItem, setModalItem] = useState(null);
-  const [groups, setGroups] = useState({});
+  const [neighborhoodModal, setNeighborhoodModal] = useState(null);
+  const [selectedFilter, setSelectedFilter] = useState("zona");
 
   useEffect(() => {
-    fetch("http://localhost:8080/centers")
+    fetch("http://localhost:8080/centers/filter/zone/neighborhoods")
       .then((res) => res.json())
       .then((data) => {
-        setAllCenters(data || []);
+        setZones(data || []);
+        const centers = [];
+        (data || []).forEach((zone) => {
+          (zone.bairros || []).forEach((bairro) => {
+            (bairro.bloodCenters || []).forEach((c) => centers.push(c));
+          });
+        });
 
-        const grouped = (data || []).reduce((acc, center) => {
-          
-          const zone = center.address?.zone;
-
-          let zoneKey = "Outras Regiões";
-          if (zone && zone !== "null") {
-            zoneKey = `ZONA ${zone.toUpperCase()}`;  
-          }
-
-          if (!acc[zoneKey]) acc[zoneKey] = [];
-          acc[zoneKey].push(center);
-          return acc;
-        }, {});
-
-        setGroups(grouped);
+        fetch("http://localhost:8080/centers")
+          .then((res) => res.json())
+          .then((allData) => {
+            const merged = [...centers];
+            (allData || []).forEach((center) => {
+              if (!merged.some((c) => c.bloodCenterId === center.bloodCenterId)) {
+                merged.push(center);
+              }
+            });
+            setAllCenters(merged);
+          });
       })
-      .catch((err) => console.error("Erro:", err));
+      .catch((err) => console.error("Erro zonas:", err));
   }, []);
 
-
-
-  const handleSearch = useCallback((query) => {
+  const handleSearch = useCallback(async (query) => {
     if (!query || !query.trim()) {
       setSearchResults(null);
       return;
     }
+    try {
+      const response = await fetch(`http://localhost:8080/centers/filter/search?search=${encodeURIComponent(query)}`);
+      const data = await response.json();
+      setSearchResults(data || []);
+    } catch (err) {
+      console.error("Erro search:", err);
+      setSearchResults([]);
+    }
+  }, []);
 
-    const lowerQuery = query.toLowerCase();
-
-    // Filtro
-    const filtered = allCenters.filter((center) => {
-      const nameMatch = center.name?.toLowerCase().includes(lowerQuery);
-      const bairroMatch = center.address?.bairro?.toLowerCase().includes(lowerQuery);
-      const municipioMatch = center.address?.municipio?.toLowerCase().includes(lowerQuery);
-
-      return nameMatch || bairroMatch || municipioMatch;
-    });
-
-    setSearchResults(filtered);
-  }, [allCenters]);
-
-  
-  return (
-    <div>
-      <Header onSearch={handleSearch} />
-
-      {searchResults ? (
-        <SearchResults results={searchResults} onOpen={setModalItem} />
+  // 2. FUNÇÃO RENDERIZADORA: Limpa o JSX principal
+  const renderFilteredContent = () => {
+    if (selectedFilter === "zona") {
+      return zones?.length > 0 ? (
+        zones.map((zoneObj) => (
+          <ZoneSection
+            key={zoneObj.zone}
+            title={zoneObj.zone}
+            bairros={zoneObj.bairros || []}
+            onOpenNeighborhood={setNeighborhoodModal}
+          />
+        ))
       ) : (
-        <>
-          <Hero onMoreInfo={setModalItem} />
+        <div className="loading">Carregando zonas...</div>
+      );
+    }
 
-          {/* Percorre as chaves do objeto 'groups' (ex: Vila Ema, Itaquera...) */}
-          {Object.keys(groups).length > 0 ? (
-            Object.keys(groups).map((locationName) => (
-              <TitleList
-                key={locationName}
-                title={locationName}
-                initialItems={groups[locationName]}
-                onOpen={setModalItem}
-              />
-            ))
-          ) : (
-            <div className="loading">Carregando hemocentros...</div>
-          )}
-        </>
-      )}
+    // 3. UNIFICAÇÃO: Trata bairro, municipio, estado e abertos de uma vez só!
+    const groupedData = groupCentersBy(allCenters, selectedFilter);
+    const entries = Object.entries(groupedData);
 
-      <footer className="Footer">
-        <div className="footer-logo">
-          {/* Inline Netflix wordmark */}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="3 0 200 200"
-            width="80"
-            height="40"
-            fill="none"
-            aria-label="Onde Doar"
-            role="img"
-          >
-
-            <path d="M28.7763 -1.25785e-06C24.9974 -1.09267e-06 21.2554 0.744321 17.7641 2.19047C14.2728 3.63661 11.1005 5.75626 8.42839 8.42839C5.75626 11.1005 3.63661 14.2728 2.19046 17.7641C0.74432 21.2554 -1.58822e-06 24.9974 -1.25785e-06 28.7763C-9.27486e-07 32.5553 0.744321 36.2972 2.19047 39.7885C3.63661 43.2798 5.75626 46.4521 8.42839 49.1243C11.1005 51.7964 14.2728 53.916 17.7641 55.3622C21.2554 56.8083 24.9974 57.5526 28.7763 57.5526L28.7763 46.457C26.4545 46.457 24.1553 45.9997 22.0102 45.1112C19.8651 44.2226 17.916 42.9203 16.2742 41.2785C14.6324 39.6367 13.33 37.6876 12.4415 35.5424C11.5529 33.3973 11.0956 31.0982 11.0956 28.7763C11.0956 26.4545 11.5529 24.1553 12.4415 22.0102C13.33 19.8651 14.6324 17.916 16.2742 16.2742C17.916 14.6324 19.8651 13.33 22.0102 12.4415C24.1553 11.5529 26.4545 11.0956 28.7763 11.0956L28.7763 -1.25785e-06Z" fill="#E21221" />
-            <path d="M28.7764 57.5527C32.5554 57.5527 36.2973 56.8084 39.7886 55.3622C43.2799 53.9161 46.4522 51.7964 49.1243 49.1243C51.7965 46.4522 53.9161 43.2799 55.3623 39.7886C56.8084 36.2973 57.5527 32.5553 57.5527 28.7764C57.5527 24.9974 56.8084 21.2555 55.3623 17.7642C53.9161 14.2729 51.7965 11.1006 49.1243 8.42845C46.4522 5.75632 43.2799 3.63667 39.7886 2.19053C36.2973 0.744381 32.5554 5.96121e-05 28.7764 5.97773e-05L28.7764 11.0957C31.0983 11.0957 33.3974 11.553 35.5425 12.4415C37.6876 13.3301 39.6368 14.6324 41.2786 16.2742C42.9204 17.916 44.2227 19.8651 45.1113 22.0103C45.9998 24.1554 46.4571 26.4545 46.4571 28.7764C46.4571 31.0982 45.9998 33.3974 45.1113 35.5425C44.2227 37.6876 42.9204 39.6367 41.2786 41.2785C39.6368 42.9203 37.6876 44.2227 35.5425 45.1112C33.3974 45.9998 31.0983 46.4571 28.7764 46.4571L28.7764 57.5527Z" fill="#E21221" />
-            <path d="M7.25935 34.1509L7.25935 38.3846C7.25936 41.7555 9.6591 44.649 12.9719 45.2724L24.6927 47.478C28.5546 48.2048 32.5492 47.5518 35.9787 45.6332L48.2796 38.7516C51.6195 36.8831 52.2968 32.3644 49.6515 29.5988C48.267 28.1514 46.2382 27.5126 44.2742 27.9054C43.0257 28.1551 41.7297 27.991 40.583 27.4378L33.8634 24.1966C30.5044 22.5764 26.4642 23.7426 24.4852 26.9037L23.095 29.1243C21.4652 31.7277 17.9067 32.2827 15.5616 30.2992C12.2828 27.5261 7.25935 29.8566 7.25935 34.1509Z" fill="#E21221" />
-            <path d="M22.6048 52.8826C22.3512 49.2916 25.1959 46.2389 28.7958 46.2389C32.3813 46.2389 35.2209 49.2683 34.9893 52.8463L30.8153 117.325C30.7528 118.29 29.9522 119.041 28.9855 119.041C28.0229 119.041 27.2242 118.296 27.1564 117.336L22.6048 52.8826Z" fill="#E21221" />
-
-          </svg>
+    if (entries.length === 0) {
+      const emptyMessages = {
+        bairro: "Nenhum bairro disponível nos dados.",
+        municipio: "Nenhum município disponível nos dados.",
+        abertos: "Nenhuma unidade aberta encontrada.",
+        estado: "Nenhum dado de estado encontrado."
+      };
+      return (
+        <div style={{ padding: "40px", color: "black", fontSize: "1.2rem", fontWeight: "600" }}>
+          {emptyMessages[selectedFilter]}
         </div>
+      );
+    }
 
-        <div className="Footer-links">
-          <div className="col">
-            <ul>
-              <li>FAQ</li>
-              <li>Investor Relations</li>
-              <li>Privacy</li>
-              <li>Speed Test</li>
-            </ul>
-          </div>
-          <div className="col">
-            <ul>
-              <li>Help Center</li>
-              <li>Jobs</li>
-              <li>Cookie Preferences</li>
-              <li>Legal Notices</li>
-            </ul>
-          </div>
-          <div className="col">
-            <ul>
-              <li>Account</li>
-              <li>Ways to Watch</li>
-              <li>Corporate Information</li>
-              <li>Only on Netflix</li>
-            </ul>
-          </div>
-          <div className="col">
-            <ul>
-              <li>Media Center</li>
-              <li>Terms of Use</li>
-              <li>Contact Us</li>
-            </ul>
-          </div>
-        </div>
+    return entries.map(([title, centers]) => (
+      <TitleList key={title} title={title} initialItems={centers} onOpen={setModalItem} />
+    ));
+  };
 
-        <div className="Footer-bottom">
-          <div className="language">
-            <select defaultValue="en" aria-label="Language">
-              <option value="pt-BR">Português</option>
-              <option value="en">🌐 English</option>
-              <option value="hi">हिन्दी</option>
-              <option value="es">Español</option>
-              <option value="fr">Français</option>
-              <option value="de">Deutsch</option>
-            </select>
-          </div>
-          <div className="copyright">
-            © {new Date().getFullYear()} Onde Doar.
-          </div>
-        </div>
-      </footer>
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <div>
+              <Header onSearch={handleSearch} />
+              <Hero onSearch={handleSearch} onFilterChange={setSelectedFilter} />
 
-      {modalItem && (
-        <Modal item={modalItem} onClose={() => setModalItem(null)} />
-      )}
-    </div>
+              {/* RENDERIZAÇÃO CONDICIONAL LIMPA */}
+              {searchResults !== null ? (
+                <SearchResults results={searchResults} onOpen={setModalItem} />
+              ) : (
+                renderFilteredContent()
+              )}
+
+              {/* MODAIS */}
+              {neighborhoodModal && (
+                <NeighborhoodModal
+                  item={neighborhoodModal}
+                  onClose={() => setNeighborhoodModal(null)}
+                  onOpenCenter={(center) => {
+                    setNeighborhoodModal(null);
+                    setModalItem(center);
+                  }}
+                />
+              )}
+              {modalItem && <Modal item={modalItem} onClose={() => setModalItem(null)} />}
+            </div>
+          }
+        />
+        <Route path="/info" element={<Info />} />
+      </Routes>
+    </BrowserRouter>
   );
 }

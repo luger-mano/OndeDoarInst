@@ -1,0 +1,321 @@
+/* ───────── WRAPPER ───────── */
+.navigation-wrapper {
+  position: relative;
+}
+
+/* ───────── NAVIGATION ───────── */
+.Navigation {
+  display: flex;
+  align-items: center;
+  margin-left: 25px;
+}
+
+.Navigation nav ul {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.Navigation nav ul li {
+  margin: 0;
+}
+
+.nav-link {
+  display: inline-block;
+  padding: 6px 12px;
+  color: rgba(19, 19, 19, 0.75);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: 0.2s ease;
+  white-space: nowrap;
+}
+
+.nav-link:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: black;
+}
+
+/* ───────── MENUS ───────── */
+.menuOp1,
+.menuOp2,
+.menuOp3 {
+  position: absolute;
+  left: 0;
+  top: 48px;
+
+  width: 1200px;
+  min-height: 250px;
+
+  padding: 24px;
+
+  background: white;
+  color: black;
+
+  border-radius: 0 0 14px 14px;
+
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+
+  transition: 0.25s ease;
+
+  z-index: 999;
+
+  box-sizing: border-box;
+}
+
+/* VISÍVEL */
+.menuVisible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* SCROLL */
+.menuScrolled {
+  background: var(--lightness);
+}
+
+/* ───────── TAG ───────── */
+.menu-tag {
+  background: rgba(229, 9, 20, 0.08);
+  color: #e50914;
+
+  padding: 6px 12px;
+
+  border-radius: 30px;
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+
+  display: inline-block;
+
+  margin-bottom: 16px;
+}
+
+/* ───────── TITLES ───────── */
+.menuOp1 h2,
+.menuOp2 h2,
+.menuOp3 h2 {
+  font-size: 34px;
+  margin-bottom: 18px;
+}
+
+/* ───────── TEXT ───────── */
+.menuOp1 p,
+.menuOp2 p,
+.menuOp3 p {
+  color: rgba(0, 0, 0, 0.72);
+  line-height: 1.7;
+}
+
+/* ───────── MENU 1 ───────── */
+.menuOp1 {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.menu-about-left {
+  flex: 1;
+}
+
+.menu-about-left p {
+  max-width: 650px;
+  margin-bottom: 14px;
+}
+
+/* ───────── CONTACT CARD ───────── */
+.menu-about-right {
+  width: 320px;
+  display: flex;
+  align-items: center;
+}
+
+.contact-card {
+  width: 100%;
+
+  background: #fafafa;
+
+  border: 1px solid #ececec;
+
+  border-radius: 16px;
+
+  padding: 24px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+
+  box-sizing: border-box;
+}
+
+.contact-card h3 {
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+/* CONTACT ITEM */
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-bottom: 16px;
+}
+
+.contact-item span {
+  font-size: 18px;
+}
+
+.contact-item p {
+  margin: 0;
+}
+
+/* LINKEDIN */
+.linkedin-link {
+  text-decoration: none;
+  color: #0a66c2;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.linkedin-link:hover {
+  opacity: 0.8;
+}
+
+/* ───────── INFO BOX ───────── */
+.info-boxs {
+  display: flex;
+  margin-top: 10px;
+}
+
+/* ───────── CARDS ───────── */
+.cards {
+  display: grid;
+
+  width: 100%;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 18px;
+}
+
+.card {
+  background: #f8f8f8;
+
+  padding: 20px;
+
+  border-radius: 14px;
+
+  transition: 0.25s ease;
+
+  min-height: 180px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  box-sizing: border-box;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.card h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.card p {
+  font-size: 14px;
+}
+
+.card-icon {
+  font-size: 26px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.card strong {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.nav-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+
+
+/* ───────── RESPONSIVIDADE ───────── */
+
+@media (max-width: 1250px) {
+
+  .menuOp1,
+  .menuOp2,
+  .menuOp3 {
+    width: calc(100vw - 40px);
+  }
+}
+
+@media (max-width: 900px) {
+
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .menuOp1 {
+    flex-direction: column;
+  }
+
+  .menu-about-right {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .menuOp1,
+  .menuOp2,
+  .menuOp3 {
+    width: calc(100vw - 20px);
+
+    left: 10px;
+
+    padding: 20px;
+
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .menuOp1 h2,
+  .menuOp2 h2,
+  .menuOp3 h2 {
+    font-size: 26px;
+  }
+
+  .nav-link {
+    font-size: 12px;
+    padding: 5px 8px;
+  }
+
+  .card {
+    min-height: auto;
+  }
+}

@@ -1,4 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
+import ModalLogin from "../ModalLogin/ModalLogin";
+import ModalEdicao from "../ModalEdicao/ModalEdicao";
+import ModalCadastro from "../ModalCadastro/ModalCadastro";
+import logo_without_account from "../../assets/logo_without_account.svg"
+import "./UserProfile.css";
 
 const DEFAULT_PROFILES = [
   {
@@ -20,6 +25,9 @@ export default function UserProfile() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
+  const [loginOpen, setLoginOpen] = useState(false);
+  const [registerOpen, setRegisterOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
 
   // Close on outside click
   useEffect(() => {
@@ -37,14 +45,14 @@ export default function UserProfile() {
     setOpen(false);
   }
 
-  function handleAddProfile() {
-    const name = prompt("Enter profile name:");
-    if (!name) return;
-    const img = `https://i.pravatar.cc/96?u=${Date.now()}`;
-    setProfiles((prev) => [...prev, { name, img }]);
-    setCurrentIndex(profiles.length);
-    setOpen(false);
-  }
+  // function handleAddProfile() {
+  //   const name = prompt("Enter profile name:");
+  //   if (!name) return;
+  //   const img = `https://i.pravatar.cc/96?u=${Date.now()}`;
+  //   setProfiles((prev) => [...prev, { name, img }]);
+  //   setCurrentIndex(profiles.length);
+  //   setOpen(false);
+  // }
 
   const current = profiles[currentIndex];
 
@@ -53,6 +61,20 @@ export default function UserProfile() {
       className={`UserProfile ${open ? "open" : ""}`}
       ref={ref}
     >
+         {/* <button onClick={() => setLoginOpen(true)}>Login</button> */}
+              
+            <ModalLogin isOpen={loginOpen}onClose={() => setLoginOpen(false)}/> 
+      
+             {/* <button onClick={() => setEditOpen(true)}> Abrir edição</button> */}
+      
+            <ModalEdicao isOpen={editOpen}onClose={() => setEditOpen(false)}/>
+
+              <ModalCadastro
+                            isOpen={registerOpen}
+                            onClose={() => setRegisterOpen(false)}
+                          />
+
+
       {/* Current user trigger */}
       <div
         className="User"
@@ -67,51 +89,19 @@ export default function UserProfile() {
       >
         <div className="image">
           <img
-            src={current?.img || "https://i.pravatar.cc/96"}
+            src={logo_without_account}
             alt={current?.name || "Profile"}
           />
         </div>
         <span className="caret">▾</span>
       </div>
 
-      {/* Dropdown menu */}
       <div className="UserProfile-menu">
-
-        {/* Profile switcher */}
-        <div className="UserProfileSwitch">
-          {profiles.map((p, i) => (
-            <div
-              key={i}
-              className="UserProfile-menu-item"
-              onClick={() => handleSelect(i)}
-              role="button"
-              tabIndex={0}
-            >
-              <img src={p.img} alt={p.name} />
-              <span>{p.name}</span>
-            </div>
-          ))}
-          <div
-            className="UserProfile-menu-item"
-            onClick={handleAddProfile}
-            role="button"
-            tabIndex={0}
-          >
-            <img
-              src="https://via.placeholder.com/28?text=%2B"
-              alt="Add profile"
-            />
-            <span>Add Profile</span>
-          </div>
-        </div>
-
-        <hr className="UserProfile-menu-divider" />
-
-        {/* User navigation */}
+       
         <div className="UserNavigation">
-          <div className="UserProfile-menu-item">Manage Profiles</div>
-          <div className="UserProfile-menu-item">Account</div>
-          <div className="UserProfile-menu-item">Help Center</div>
+          <div className="UserProfile-menu-item"><button className="botaoLog" onClick={() => setLoginOpen(true)}>Login</button></div>
+          <div className="UserProfile-menu-item"><button className="botaoLog" onClick={() => setRegisterOpen(true)}>Cadastro</button></div>
+          <div className="UserProfile-menu-item"><button className="botaoLog" onClick={() => setEditOpen(true)}>Editar Perfil</button></div>
         </div>
 
         <hr className="UserProfile-menu-divider" />
@@ -119,7 +109,7 @@ export default function UserProfile() {
           className="UserProfile-menu-item"
           style={{ color: "rgba(105, 105, 105, 0.55)" }}
         >
-          Sign out of Netflix
+          Sair
         </div>
       </div>
     </div>

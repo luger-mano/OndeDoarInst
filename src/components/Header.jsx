@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Logo from "./Logo";
-import Navigation from "./Navigation";
+import Navigation from "./Navigation/Navigation";
 import Search from "./Search";
-import UserProfile from "./UserProfile";
+import UserProfile from "./UserProfile/UserProfile";
 
 export default function Header({ onSearch }) {
   const [scrolled, setScrolled] = useState(false);
@@ -15,8 +15,10 @@ export default function Header({ onSearch }) {
 
   return (
     <header className={`Header ${scrolled ? "scrolled" : ""}`}>
+      <div className="div-logo-nav">
       <Logo />
-      <Navigation />
+      <Navigation/>
+      </div>
       <div className="Header-right">
         {/* <button className="NotifBtn" title="Notifications" aria-label="Notifications">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="20" height="20">
@@ -26,5 +28,6 @@ export default function Header({ onSearch }) {
         <UserProfile />
       </div>
     </header>
+    
   );
 }

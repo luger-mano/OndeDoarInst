@@ -1,0 +1,44 @@
+.SearchResults {
+
+  padding: 30px 40px;
+
+  min-height: 100vh;
+}
+
+.SearchResults h2 {
+
+  font-size: 36px;
+
+  margin-bottom: 30px;
+}
+
+.search-grid {
+
+  display: grid;
+
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+
+  gap: 18px;
+}
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+
+  .SearchResults {
+
+    padding: 20px;
+  }
+
+  .SearchResults h2 {
+
+    font-size: 28px;
+  }
+
+  .search-grid {
+
+    grid-template-columns: 1fr;
+
+    gap: 16px;
+  }
+
+}
