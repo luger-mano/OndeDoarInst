@@ -70,20 +70,32 @@ export default function NeighborhoodModal({
                 className="unit-card"
               >
 
+                {/* Imagem agora é clicável */}
                 <img
                   src={center.facadeImageUrl}
                   alt={center.name}
+                  onClick={() => onOpenCenter(center)}
+                  style={{ cursor: "pointer" }}
                 />
 
                 <div className="unit-info">
 
-                  <strong>
+                  {/* Título agora é clicável */}
+                  <strong 
+                    onClick={() => onOpenCenter(center)}
+                    style={{ cursor: "pointer" }}
+                  >
                     {center.name}
                   </strong>
 
-                  <p>
-                    {center.address?.fullAddress}
-                  </p>
+                  <div className="address-wrapper">
+                    <img
+                      src="/logo-od.svg"
+                      alt="Ícone OndeDoar"
+                      className="address-icon"
+                    />
+                    <p>{center.address?.fullAddress}</p>
+                  </div>
 
                   <span
                     style={{
@@ -91,7 +103,7 @@ export default function NeighborhoodModal({
                         ? "#E21221"
                         : center.operation?.toLowerCase().startsWith("aberto")
                           ? "#46d369"
-                          : "#E21221" 
+                          : "#E21221"
                     }}
                   >
                     {center.operation}
@@ -102,9 +114,7 @@ export default function NeighborhoodModal({
                 <div className="unit-actions">
 
                   <button
-                    onClick={() =>
-                      onOpenCenter(center)
-                    }
+                    onClick={() => onOpenCenter(center)}
                   >
                     ℹ
                   </button>
@@ -123,6 +133,4 @@ export default function NeighborhoodModal({
 
     </div>
   )
-
-
 }
