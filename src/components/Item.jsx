@@ -84,17 +84,11 @@ export default function Item({
       </div>
 
       <div className="overlay">
-        <div className="actions">
-          <button className="card-btn more" title="Ver Detalhes">ℹ</button>
-        </div>
-        <div className="rating">
-          <span className="match">{getStockStatus(score)}</span>
-        </div>
         <div className="title">{title}</div>
+
         <div className="plot">
-          <p>📍 {address?.fullAddress || "Endereço não informado"}</p>
-          <p style={{ fontSize: '0.70rem', opacity: 0.9, fontWeight: 600, color: '#0b0b0b' }}>
-            {getExclusiveLocation()}
+          <p className="address">
+            {address?.fullAddress || "Endereço não informado"}
           </p>
         </div>
       </div>
