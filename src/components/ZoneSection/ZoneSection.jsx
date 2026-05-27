@@ -51,15 +51,20 @@ export default function ZoneSection({ title, bairros, onOpenNeighborhood }) {
                 </div>
 
                 <div className="overlay">
-                
+
                   <div className="rating">
+                    <img
+                      src="/mynaui_hospital-solid.svg"
+                      alt="Ícone de Hospital"
+                      className="plot-icon"
+                    />
                     <span className="match">
                       {bairro.bloodCenters?.length || 0} {bairro.bloodCenters?.length === 1 ? "hemocentro" : "hemocentros"}
                     </span>
                   </div>
 
                   <div className="plot">
-                    Clique para visualizar os hemocentros deste bairro.
+                    <span>Clique para visualizar os hemocentros deste bairro.</span>
                   </div>
                 </div>
               </div>

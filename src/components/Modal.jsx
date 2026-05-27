@@ -29,16 +29,22 @@ export default function Modal({ item, onClose }) {
         <button className="modal-close" onClick={onClose}>✕</button>
 
         <div className="modal-hero">
-          {/* 2. Lógica para mostrar a imagem ou o gradiente de fallback */}
-          {facadeImageUrl ? (
-            <img
-              src={facadeImageUrl}
-              alt={name}
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            />
-          ) : (
-            <div style={{ width: "100%", height: "100%", background: "linear-gradient(to bottom, #bc1823, #222)" }} />
-          )}
+          {/* Vídeo substituindo a imagem e o fallback */}
+          <video
+            src="/generic_blood_gif.mp4"
+            className="modal-video"
+            autoPlay
+            loop
+            muted
+            playsInline
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              // Mantém o filtro de brilho para escurecer o vídeo
+              filter: "brightness(0.8)",
+            }}
+          />
 
           <div className="modal-hero-overlay" />
           <div className="modal-hero-content">
@@ -52,8 +58,15 @@ export default function Modal({ item, onClose }) {
           <div className="modal-left">
 
             <div className="modal-overview-card">
-              <h4 className="section-title">📍 Endereço</h4>
-              <p>{fullAddress || "Informação não disponível."}</p>
+              <h4 className="section-title">Endereço</h4>
+              <p>
+                <img
+                  src="/logo-od.svg"
+                  alt="Ícone OndeDoar"
+                  className="address-icon"
+                />
+                {fullAddress || "Informação não disponível."}
+              </p>
             </div>
 
             <div className="modal-donation-message">
@@ -73,12 +86,12 @@ export default function Modal({ item, onClose }) {
               {/* LÓGICA EXCLUSIVA: Município OU Bairro */}
               {validBairro ? (
                 <div className="metadata-item">
-                  <span className="metadata-label">Bairro:</span>
+                  <span className="metadata-label">Bairro</span>
                   <span className="metadata-value">{validBairro}</span>
                 </div>
               ) : validMunicipio ? (
                 <div className="metadata-item">
-                  <span className="metadata-label">Município:</span>
+                  <span className="metadata-label">Município</span>
                   <span className="metadata-value">{validMunicipio}</span>
                 </div>
               ) : null}
@@ -86,14 +99,14 @@ export default function Modal({ item, onClose }) {
               {/* ZONA */}
               {zone && zone !== "null" && (
                 <div className="metadata-item">
-                  <span className="metadata-label">Zona:</span>
+                  <span className="metadata-label">Zona</span>
                   <span className="metadata-value">{zone}</span>
                 </div>
               )}
 
               {/* HORÁRIO */}
               <div className="metadata-item">
-                <span className="metadata-label">Horário:</span>
+                <span className="metadata-label">Horário</span>
                 <span className="metadata-value">
                   {operation ? operation.substring(0, 15) : "Sob consulta"}
                 </span>
