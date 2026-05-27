@@ -177,19 +177,107 @@ const handleSubmit =
         password:
           form.senha,
 
-        bloodType:
-          form.tipoSanguineo ===
-          "Não sei"
+       bloodType:
 
-            ? null
+  form.tipoSanguineo === "A+"
 
-            : form.tipoSanguineo,
+    ? "A_POSITIVE"
+
+    : form.tipoSanguineo === "A-"
+
+    ? "A_NEGATIVE"
+
+    : form.tipoSanguineo === "B+"
+
+    ? "B_POSITIVE"
+
+    : form.tipoSanguineo === "B-"
+
+    ? "B_NEGATIVE"
+
+    : form.tipoSanguineo === "AB+"
+
+    ? "AB_POSITIVE"
+
+    : form.tipoSanguineo === "AB-"
+
+    ? "AB_NEGATIVE"
+
+    : form.tipoSanguineo === "O+"
+
+    ? "O_POSITIVE"
+
+    : form.tipoSanguineo === "O-"
+
+    ? "O_NEGATIVE"
+
+    : form.tipoSanguineo === "Não sei"
+
+    ? ""
+
+    : "",
 
         state:
           form.estado
+
+          
       };
 
-      await registerRequest(payload);
+      if (
+  form.tipoSanguineo ===
+  "Não sei"
+) {
+
+  delete payload.bloodType;
+}
+      // LOG PAYLOAD
+// console.log("PAYLOAD CADASTRO:", payload );
+
+      console.log(
+  "TIPO SANGUINEO:",
+  form.tipoSanguineo
+);
+
+console.log(
+  "PAYLOAD:",
+  payload
+);
+      const response =
+  await registerRequest(
+    payload
+  );
+
+console.log(
+  "RESPOSTA CADASTRO:",
+  response
+);
+
+// SALVA USER
+localStorage.setItem(
+
+  "user",
+
+  JSON.stringify({
+
+    id:
+      response.userId,
+
+    email:
+      form.email,
+
+    userName:
+      form.nome,
+
+    bloodType:
+
+  form.tipoSanguineo ===
+  "Não sei"
+
+    ? "?"
+
+    : form.tipoSanguineo
+  })
+);
 
       setError("");
 

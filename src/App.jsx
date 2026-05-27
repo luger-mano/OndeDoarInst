@@ -75,20 +75,155 @@ export default function App() {
       .catch((err) => console.error("Erro zonas:", err));
   }, []);
 
-  const handleSearch = useCallback(async (query) => {
-    if (!query || !query.trim()) {
-      setSearchResults(null);
-      return;
-    }
-    try {
-      const response = await fetch(`http://localhost:8080/centers/filter/search?search=${encodeURIComponent(query)}`);
-      const data = await response.json();
-      setSearchResults(data || []);
-    } catch (err) {
-      console.error("Erro search:", err);
-      setSearchResults([]);
-    }
-  }, []);
+  // SEARCH
+  const handleSearch =
+    useCallback(
+
+      async (query) => {
+
+        // LIMPA SEARCH
+        if (
+          !query ||
+          !query.trim()
+        ) {
+
+          setSearchResults(null);
+
+          return;
+        }
+
+        try {
+
+          const response =
+            await fetch(
+
+              `http://localhost:8080/centers/filter/search?search=${encodeURIComponent(query)}`
+
+            );
+
+          const data =
+            await response.json();
+
+          setSearchResults(
+            data || []
+          );
+
+        } catch (err) {
+
+          console.error(
+            "Erro search:",
+            err
+          );
+
+          setSearchResults([]);
+
+        }
+
+      },
+
+      []
+    );
+
+  // AGRUPAMENTO
+  function groupCentersBy(
+    items,
+    field
+  ) {
+
+    const grouped = {};
+
+    items.forEach((center) => {
+
+      let key = null;
+
+      // BAIRRO
+      if (field === "bairro") {
+
+        const bairro =
+          center.address?.bairro;
+
+        if (
+          bairro &&
+          bairro !== "s/b"
+        ) {
+
+          key = bairro;
+
+        }
+
+      }
+
+      // MUNICIPIO
+      else if (
+        field === "municipio"
+      ) {
+
+        const municipio =
+          center.address?.municipio;
+
+        // TUDO QUE NÃO É s/m
+        // É CONSIDERADO MUNICÍPIO
+        if (
+          municipio &&
+          municipio !== "s/m"
+        ) {
+
+          key = municipio;
+
+        }
+
+      }
+
+      // ESTADO
+      else if (
+        field === "estado"
+      ) {
+
+        key = "São Paulo";
+
+      }
+
+      // ABERTOS
+      else if (
+        field === "abertos"
+      ) {
+
+        const operation =
+          center.operation?.toLowerCase() || "";
+
+        const isClosed =
+          operation.includes(
+            "fechada"
+          );
+
+        const needsCheck =
+          operation.includes(
+            "conferir"
+          );
+
+        // SOMENTE ABERTOS
+        if (
+          !isClosed &&
+          !needsCheck
+        ) {
+
+          key = "Unidades abertas";
+
+        }
+
+      }
+
+      if (!key) return;
+
+      if (!grouped[key]) {
+
+        grouped[key] = [];
+
+      }
+
+      grouped[key].push(center);
+
+    });
 
   // 2. FUNÇÃO RENDERIZADORA: Limpa o JSX principal
   const renderFilteredContent = () => {
