@@ -34,8 +34,15 @@ export default function UserProfile() {
   const [loggedUser, setLoggedUser] =
     useState(null);
 
-  // MOCK VISUAL
-  const mockBloodType = "A+";
+  
+const bloodType =
+
+  loggedUser?.bloodType &&
+  loggedUser.bloodType !== "Não sei"
+
+    ? loggedUser.bloodType
+
+    : "?";
 
   useEffect(() => {
 
@@ -100,6 +107,85 @@ export default function UserProfile() {
     window.location.reload();
   }
 
+  async function handleDelete() {
+
+  const confirmDelete =
+    window.confirm(
+      "Deseja realmente excluir sua conta?"
+    );
+
+  if (!confirmDelete) return;
+
+  try {
+
+    const token =
+      localStorage.getItem(
+        "token"
+      );
+
+    const user =
+      JSON.parse(
+
+        localStorage.getItem(
+          "user"
+        )
+      );
+
+    if (!user?.id) {
+
+      return alert(
+        "Usuário não encontrado."
+      );
+    }
+
+    const response =
+      await fetch(
+
+        `http://localhost:8080/user/${user.id}`,
+
+        {
+
+          method: "DELETE",
+
+          headers: {
+
+            Authorization:
+              `Bearer ${token}`
+          }
+        }
+      );
+
+    if (!response.ok) {
+
+      throw new Error(
+        "Erro ao excluir conta"
+      );
+    }
+
+    alert(
+      "Conta excluída com sucesso!"
+    );
+
+    localStorage.removeItem(
+      "token"
+    );
+
+    localStorage.removeItem(
+      "user"
+    );
+
+    window.location.reload();
+
+  } catch (err) {
+
+    console.error(err);
+
+    alert(
+      "Erro ao excluir conta."
+    );
+  }
+}
+
   return (
 
     <div
@@ -156,8 +242,13 @@ export default function UserProfile() {
 
           <span className="user-name">
 
-            {loggedUser.email
-              .split("@")[0]}
+            {
+
+  loggedUser.userName ||
+
+  loggedUser.email
+    .split("@")[0]
+}
 
           </span>
 
@@ -168,10 +259,7 @@ export default function UserProfile() {
 
           <span>
 
-            {loggedUser
-              ? mockBloodType
-              : "?"}
-
+            {bloodType}
           </span>
 
         </div>
@@ -258,10 +346,11 @@ export default function UserProfile() {
               <div className="UserProfile-menu-item">
 
                 <button
-                  className="botaoLog"
-                >
-                  Excluir Conta
-                </button>
+  className="botaoLog"
+  onClick={handleDelete}
+>
+  Excluir Conta
+</button>
 
               </div>
 

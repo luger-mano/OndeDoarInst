@@ -211,17 +211,73 @@ const handleSubmit =
 
     ? "O_NEGATIVE"
 
-    : null,
+    : form.tipoSanguineo === "Não sei"
+
+    ? ""
+
+    : "",
 
         state:
           form.estado
 
           
       };
+
+      if (
+  form.tipoSanguineo ===
+  "Não sei"
+) {
+
+  delete payload.bloodType;
+}
       // LOG PAYLOAD
 // console.log("PAYLOAD CADASTRO:", payload );
 
-      await registerRequest(payload);
+      console.log(
+  "TIPO SANGUINEO:",
+  form.tipoSanguineo
+);
+
+console.log(
+  "PAYLOAD:",
+  payload
+);
+      const response =
+  await registerRequest(
+    payload
+  );
+
+console.log(
+  "RESPOSTA CADASTRO:",
+  response
+);
+
+// SALVA USER
+localStorage.setItem(
+
+  "user",
+
+  JSON.stringify({
+
+    id:
+      response.userId,
+
+    email:
+      form.email,
+
+    userName:
+      form.nome,
+
+    bloodType:
+
+  form.tipoSanguineo ===
+  "Não sei"
+
+    ? "?"
+
+    : form.tipoSanguineo
+  })
+);
 
       setError("");
 
@@ -294,7 +350,7 @@ const handleSubmit =
           >
             <option value="">Tipo sanguíneo (opcional)</option>
 
-            <option>A</option>
+            <option>A+</option>
             <option>A-</option>
 
             <option>B+</option>
