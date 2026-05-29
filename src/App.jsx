@@ -49,7 +49,7 @@ export default function App() {
   const [selectedFilter, setSelectedFilter] = useState("zona");
 
   useEffect(() => {
-    fetch("http://localhost:8080/centers/filter/zone/neighborhoods")
+    fetch("/api/centers/filter/zone/neighborhoods")
       .then((res) => res.json())
       .then((data) => {
         setZones(data || []);
@@ -60,7 +60,7 @@ export default function App() {
           });
         });
 
-        fetch("http://localhost:8080/centers")
+        fetch("/api/centers")
           .then((res) => res.json())
           .then((allData) => {
             // Verifique se é array antes de prosseguir
@@ -85,7 +85,7 @@ export default function App() {
       return;
     }
     try {
-      const response = await fetch(`http://localhost:8080/centers/filter/search?search=${encodeURIComponent(query)}`);
+      const response = await fetch(`/api/centers/filter/search?search=${encodeURIComponent(query)}`);
       const data = await response.json();
       setSearchResults(data || []);
     } catch (err) {
