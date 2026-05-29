@@ -1,45 +1,35 @@
-.botaoLog{
-    border: none;
-    text-decoration: none;
-    background-color: transparent;
+.botaoLog {
+  border: none;
+  text-decoration: none;
+  background-color: transparent;
 }
 
 .blood-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  background-color: #e50914;
+  /* Vermelho Netflix como padrão para o sangue, mude se preferir */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #ffffff;
+  font-size: 14px;
+}
 
-  width: 42px;
-
-  height: 42px;
-
-  border-radius: 12px;
+.blood-avatar:hover {
+  transform: scale(1.01);
 
   background:
     linear-gradient(
       135deg,
-      #b91c1c,
+      #c61b1b,
       #ef4444
     );
 
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  color: white;
-
-  font-weight: 800;
-
-  font-size: 15px;
-
-  box-shadow:
-    0 6px 18px rgba(239,68,68,0.35);
 
   transition: 0.2s ease;
-}
-
-.blood-avatar:hover {
-
-  transform: scale(1.05);
 }
 
 .user-name {

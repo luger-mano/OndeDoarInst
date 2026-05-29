@@ -60,12 +60,7 @@ export default function Modal({ item, onClose }) {
             <div className="modal-overview-card">
               <h4 className="section-title">Endereço</h4>
               <p>
-                <img
-                  src="/logo-od.svg"
-                  alt="Ícone OndeDoar"
-                  className="address-icon"
-                />
-                {fullAddress || "Informação não disponível."}
+                📍​ {fullAddress || "Informação não disponível."}
               </p>
             </div>
 

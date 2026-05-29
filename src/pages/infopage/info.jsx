@@ -2,9 +2,9 @@ import Header from "../../components/Header";
 import "./info.css";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import LoginModal from "../../components/ModalLogin/ModalLogin.jsx";
-import RegisterModal from "../../components/ModalCadastro/ModalCadastro.jsx";
-import ModalEdicao from "../../components/ModalEdicao/ModalEdicao.jsx";
+// import LoginModal from "../../components/ModalLogin/ModalLogin.jsx";
+// import RegisterModal from "../../components/ModalCadastro/ModalCadastro.jsx";
+// import ModalEdicao from "../../components/ModalEdicao/ModalEdicao.jsx";
 import doacaoimg from "../../assets/doacaoimg.jpg"
 import Footer from "../../components/Footer/Footer.jsx"
 

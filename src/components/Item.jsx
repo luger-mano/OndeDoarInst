@@ -18,6 +18,7 @@ export default function Item({
 
   const isClosed = operation?.includes("FECHADO") || operation?.includes("Unidade fechada");
   const isConsult = operation?.includes("CONSULTAR");
+  const isOpen = operation?.includes("ABERTO") || operation?.includes("Unidade aberta");
 
   const bg =
     facadeImageUrl ||
@@ -77,7 +78,7 @@ export default function Item({
       <div className="overlay">
         <div className="title">{title}</div>
         <div className="plot">
-          <p className="address">{address?.fullAddress || "Endereço não informado"}</p>
+          <p className="address">📍​ {address?.fullAddress || "Endereço não informado"}</p>
         </div>
       </div>
     </div>
