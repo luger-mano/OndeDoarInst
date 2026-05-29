@@ -27,7 +27,7 @@ export default function TitleList({
 
     } else {
 
-      const requestUrl = `http://localhost:8080/centers/filter/zone/neighborhoods`;
+      const requestUrl = `/api/centers/filter/zone/neighborhoods`;
 
       fetch(requestUrl)
 
