@@ -63,14 +63,18 @@ export default function App() {
         fetch("http://localhost:8080/centers")
           .then((res) => res.json())
           .then((allData) => {
+            // Verifique se é array antes de prosseguir
+            const centersList = Array.isArray(allData) ? allData : [];
+
             const merged = [...centers];
-            (allData || []).forEach((center) => {
+            centersList.forEach((center) => {
               if (!merged.some((c) => c.bloodCenterId === center.bloodCenterId)) {
                 merged.push(center);
               }
             });
             setAllCenters(merged);
-          });
+          })
+          .catch((err) => console.error("Erro ao carregar centros:", err));
       })
       .catch((err) => console.error("Erro zonas:", err));
   }, []);
