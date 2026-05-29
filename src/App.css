@@ -17,14 +17,15 @@
   padding: 0 60px;
   height: 68px;
   transition: background 0.4s ease;
+  background-color: #ffffff; /* Garante fundo branco por padrão */
 }
 
 .Header.scrolled {
-  background: var(--lightness);
+  background: #ffffff; /* Ou mantenha var(--lightness) se ela já for branca */
 }
 
 .Header:not(.scrolled) {
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.85) 80%);
+  background: #ffffff; /* Substituído o gradiente transparente por branco sólido */
 }
 
 .div-logo-nav {
@@ -59,7 +60,7 @@
   display: flex;
   align-items: center;
   border: 1px solid transparent;
-  padding: 2px 7px;
+  padding: 0px 6px;
   gap: 5px;
   transition: all 0.25s ease;
   background: transparent;
@@ -127,25 +128,37 @@
   align-items: center;
   gap: 6px;
   cursor: pointer;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .UserProfile .User {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
 }
 
-.UserProfile .User .image img {
+.UserProfile .User .user-name {
+  font-size: 14px;
+  color: #000000;
+}
+
+.UserProfile .User div.image.blood-avatar {
   width: 32px;
   height: 32px;
   border-radius: 4px;
-  /* object-fit: cover; */
-  display: block;
+  background-color: #e50914;
+  /* Vermelho Netflix como padrão para o sangue, mude se preferir */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #ffffff;
+  font-size: 14px;
 }
 
 .UserProfile .User .caret {
   font-size: 10px;
-  color: var(--black);
+  color: #000000;
   transition: transform 0.2s;
   display: inline-block;
 }
@@ -154,11 +167,12 @@
   transform: rotate(180deg);
 }
 
+/* Menu Dropdown Escuro */
 .UserProfile-menu {
   position: absolute;
   top: calc(100% + 10px);
   right: 0;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgb(255, 255, 255);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 4px;
   min-width: 210px;
@@ -168,7 +182,6 @@
   transform: translateY(-4px);
   transition: all 0.15s ease;
   z-index: 200;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
 }
 
 .UserProfile-menu::before {
@@ -182,7 +195,6 @@
 }
 
 .UserProfile.open .UserProfile-menu {
-  background-color: white;
   opacity: 1;
   pointer-events: all;
   transform: translateY(0);
@@ -194,35 +206,360 @@
   gap: 10px;
   padding: 8px 16px;
   font-size: 13px;
-  color: rgba(86, 86, 86, 0.8);
+  color: rgba(0, 0, 0, 0.8);
   cursor: pointer;
   transition: color 0.15s;
 }
 
 .UserProfile-menu-item:hover {
-  color: var(--black);
+  color: #a9a9a9;
 }
 
-.UserProfile-menu-item img {
-  width: 20px;
-  height: 20px;
-  border-radius: 3px;
-  object-fit: cover;
+.UserProfile-menu-item .botaoLog {
+  background: none;
+  border: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+}
+
+.UserProfile-menu-item.user-email-display {
+  color: rgb(20, 20, 20);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: default;
 }
 
 .UserProfile-menu-divider {
   border: none;
-  border-top: 1px solid rgba(206, 206, 206, 0.12);
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
   margin: 6px 0;
+}
+
+.UserProfile-menu-item img {
+  width: 24px;   
+  height: 24px; 
+  border-radius: 4px;
+  
 }
 
 .UserProfileSwitch {
   padding: 0;
 }
 
-.UserProfile.open .Button .caret {
-  transform: rotate(180deg);
-  display: inline-block;
+/* Estilização para o formulário de login embutido no dropdown */
+.inline-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 16px;
+  width: 210px; /* Mesma largura mínima do menu original */
+  box-sizing: border-box;
+}
+
+.inline-login-form h3 {
+  margin: 0 0 6px 0;
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.9);
+  text-align: left;
+}
+
+.inline-login-form input {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 13px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.inline-login-form input:focus {
+  border-color: #e50914;
+}
+
+.inline-login-error {
+  color: #e50914;
+  font-size: 11px;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.inline-login-btn {
+  background: #e50914;
+  color: white;
+  border: none;
+  padding: 8px;
+  font-size: 13px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s;
+}
+
+.inline-login-btn:hover {
+  background: #f6121d;
+}
+
+.inline-cancel-btn {
+  background: transparent;
+  border: none;
+  color: #666;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 4px 0 0 0;
+  text-decoration: underline;
+  text-align: center;
+}
+
+/* Modal de Sucesso em tela cheia para travar a interface até o reload */
+.success-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+}
+
+.success-popup {
+  background: white;
+  padding: 24px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  color: #333;
+}
+
+.success-btn {
+  margin-top: 14px;
+  border: none;
+  background: #16a34a;
+  color: white;
+  padding: 8px 24px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.success-btn:hover {
+  background: #15803d;
+}
+
+.inline-form-divider-pills {
+  border: none;
+  border-top: 1px dashed #e6e6e6;
+  margin: 6px 0;
+  width: 100%;
+}
+/* Container base do formulário que entra dentro do dropdown */
+.inline-dropdown-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 16px;
+  width: 210px; /* Largura padrão idêntica ao menu inicial */
+  box-sizing: border-box;
+}
+
+/* Modificador de expansão de largura apenas para a visualização do Cadastro */
+.UserProfile-menu.menu-expand-cadastro {
+  min-width: 280px; /* Expande um pouco para dar mais conforto aos campos do cadastro */
+}
+
+.UserProfile-menu.menu-expand-cadastro .inline-dropdown-form {
+  width: 280px;
+}
+
+.inline-dropdown-form h3 {
+  margin: 0 0 4px 0;
+  font-size: 15px;
+  color: rgba(0, 0, 0, 0.9);
+  text-align: left;
+}
+
+/* Grid lado a lado para Nome e Sobrenome dentro do Dropdown */
+.inline-form-grid {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.inline-form-grid input {
+  width: 50% !important;
+}
+
+/* Configuração universal de inputs e selects embutidos */
+.inline-dropdown-form input,
+.inline-dropdown-form select {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 13px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  outline: none;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  font-family: inherit;
+}
+
+.inline-dropdown-form input:focus,
+.inline-dropdown-form select:focus {
+  border-color: #e50914;
+}
+
+/* Tratamentos de erros internos */
+.inline-form-error {
+  color: #e50914;
+  font-size: 11px;
+  margin: 0;
+  line-height: 1.3;
+  font-weight: 500;
+}
+
+/* Botão principal de ação */
+.inline-form-btn {
+  background: #e50914;
+  color: white;
+  border: none;
+  padding: 9px;
+  font-size: 13px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s;
+  margin-top: 4px;
+}
+
+.inline-form-btn:hover {
+  background: #f6121d;
+}
+
+/* Link de retorno discretamente posicionado */
+.inline-back-link {
+  background: transparent;
+  border: none;
+  color: #555;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 4px 0 0 0;
+  text-decoration: underline;
+  text-align: center;
+}
+
+.inline-back-link:hover {
+  color: #000;
+}
+
+/* ── OVERLAY MODERNO (FUNDO SUTIL) ── */
+.global-success-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px); /* Efeito de desfoque no fundo do site */
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  animation: overlayFade 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── CARD DE SUCESSO PREMIUM ── */
+.global-success-popup {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px 20px;
+  border-radius: 8px; /* Bordas mais arredondadas e modernas */
+  text-align: center;
+  width: 360px;
+  max-width: 90%;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.2),
+    0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  animation: cardPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); /* Animação com leve "efeito elástico" */
+}
+
+/* Ícone de check animado (Adicionado via CSS para complementar o visual) */
+.global-success-popup::before {
+  content: '✓';
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: #0fa448; /* Verde esmeralda moderno */
+  color: white;
+  font-size: 26px;
+  font-weight: bold;
+  border-radius: 50%;
+  margin-bottom: 4px;
+}
+
+/* ── TEXTO DA MENSAGEM ── */
+.global-success-popup p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937; /* Grafite escuro elegante em vez de preto puro */
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+}
+
+/* ── BOTÃO ESTILIZADO ── */
+.global-success-popup button {
+  border: none;
+  background: #0fa448; /* Botão preto escuro para contrastar com o verde e o vermelho do site */
+  color: #ffffff;
+  padding: 12px 32px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%; /* Ocupa a largura total do card */
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.3px;
+}
+
+/* Efeitos de Interação do Botão */
+.global-success-popup button:hover {
+  background: #1f2937;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.global-success-popup button:active {
+  transform: translateY(0);
+}
+
+@keyframes overlayFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes cardPop {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* ── HERO ── */
@@ -261,13 +598,9 @@
 .Hero .vignette {
   position: absolute;
   inset: 0;
-  /* Z-index 1 para ficar entre o vídeo (0) e o conteúdo (2) */
   z-index: 1; 
   
   background: 
-    /* 1. Sombra na Esquerda: Melhora muito a leitura do texto branco */
-  
-    /* 2. Suavização Inferior: Faz o vídeo "fundir" com a próxima seção do site */
     linear-gradient(to top, 
       rgba(255, 255, 255, 1) 5%, 
       rgba(255, 255, 255, 0.5) 35%, 
@@ -276,7 +609,6 @@
       rgba(0, 0, 0, 0.51) 100%
     );
   
-  /* Garante que o gradiente não bloqueie cliques em botões se necessário */
   pointer-events: none; 
 }
 
@@ -284,7 +616,7 @@
 .Hero .content {
   position: absolute;
   left: 60px;
-  top: 5%; /* Ajuste levemente para cima do centro real para equilíbrio visual */
+  top: 5%;
   transform: translateY(50%);
   z-index: 2;
   max-width: 700px;
@@ -303,9 +635,9 @@
 
 .Hero .button-wrapper {
   position: absolute;
-  bottom: 50px; /* Mantém no mesmo lugar de antes */
+  bottom: 50px;
   left: 60px;
-  z-index: 3; /* Z-index maior para garantir que os inputs funcionem */
+  z-index: 3;
   display: flex;
   gap: 15px;
   flex-wrap: wrap;
@@ -355,7 +687,7 @@
   left: 0;
   right: auto;
   top: calc(100% + 5px);
-  background: rgba(0, 0, 0, 0.95);
+  background: rgb(255, 255, 255);
 }
 
 .hero-menu-adjust::before {
@@ -433,13 +765,12 @@
 
 .Button[data-primary='false'] {
   background: rgba(255, 255, 255, 0.918);
-  border: 1px solid rgba(86, 86, 86, 0.8);
   color: rgba(86, 86, 86, 0.8);
 }
 
 .Button[data-primary='false']:hover {
-  background: rgba(126, 126, 126, 0.12);
-  color: var(--black);
+  background: rgba(255, 255, 255, 0.293);
+  color: rgba(23, 23, 23, 0.8);
 }
 
 .Button .btn-icon {

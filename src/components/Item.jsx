@@ -14,6 +14,12 @@ export default function Item({
   neighborhoodImageUrl,
   onOpen
 }) {
+  const op = operation || "";
+
+  const isClosed = operation?.includes("FECHADO") || operation?.includes("Unidade fechada");
+  const isConsult = operation?.includes("CONSULTAR");
+  const isOpen = operation?.includes("ABERTO") || operation?.includes("Unidade aberta");
+
   const bg =
     facadeImageUrl ||
     municipalityImageUrl ||
@@ -26,10 +32,11 @@ export default function Item({
     if (stock < 70) return "🟡 Estoque Médio";
     return "🟢 Estoque Alto";
   };
-
+  
   // Lógica de exibição exclusiva: Bairro OU Município
   const getExclusiveLocation = () => {
     if (!address) return "Localização não informada";
+
 
     const { bairro, municipio, zone } = address;
     const hasBairro = bairro && bairro.toLowerCase() !== "s/b";
@@ -49,47 +56,29 @@ export default function Item({
   return (
     <div className="Item" onClick={() => onOpen && onOpen()}>
       <div className="thumb-wrapper">
-        <img
-          className="thumb"
-          src={bg}
-          alt={title}
-          loading="lazy"
-          onError={(e) => {
-            e.target.src = PLACEHOLDER;
-          }}
-        />
-        {operation?.includes("Unidade fechada") && (
-          <div className="status-bar">
-            <div className="status-title">
-              {operation.split("|")[0]}
-            </div>
+        <img className="thumb" src={bg} alt={title} loading="lazy" />
 
-            <div className="status-subtitle">
-              {operation.split("|")[1]}
-            </div>
+        {/* Exibe APENAS se estiver fechado */}
+        {isClosed && (
+          <div className="status-bar" style={{ backgroundColor: 'rgba(200, 0, 0, 0.8)' }}>
+            <div className="status-title">FECHADO</div>
+            <div className="status-subtitle">{op.split("|")[1] || "Verifique o horário"}</div>
           </div>
         )}
 
-        {operation?.includes("Ligar ou acessar o site para conferir") && (
-          <div className="status-bar">
-            <div className="status-title">
-              CONSULTAR
-            </div>
-
-            <div className="status-subtitle">
-              {operation}
-            </div>
+        {/* Exibe APENAS se for consultar */}
+        {isConsult && (
+          <div className="status-bar" style={{ backgroundColor: 'rgba(255, 165, 0, 0.8)' }}>
+            <div className="status-title">CONSULTAR</div>
+            <div className="status-subtitle">{op}</div>
           </div>
         )}
       </div>
-
+      
       <div className="overlay">
         <div className="title">{title}</div>
-
         <div className="plot">
-          <p className="address">
-            {address?.fullAddress || "Endereço não informado"}
-          </p>
+          <p className="address">📍​ {address?.fullAddress || "Endereço não informado"}</p>
         </div>
       </div>
     </div>

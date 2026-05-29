@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-import "./ModalLogin.css";
+// import "./ModalLogin.css";
 
-import RegisterModal
-from "../ModalCadastro/ModalCadastro.jsx";
+// import RegisterModal
+// from "../ModalCadastro/ModalCadastro.jsx";
 
-import "../../pages/infopage/info.css";
+// import "../../pages/infopage/info.css";
 
 import {
   loginRequest,

@@ -154,9 +154,11 @@ export default function Hero({ onMoreInfo, onSearch, onFilterChange }) {
                     src={opt.img}
                     alt={opt.name}
                     style={{
+                      width: "24px",                 /* Força a largura */
+                      height: "24px",                /* Força a altura */
                       filter: "brightness(0) invert(0.2)",
                       opacity: 0.8,
-                      objectFit: "fill"
+                      objectFit: "contain"           /* Garante que a imagem não mude de proporção */
                     }}
                   />
                   <span>{opt.name}</span>

@@ -21,6 +21,8 @@
 
 .Navigation nav ul li {
   margin: 0;
+  position: relative; /* Mantém o alinhamento correto para o hover */
+  padding-bottom: 10px; /* Margem sutil para o mouse não perder o foco ao descer para o menu */
 }
 
 .nav-link {
@@ -46,7 +48,7 @@
 .menuOp3 {
   position: absolute;
   left: 0;
-  top: 48px;
+  top: 49px; /* Ajustado para aproximar o menu do botão e evitar fechar acidentalmente */
 
   width: 1200px;
   min-height: 250px;
@@ -58,16 +60,13 @@
 
   border-radius: 0 0 14px 14px;
 
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
-
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
 
-  transition: 0.25s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
 
   z-index: 999;
-
   box-sizing: border-box;
 }
 
@@ -87,17 +86,12 @@
 .menu-tag {
   background: rgba(229, 9, 20, 0.08);
   color: #e50914;
-
   padding: 6px 12px;
-
   border-radius: 30px;
-
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 1px;
-
   display: inline-block;
-
   margin-bottom: 16px;
 }
 
@@ -105,7 +99,8 @@
 .menuOp1 h2,
 .menuOp2 h2,
 .menuOp3 h2 {
-  font-size: 34px;
+  font-size: 30px;
+  margin-top: 0;
   margin-bottom: 18px;
 }
 
@@ -142,31 +137,24 @@
 
 .contact-card {
   width: 100%;
-
   background: #fafafa;
-
   border: 1px solid #ececec;
-
   border-radius: 16px;
-
   padding: 24px;
-
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-
   box-sizing: border-box;
 }
 
 .contact-card h3 {
+  margin-top: 0;
   margin-bottom: 20px;
   font-size: 20px;
 }
 
-/* CONTACT ITEM */
 .contact-item {
   display: flex;
   align-items: center;
   gap: 12px;
-
   margin-bottom: 16px;
 }
 
@@ -178,7 +166,6 @@
   margin: 0;
 }
 
-/* LINKEDIN */
 .linkedin-link {
   text-decoration: none;
   color: #0a66c2;
@@ -190,54 +177,61 @@
   opacity: 0.8;
 }
 
-/* ───────── INFO BOX ───────── */
+/* ───────── INFO BOX & CARDS UNIFICADOS ───────── */
 .info-boxs {
   display: flex;
+  width: 100%;
   margin-top: 10px;
 }
 
-/* ───────── CARDS ───────── */
+/* Força que todos os cards herdem a mesma altura proporcional do grid */
 .cards {
   display: grid;
-
   width: 100%;
-
-  grid-template-columns: repeat(3, 1fr);
-
   gap: 18px;
+  align-items: stretch; /* Essencial: Estica os filhos verticalmente para ficarem iguais */
+}
+
+/* Grid específico com 3 colunas para "Por que doar" */
+.horizontal-cards {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Grid específico com 4 colunas para "Requisitos" */
+.requirements-grid {
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .card {
   background: #f8f8f8;
-
   padding: 20px;
-
   border-radius: 14px;
-
-  transition: 0.25s ease;
-
-  min-height: 180px;
-
+  transition: all 0.25s ease;
+  
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-
+  height: 100%; /* Força o card a preencher todo o espaço disponível do grid */
   box-sizing: border-box;
 }
 
 .card:hover {
   transform: translateY(-4px);
-
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  background: #ffffff;
 }
 
 .card h3 {
-  margin-bottom: 10px;
+  margin-top: 0;
+  margin-bottom: 12px;
   font-size: 18px;
 }
 
 .card p {
-  font-size: 14px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  margin: 0;
+  color: rgba(0, 0, 0, 0.7);
 }
 
 .card-icon {
@@ -248,7 +242,8 @@
 
 .card strong {
   display: block;
-  margin-bottom: 8px;
+  font-size: 16px;
+  margin-bottom: 10px;
 }
 
 .nav-button {
@@ -257,12 +252,8 @@
   cursor: pointer;
 }
 
-
-
 /* ───────── RESPONSIVIDADE ───────── */
-
 @media (max-width: 1250px) {
-
   .menuOp1,
   .menuOp2,
   .menuOp3 {
@@ -270,10 +261,10 @@
   }
 }
 
-@media (max-width: 900px) {
-
-  .cards {
-    grid-template-columns: repeat(2, 1fr);
+@media (max-width: 992px) {
+  .horizontal-cards,
+  .requirements-grid {
+    grid-template-columns: repeat(2, 1fr); /* Quebra para duas colunas em telas médias */
   }
 
   .menuOp1 {
@@ -286,36 +277,29 @@
 }
 
 @media (max-width: 768px) {
-
   .menuOp1,
   .menuOp2,
   .menuOp3 {
     width: calc(100vw - 20px);
-
     left: 10px;
-
     padding: 20px;
-
     max-height: 80vh;
     overflow-y: auto;
   }
 
-  .cards {
-    grid-template-columns: 1fr;
+  .horizontal-cards,
+  .requirements-grid {
+    grid-template-columns: 1fr; /* 1 coluna em telas de celulares */
   }
 
   .menuOp1 h2,
   .menuOp2 h2,
   .menuOp3 h2 {
-    font-size: 26px;
+    font-size: 24px;
   }
 
   .nav-link {
     font-size: 12px;
     padding: 5px 8px;
-  }
-
-  .card {
-    min-height: auto;
   }
 }
