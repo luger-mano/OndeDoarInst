@@ -27,9 +27,6 @@ const HERO_ITEMS = [
 
 const FILTER_OPTIONS = [
   { id: "zona", name: "Filtrar por Zona", img: "https://cdn-icons-png.flaticon.com/512/854/854878.png" },
-  { id: "bairro", name: "Filtrar por Bairro", img: "https://cdn-icons-png.flaticon.com/512/1210/1210103.png" },
-  { id: "municipio", name: "Filtrar por Município", img: "https://cdn-icons-png.flaticon.com/512/1210/1210103.png" },
-  { id: "estado", name: "Filtrar por Estado", img: "https://cdn-icons-png.flaticon.com/512/484/484167.png" },
   { id: "abertos", name: "Filtrar por Abertos", img: "https://cdn-icons-png.flaticon.com/512/4149/4149673.png" },
   { id: "proximos", name: "Mais próximos", img: "https://cdn-icons-png.flaticon.com/512/1865/1865269.png" }
 ];

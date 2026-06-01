@@ -99,6 +99,8 @@ export default function Modal({ item, onClose }) {
                 </div>
               )}
 
+              
+
               {/* HORÁRIO */}
               <div className="metadata-item">
                 <span className="metadata-label">Horário</span>
