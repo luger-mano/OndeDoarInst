@@ -1,0 +1,36 @@
+.team-menu {
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+.team-description {
+
+  max-width: 700px;
+
+  margin-bottom: 0px;
+
+  color: rgba(0,0,0,.7);
+}
+
+.team-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 16px;
+}
+
+.team-menu .menu-tag {
+
+  display: inline-block;
+
+  width: 155px;
+
+  padding: 8px 16px;
+
+  margin-bottom: 10px;
+}

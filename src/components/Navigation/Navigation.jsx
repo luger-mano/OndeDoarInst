@@ -1,5 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Navigation.css";
+import TeamCard from "../TeamCard/TeamCard";
+import "../TeamCard/TeamSection.css";
+
+import hug from "../../assets/fotosDevs/hug.png";
+import hug2 from "../../assets/fotosDevs/hug2.png";
+
+import kai from "../../assets/fotosDevs/kai.png";
+import kai2 from "../../assets/fotosDevs/kai2.png";
+
+import luc from "../../assets/fotosDevs/luc.png";
+import luc2 from "../../assets/fotosDevs/luc2.png";
+
+import rob from "../../assets/fotosDevs/rob.png";
+import rob2 from "../../assets/fotosDevs/rob2.png";
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
@@ -46,56 +60,65 @@ export default function Navigation() {
               <div
                 className={`
                   menuOp1
+    team-menu
                   ${scrolled ? "menuScrolled" : ""}
                   ${openMenu === "quem" ? "menuVisible" : ""}
                 `}
+                 onMouseLeave={handleMouseLeave}
               >
-                <div className="menu-about-left">
-                  <span className="menu-tag">HEMODOAÇÃO</span>
-                  <h2>Conectando pessoas à doação de sangue</h2>
-                  <p>
-                    Somos uma plataforma digital criada exclusivamente para modernizar,
-                    centralizar e facilitar o acesso à doação de sangue em todo o território nacional.
-                  </p>
-                  <p>
-                    Conectamos doadores voluntários a hemocentros e hospitais parceiros próximos
-                    de forma 100% simples, rápida e transparente.
-                  </p>
-                  <p>
-                    Nosso principal objetivo é manter os estoques abastecidos continuamente, reduzindo a falta
-                    crítica de bolsas de sangue nos períodos de baixa captação.
-                  </p>
-                  <p>
-                    Acreditamos fielmente que a união entre tecnologia assertiva e a solidariedade humana
-                    detém o poder de salvar milhares de vidas diariamente.
-                  </p>
-                </div>
+                <span className="menu-tag">
+  EQUIPE ONDEDOAR
+</span>
 
-                {/* CONTATO */}
-                <div className="menu-about-right">
-                  <div className="contact-card">
-                    <h3>Informações de contato</h3>
-                    <div className="contact-item">
-                      <span>📞</span>
-                      <p>11 96926-6214</p>
-                    </div>
-                    <div className="contact-item">
-                      <span>✉️</span>
-                      <p>contato@hugosevero.com</p>
-                    </div>
-                    <div className="contact-item">
-                      <span>💼</span>
-                      <a
-                        href="https://www.linkedin.com/in/hugosevero/"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="linkedin-link"
-                      >
-                        Linkedin
-                      </a>
-                    </div>
-                  </div>
-                </div>
+<h2>
+  Conheça nossa equipe
+</h2>
+
+<p className="team-description">
+  Somos uma equipe de doadores apaixonada por tecnologia e impacto social,
+  unindo nossas habilidades para facilitar a doação de sangue
+  e conectar pessoas que podem salvar vidas.
+</p>
+
+<div className="team-grid">
+
+  <TeamCard
+    name="Hugo Severo"
+    role="CEO"
+    email="contato@hugosevero.com"
+    linkedin="https://www.linkedin.com/in/hugosevero/"
+    photo={hug}
+    photoDonation={hug2}
+  />
+
+  <TeamCard
+    name="Kaiqui Petty"
+    role="DevOps"
+    email="kaiqui@email"
+    linkedin="https://www.linkedin.com/in/kaiqui-petty-6b9299217/"
+    photo={kai}
+    photoDonation={kai2}
+  />
+
+  <TeamCard
+    name="Lucas Germano"
+    role="CTO e desenvolvedor Full-Stack"
+    email="germanoluc890@gmail.com"
+    linkedin="https://www.linkedin.com/in/lucas-germano-dev/"
+    photo={luc}
+    photoDonation={luc2}
+  />
+
+  <TeamCard
+    name="Robson Rioki"
+    role="Desenvolvedor Front-End"
+    email="riokirobson@gmail.com"
+    linkedin="https://www.linkedin.com/in/riokirobson/"
+    photo={rob}
+    photoDonation={rob2}
+  />
+
+</div>
               </div>
             </li>
 
