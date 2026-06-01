@@ -201,7 +201,7 @@ export default function Navigation() {
     <div className="card requirement-small">
 
       <span className="card-icon">
-        🎂
+        
       </span>
 
       <strong>
@@ -217,7 +217,7 @@ export default function Navigation() {
     <div className="card requirement-small">
 
       <span className="card-icon">
-        ⚖️
+        
       </span>
 
       <strong>
@@ -236,7 +236,7 @@ export default function Navigation() {
 <div className="requirements-info">
 
   <h3>
-    💚 Saúde Geral e Alimentação
+     Saúde Geral e Alimentação
   </h3>
 
   <p>

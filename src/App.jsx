@@ -1,6 +1,6 @@
   import React, { useState, useEffect, useCallback } from "react";
   import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+  import { getUserLocation } from "./services/locationService";
   import Header from "./components/Header";
   import Hero from "./components/Hero";
   import TitleList from "./components/TitleList";
@@ -49,6 +49,7 @@
     const [modalItem, setModalItem] = useState(null);
     const [neighborhoodModal, setNeighborhoodModal] = useState(null);
     const [selectedFilter, setSelectedFilter] = useState("zona");
+    const [nearestCenters, setNearestCenters] = useState([]);
 
     // ===> NOVO: Estado para lembrar de qual bairro o usuário veio <===
     const [previousNeighborhood, setPreviousNeighborhood] = useState(null);
@@ -95,6 +96,51 @@
       .catch((err) => console.error("Erro ao carregar dados iniciais:", err));
     }, []);
 
+ const handleNearestFilter = async () => {
+
+  try {
+
+    const location =
+      await getUserLocation();
+
+    const response =
+      await fetch(
+
+        `http://localhost:8080/centers/filter/nearest?latitudeStarting=${location.latitude}&longitudeStarting=${location.longitude}`
+
+      );
+
+    if (!response.ok) {
+
+      throw new Error(
+        `Erro ${response.status}`
+      );
+    }
+
+    const data =
+      await response.json();
+
+    console.log(
+      "HEMOCENTROS PRÓXIMOS:",
+      data
+    );
+
+    setNearestCenters(data);
+
+    setSelectedFilter(
+      "proximos"
+    );
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+  }
+};
+
+
+
     const handleSearch = useCallback(async (query) => {
       if (!query || !query.trim()) {
         setSearchResults(null);
@@ -102,6 +148,17 @@
       }
       try {
         const response = await fetch(`http://localhost:8080/centers/filter/search?search=${encodeURIComponent(query)}`);
+        if (!response.ok) {
+
+  console.error(
+    "STATUS:",
+    response.status
+  );
+
+  throw new Error(
+    `Erro ${response.status}`
+  );
+}
         const data = await response.json();
         setSearchResults(data || []);
       } catch (err) {
@@ -162,6 +219,42 @@
         );
       }
 
+      if (selectedFilter === "proximos") {
+
+  if (nearestCenters.length === 0) {
+
+    return (
+      <div
+        style={{
+          padding: "40px",
+          color: "black",
+          fontSize: "1.2rem",
+          fontWeight: "600"
+        }}
+      >
+        Nenhum hemocentro encontrado próximo à sua localização.
+      </div>
+    );
+  }
+
+  return (
+    <TitleList
+      title="Hemocentros mais próximos"
+      initialItems={nearestCenters}
+      onOpen={setModalItem}
+    />
+  );
+}
+      if (selectedFilter === "proximos") {
+
+  return (
+    <TitleList
+      title="Hemocentros mais próximos"
+      initialItems={nearestCenters}
+      onOpen={setModalItem}
+    />
+  );
+}
       const groupedData = groupCentersBy(allCenters, selectedFilter);
       const entries = Object.entries(groupedData);
 
@@ -196,7 +289,11 @@
                 <div>
                   <Header onSearch={handleSearch} />
                   <Hero onSearch={handleSearch} onFilterChange={setSelectedFilter} />
-
+                  <button
+  onClick={handleNearestFilter}
+>
+  Buscar mais próximos
+</button>
                   {searchResults !== null ? (
                     <SearchResults results={searchResults} onOpen={setModalItem} />
                   ) : (
