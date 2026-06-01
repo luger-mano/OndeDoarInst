@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const PLACEHOLDER = "https://via.placeholder.com/400x225?text=Bairro";
-const VISIBLE = 5; // Quantidade de cards visíveis por vez
+const VISIBLE = 5; // Quantidade de cards inteiros visíveis por vez
 
 export default function ZoneSection({ title, bairros, onOpenNeighborhood }) {
   const [offset, setOffset] = useState(0);
@@ -9,15 +9,19 @@ export default function ZoneSection({ title, bairros, onOpenNeighborhood }) {
   const canPrev = offset > 0;
   const canNext = offset + VISIBLE < bairros.length;
 
-  // Seguindo o modelo: filtramos apenas os itens que devem aparecer na tela agora
-  const visibleBairros = bairros.slice(offset, offset + VISIBLE);
+  // CORRIGIDO: Pegamos VISIBLE + 1 para renderizar o card que vai ficar "espiando" na borda
+  const visibleBairros = bairros.slice(offset, offset + VISIBLE + 1);
+
+  const deveExibirZona = title && !["INTERIOR", "METROPOLIS", "METROPOLE"].includes(title.toUpperCase());
 
   return (
     <div className="TitleList" data-loaded="true">
       <div className="Title">
         {/* HEADER */}
         <div className="row-header">
-          <span className="row-title">ZONA {title}</span>
+          <span className="row-title">
+            {deveExibirZona ? `ZONA ${title}` : title}
+          </span>
         </div>
 
         {/* SLIDER */}
@@ -31,44 +35,45 @@ export default function ZoneSection({ title, bairros, onOpenNeighborhood }) {
             ‹
           </button>
 
-          {/* TRACK */}
-          <div className="titles-wrapper">
-            {visibleBairros.map((bairro) => (
-              <div
-                key={bairro.bairro}
-                className="Item"
-                onClick={() => onOpenNeighborhood(bairro)}
-              >
-                <img
-                  className="thumb"
-                  src={bairro.neighborhoodImageUrl || PLACEHOLDER}
-                  alt={bairro.bairro}
-                />
+          {/* NOVA CAMADA: Viewport para esconder o excesso sem cortar o botão */}
+          <div className="slider-viewport">
+            {/* TRACK */}
+            <div className="titles-wrapper">
+              {visibleBairros.map((bairro) => (
+                <div
+                  key={bairro.bairro}
+                  className="Item"
+                  onClick={() => onOpenNeighborhood(bairro)}
+                >
+                  <img
+                    className="thumb"
+                    src={bairro.neighborhoodImageUrl || PLACEHOLDER}
+                    alt={bairro.bairro}
+                  />
 
-                {/* NOVA CAMADA: Nome do bairro sobre a imagem */}
-                <div className="bairro-cover">
-                  <span className="bairro-cover-title">{bairro.bairro}</span>
-                </div>
-
-                <div className="overlay">
-
-                  <div className="rating">
-                    <img
-                      src="/mynaui_hospital-solid.svg"
-                      alt="Ícone de Hospital"
-                      className="plot-icon"
-                    />
-                    <span className="match">
-                      {bairro.bloodCenters?.length || 0} {bairro.bloodCenters?.length === 1 ? "hemocentro" : "hemocentros"}
-                    </span>
+                  <div className="bairro-cover">
+                    <span className="bairro-cover-title">{bairro.bairro}</span>
                   </div>
 
-                  <div className="plot">
-                    <span>Clique para visualizar os hemocentros deste bairro.</span>
+                  <div className="overlay">
+                    <div className="rating">
+                      <img
+                        src="/mynaui_hospital-solid.svg"
+                        alt="Ícone de Hospital"
+                        className="plot-icon"
+                      />
+                      <span className="match">
+                        {bairro.bloodCenters?.length || 0} {bairro.bloodCenters?.length === 1 ? "hemocentro" : "hemocentros"}
+                      </span>
+                    </div>
+
+                    <div className="plot">
+                      <span>Clique para visualizar os hemocentros deste bairro.</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
           {/* BOTÃO DIREITA */}

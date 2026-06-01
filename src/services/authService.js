@@ -1,5 +1,5 @@
 const API_URL =
-  "/api";
+  "http://localhost:8080";
 
 // GERA CHAVE ÚNICA
 function generateKey() {
@@ -94,7 +94,7 @@ export async function deleteAccountRequest(
   const response =
     await fetch(
 
-      `/api/user/${userId}`,
+      `http://localhost:8080/user/${userId}`,
 
       {
 
@@ -127,7 +127,7 @@ export async function updateUserRequest(
   const response =
     await fetch(
 
-      `/api/user/${userId}`,
+      `http://localhost:8080/user/${userId}`,
 
       {
 
@@ -178,7 +178,7 @@ export async function getUserById(
   const response =
     await fetch(
 
-      `/api/user/${userId}`,
+      `http://localhost:8080/user/${userId}`,
 
       {
 
