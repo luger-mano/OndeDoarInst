@@ -1,5 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Navigation.css";
+import TeamCard from "../TeamCard/TeamCard";
+import "../TeamCard/TeamSection.css";
+
+import hug from "../../assets/fotosDevs/hug.png";
+import hug2 from "../../assets/fotosDevs/hug2.png";
+
+import kai from "../../assets/fotosDevs/kai.png";
+import kai2 from "../../assets/fotosDevs/kai2.png";
+
+import luc from "../../assets/fotosDevs/luc.png";
+import luc2 from "../../assets/fotosDevs/luc2.png";
+
+import rob from "../../assets/fotosDevs/rob.png";
+import rob2 from "../../assets/fotosDevs/rob2.png";
 
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
@@ -27,6 +41,8 @@ export default function Navigation() {
     setOpenMenu(null);
   };
 
+
+
   return (
     <div className="navigation-wrapper" ref={wrapperRef}>
       <div className="Navigation">
@@ -44,56 +60,65 @@ export default function Navigation() {
               <div
                 className={`
                   menuOp1
+    team-menu
                   ${scrolled ? "menuScrolled" : ""}
                   ${openMenu === "quem" ? "menuVisible" : ""}
                 `}
+                 onMouseLeave={handleMouseLeave}
               >
-                <div className="menu-about-left">
-                  <span className="menu-tag">HEMODOAÇÃO</span>
-                  <h2>Conectando pessoas à doação de sangue</h2>
-                  <p>
-                    Somos uma plataforma digital criada exclusivamente para modernizar,
-                    centralizar e facilitar o acesso à doação de sangue em todo o território nacional.
-                  </p>
-                  <p>
-                    Conectamos doadores voluntários a hemocentros e hospitais parceiros próximos
-                    de forma 100% simples, rápida e transparente.
-                  </p>
-                  <p>
-                    Nosso principal objetivo é manter os estoques abastecidos continuamente, reduzindo a falta
-                    crítica de bolsas de sangue nos períodos de baixa captação.
-                  </p>
-                  <p>
-                    Acreditamos fielmente que a união entre tecnologia assertiva e a solidariedade humana
-                    detém o poder de salvar milhares de vidas diariamente.
-                  </p>
-                </div>
+                <span className="menu-tag">
+  EQUIPE ONDEDOAR
+</span>
 
-                {/* CONTATO */}
-                <div className="menu-about-right">
-                  <div className="contact-card">
-                    <h3>Informações de contato</h3>
-                    <div className="contact-item">
-                      <span>📞</span>
-                      <p>11 96926-6214</p>
-                    </div>
-                    <div className="contact-item">
-                      <span>✉️</span>
-                      <p>contato@hugosevero.com</p>
-                    </div>
-                    <div className="contact-item">
-                      <span>💼</span>
-                      <a
-                        href="https://www.linkedin.com/in/hugosevero/"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="linkedin-link"
-                      >
-                        Linkedin
-                      </a>
-                    </div>
-                  </div>
-                </div>
+<h2>
+  Conheça nossa equipe
+</h2>
+
+<p className="team-description">
+  Somos uma equipe de doadores apaixonada por tecnologia e impacto social,
+  unindo nossas habilidades para facilitar a doação de sangue
+  e conectar pessoas que podem salvar vidas.
+</p>
+
+<div className="team-grid">
+
+  <TeamCard
+    name="Hugo Severo"
+    role="CEO"
+    email="contato@hugosevero.com"
+    linkedin="https://www.linkedin.com/in/hugosevero/"
+    photo={hug}
+    photoDonation={hug2}
+  />
+
+  <TeamCard
+    name="Kaiqui Petty"
+    role="DevOps"
+    email="kaiquidejesus@gmail.com"
+    linkedin="https://www.linkedin.com/in/kaiqui-petty-6b9299217/"
+    photo={kai}
+    photoDonation={kai2}
+  />
+
+  <TeamCard
+    name="Lucas Germano"
+    role="CTO e desenvolvedor Full-Stack"
+    email="germanoluc890@gmail.com"
+    linkedin="https://www.linkedin.com/in/lucas-germano-dev/"
+    photo={luc}
+    photoDonation={luc2}
+  />
+
+  <TeamCard
+    name="Robson Rioki"
+    role="Desenvolvedor Front-End"
+    email="riokirobson@gmail.com"
+    linkedin="https://www.linkedin.com/in/riokirobson/"
+    photo={rob}
+    photoDonation={rob2}
+  />
+
+</div>
               </div>
             </li>
 
@@ -121,27 +146,27 @@ export default function Navigation() {
                     <div className="card">
                       <h3>❤️ Salva vidas</h3>
                       <p>
-                        Uma única bolsa de sangue coletada é fracionada em até quatro componentes essenciais: 
-                        hemácias, plasma, plaquetas e crioprecipitado. Isso significa que um único ato seu beneficia 
-                        diretamente múltiplas pessoas que passam por cirurgias complexas ou transplantes urgentes.
+                       Uma única doação pode beneficiar até
+                        4 pessoas que dependem de transfusões
+                        em situações de emergência,
+                        cirurgias ou tratamentos.
                       </p>
                     </div>
 
                     <div className="card">
                       <h3>🏥 Sempre necessário</h3>
                       <p>
-                        O sangue humano é insubstituível e possui data de validade rigorosa (plaquetas duram apenas 5 dias). 
-                        Hospitais tratam diariamente pacientes com câncer, anemia falciforme crônica e vítimas de acidentes graves, 
-                        tornando o fluxo constante de novos doadores algo vital para a saúde pública.
+                        Os estoques de sangue precisam ser
+                        constantemente repostos.
+                        Sua doação faz diferença todos os dias.
                       </p>
                     </div>
 
                     <div className="card">
                       <h3>🔄 Ciclo de ajuda</h3>
                       <p>
-                        Criar o hábito de doar fortalece uma rede invisível de proteção comunitária. Ao estender o braço hoje, 
-                        você garante que amanhã a cultura de doação continue viva e ativa na sociedade, protegendo seus próprios 
-                        familiares, amigos ou até mesmo você em uma eventual necessidade futura.
+                       Hoje você doa, amanhã alguém pode doar
+                        por você. A doação mantém esse ciclo funcionando.
                       </p>
                     </div>
                   </div>
@@ -169,50 +194,124 @@ export default function Navigation() {
                 <h2>Quem pode doar sangue?</h2>
 
                 <div className="info-boxs">
-                  <div className="cards requirements-grid">
-                    <div className="card">
-                      <span className="card-icon">🎂</span>
-                      <strong>Faixa etária</strong>
-                      <p>
-                        Estar na faixa entre 16 e 69 anos de idade. Jovens de 16 e 17 anos necessitam de uma autorização formal por 
-                        escrito e presença de um responsável legal. A primeira doação do voluntário deve obrigatoriamente ter sido 
-                        realizada antes de ele completar os 60 anos de idade.
-                      </p>
-                    </div>
+                  <div className="requirements-container">
 
-                    <div className="card">
-                      <span className="card-icon">⚖️</span>
-                      <strong>Peso mínimo</strong>
-                      <p>
-                        Pesar no mínimo 50kg. O volume de sangue total extraído na coleta é calculado proporcionalmente baseado na 
-                        massa corporal do doador. Mulheres e homens abaixo desse peso não possuem a margem de segurança necessária 
-                        para a retirada padrão sem riscos de mal-estar.
-                      </p>
-                    </div>
+  <div className="requirements-top">
 
-                    <div className="card">
-                      <span className="card-icon">💚</span>
-                      <strong>Saúde Geral</strong>
-                      <p>
-                        Estar em plenas condições de saúde no dia. Não apresentar sintomas gripais, febre ou infecções nos últimos 14 dias. 
-                        Caso tenha feito tatuagem, maquiagem definitiva ou piercings recentes, deve-se aguardar o prazo preventivo padrão 
-                        de 12 meses antes de doar.
-                      </p>
-                    </div>
+    <div className="card requirement-small">
 
-                    <div className="card">
-                      <span className="card-icon">🍽️</span>
-                      <strong>Alimentação</strong>
-                      <p>
-                        Estar devidamente alimentado e descansado (dormido pelo menos 6 horas na noite anterior). Evite o consumo de 
-                        alimentos excessivamente gordurosos nas 3 horas que antecedem a coleta e nunca compareça ao posto de atendimento 
-                        completamente em jejum.
-                      </p>
-                    </div>
-                  </div>
+      <span className="card-icon">
+        🎂
+      </span>
+
+      <strong>
+        Faixa Etária
+      </strong>
+
+      <p>
+        Entre 16 e 69 anos.
+      </p>
+
+    </div>
+
+    <div className="card requirement-small">
+
+      <span className="card-icon">
+        ⚖️
+      </span>
+
+      <strong>
+        Peso Mínimo
+      </strong>
+
+      <p>
+        50kg ou mais.
+      </p>
+
+    </div>
+
+  </div>
+<hr className="requirements-divider" />
+
+<div className="requirements-info">
+
+  <h3>
+    💚 Saúde Geral e Alimentação
+  </h3>
+
+  <p>
+    Estar em boas condições de saúde e
+    não apresentar sintomas gripais.
+  </p>
+
+  <p>
+    Estar alimentado e não comparecer
+    em jejum.
+  </p>
+
+  <p>
+    Dormir ao menos 6 horas antes da
+    doação.
+  </p>
+
+</div>
+
+</div>
                 </div>
               </div>
             </li>
+            {/* ───────── PRECISA DE SANGUE ───────── */}
+<li
+  onMouseEnter={() => handleMouseEnter("sangue")}
+  onMouseLeave={handleMouseLeave}
+>
+ <button className="nav-link nav-button need-blood-btn">🚨 Precisa de Sangue?</button>
+
+
+
+
+  <div
+  className={`
+    menuOp4
+    ${scrolled ? "menuScrolled" : ""}
+    ${openMenu === "sangue" ? "menuVisible" : ""}
+  `}
+>
+
+  <span className="menu-tag urgent-tag">
+    URGENTE
+  </span>
+
+  <h2>
+    🚨 Precisa de Sangue?
+  </h2>
+
+  <p>
+    Está procurando doadores para um familiar,
+    amigo ou paciente?
+  </p>
+
+  <p>
+    Preencha nosso formulário e envie as
+    informações da solicitação.
+  </p>
+
+  <p>
+    Nossa equipe analisará os dados enviados
+    e entrará em contato quando necessário.
+  </p>
+
+  <a
+    href="https://docs.google.com/forms/d/1ef0D_3q29SHkY5J3gLzrxaW2X44yvQiHThqAnOUI8vU/viewform?edit_requested=true"
+    target="_blank"
+    rel="noreferrer"
+    className="need-blood-action"
+  >
+    SOLICITAR DOADORES
+  </a>
+
+</div>
+</li>
           </ul>
         </nav>
       </div>
