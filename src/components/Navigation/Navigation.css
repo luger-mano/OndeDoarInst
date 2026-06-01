@@ -50,7 +50,7 @@
 
   left: 0;
 
-  top: 49px;
+  top: 48px;
 
   width: 530px;
 
@@ -77,7 +77,7 @@
 
   left: 0;
 
-  top: 49px;
+  top: 48px;
 
   width: 950px;
 
@@ -109,7 +109,7 @@
 
   left: 0;
 
-  top: 49px;
+  top: 48px;
 
   width: 1000px;
 
@@ -139,7 +139,7 @@ display: flex;
 .menuOp4 {
   position: absolute;
   left: 0;
-  top: 49px; /* Ajustado para aproximar o menu do botão e evitar fechar acidentalmente */
+  top: 48px; /* Ajustado para aproximar o menu do botão e evitar fechar acidentalmente */
 
   width: 1200px;
   min-height: 250px;

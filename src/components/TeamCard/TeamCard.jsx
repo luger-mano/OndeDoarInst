@@ -85,7 +85,7 @@ export default function TeamCard({
         href={`mailto:${email}`}
         className="team-link"
       >
-        ✉ {email}
+         {email}
       </a>
 
       <a

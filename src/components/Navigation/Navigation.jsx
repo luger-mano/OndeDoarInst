@@ -94,7 +94,7 @@ export default function Navigation() {
   <TeamCard
     name="Kaiqui Petty"
     role="DevOps"
-    email="kaiqui@email"
+    email="kaiquidejesus@gmail.com"
     linkedin="https://www.linkedin.com/in/kaiqui-petty-6b9299217/"
     photo={kai}
     photoDonation={kai2}
