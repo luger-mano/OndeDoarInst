@@ -43,7 +43,7 @@
     const [capitalZones, setCapitalZones] = useState([]);
     const [metropolisZones, setMetropolisZones] = useState([]);
     const [interiorZones, setInteriorZones] = useState([]);
-    
+    const [loadingNearest, setLoadingNearest] = useState(false);
     const [allCenters, setAllCenters] = useState([]);
     const [searchResults, setSearchResults] = useState(null);
     const [modalItem, setModalItem] = useState(null);
@@ -102,13 +102,15 @@
 
     const location =
       await getUserLocation();
-
+setLoadingNearest(true);
     const response =
       await fetch(
 
         `http://localhost:8080/centers/filter/nearest?latitudeStarting=${location.latitude}&longitudeStarting=${location.longitude}`
 
       );
+
+      
 
     if (!response.ok) {
 
@@ -127,17 +129,31 @@
 
     setNearestCenters(data);
 
-    setSelectedFilter(
-      "proximos"
-    );
+    
 
   } catch (error) {
 
     console.error(
       error
     );
-  }
+  }finally {
+  setLoadingNearest(false);
+}
 };
+
+useEffect(() => {
+
+  if (
+    selectedFilter === "proximos" &&
+    nearestCenters.length === 0
+  ) {
+
+    setLoadingNearest(true);
+
+    handleNearestFilter();
+  }
+
+}, [selectedFilter]);
 
 
 
@@ -219,7 +235,23 @@
         );
       }
 
-      if (selectedFilter === "proximos") {
+     if (selectedFilter === "proximos") {
+
+  if (loadingNearest) {
+
+    return (
+      <div
+        style={{
+          padding: "40px",
+          color: "black",
+          fontSize: "1.2rem",
+          fontWeight: "600"
+        }}
+      >
+        📍 Obtendo sua localização...
+      </div>
+    );
+  }
 
   if (nearestCenters.length === 0) {
 
@@ -245,16 +277,7 @@
     />
   );
 }
-      if (selectedFilter === "proximos") {
-
-  return (
-    <TitleList
-      title="Hemocentros mais próximos"
-      initialItems={nearestCenters}
-      onOpen={setModalItem}
-    />
-  );
-}
+     
       const groupedData = groupCentersBy(allCenters, selectedFilter);
       const entries = Object.entries(groupedData);
 
@@ -289,11 +312,6 @@
                 <div>
                   <Header onSearch={handleSearch} />
                   <Hero onSearch={handleSearch} onFilterChange={setSelectedFilter} />
-                  <button
-  onClick={handleNearestFilter}
->
-  Buscar mais próximos
-</button>
                   {searchResults !== null ? (
                     <SearchResults results={searchResults} onOpen={setModalItem} />
                   ) : (
