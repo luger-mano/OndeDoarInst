@@ -1,136 +1,147 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 export default function NeighborhoodModal({
   item,
   onClose,
   onOpenCenter
 }) {
+  const carouselRef = useRef(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const startX = useRef(0);
+  const scrollLeft = useRef(0);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = "";
-    }
+    };
   }, []);
+
+  // ── LÓGICA DE CLICAR E ARRASTAR (MOUSE DRAG) ──
+  const handleMouseDown = (e) => {
+    if (item.bloodCenters?.length <= 2) return; // Só ativa se for carrossel
+    setIsDragging(true);
+
+    // Guarda a posição inicial do clique e o scroll atual do container
+    startX.current = e.pageX - carouselRef.current.offsetLeft;
+    scrollLeft.current = carouselRef.current.scrollLeft;
+
+    // Evita seleção de textos indesejada enquanto arrasta
+    e.preventDefault();
+  };
+
+  const handleMouseLeaveOrUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+
+    // Calcula a distância que o mouse moveu
+    const x = e.pageX - carouselRef.current.offsetLeft;
+    const walk = (x - startX.current) * 1.5; // O multiplicador altera a velocidade do arrasto
+
+    // Aplica o movimento ao scroll horizontal
+    carouselRef.current.scrollLeft = scrollLeft.current - walk;
+  };
+
+  // Impede que o clique do arrasto dispare o evento de abrir o card acidentalmente
+  const handleCardClick = (e, center) => {
+    if (isDragging) {
+      e.stopPropagation();
+      return;
+    }
+    onOpenCenter(center);
+  };
 
   if (!item) return null;
 
+  const isCarousel = item.bloodCenters?.length > 2;
+
   return (
-    <div
-      className="Modal-overlay"
-      onClick={onClose}
-    >
+    <div className="Modal-overlay" onClick={onClose}>
+      <div className="Modal" onClick={(e) => e.stopPropagation()}>
 
-      <div
-        className="Modal"
-        onClick={(e) => e.stopPropagation()}
-      >
-
-        <button
-          className="modal-close"
-          onClick={onClose}
-        >
+        <button className="modal-close" onClick={onClose} aria-label="Fechar modal">
           ✕
         </button>
 
         <div className="modal-hero">
-
-          <img
-            src={item.neighborhoodImageUrl}
-            alt={item.bairro}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover"
-            }}
-          />
-
+          <img src={item.neighborhoodImageUrl} alt={item.bairro} className="hero-image" />
           <div className="modal-hero-overlay" />
-
           <div className="modal-hero-content">
-            <h2 className="modal-title">
-              {item.bairro}
-            </h2>
+            <h2 className="modal-title">{item.bairro}</h2>
           </div>
-
         </div>
 
         <div className="modal-units">
+          <h3>Hemocentros disponíveis neste bairro</h3>
 
-          <h3>
-            Hemocentros do bairro
-          </h3>
+          {/* EVENTOS DE ARRASTO ADICIONADOS AQUI */}
+          <div
+            ref={carouselRef}
+            className={`units-grid ${isCarousel ? 'has-carousel' : ''} ${isDragging ? 'is-dragging' : ''}`}
+            onMouseDown={handleMouseDown}
+            onMouseLeave={handleMouseLeaveOrUp}
+            onMouseUp={handleMouseLeaveOrUp}
+            onMouseMove={handleMouseMove}
+          >
+            {item.bloodCenters.map((center) => {
+              const isFechado = center.operation?.toLowerCase().includes("fechada") || center.operation?.toLowerCase().includes("fechado");
+              const isAberto = center.operation?.toLowerCase().includes("aberto") || center.operation?.toLowerCase().includes("aberta");
+              const statusType = isAberto ? "aberto" : isFechado ? "fechado" : "atencao";
 
-          <div className="units-list">
+              return (
+                <div key={center.bloodCenterId} className="unit-card">
 
-            {item.bloodCenters.map((center) => (
-
-              <div
-                key={center.bloodCenterId}
-                className="unit-card"
-              >
-
-                {/* Imagem agora é clicável */}
-                <img
-                  src={center.facadeImageUrl}
-                  alt={center.name}
-                  onClick={() => onOpenCenter(center)}
-                  style={{ cursor: "pointer" }}
-                />
-
-                <div className="unit-info">
-
-                  {/* Título agora é clicável */}
-                  <strong 
-                    onClick={() => onOpenCenter(center)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {center.name}
-                  </strong>
-
-                  <div className="address-wrapper">
-                    <img
-                      src="/logo-od.svg"
-                      alt="Ícone OndeDoar"
-                      className="address-icon"
-                    />
-                    <p>{center.address?.fullAddress}</p>
+                  {/* cliques alterados para usar a validação de segurança de arrasto */}
+                  <div className="unit-thumb-wrapper" onClick={(e) => handleCardClick(e, center)}>
+                    <img src={center.facadeImageUrl} alt={center.name} className="unit-thumb" draggable="false" />
                   </div>
 
-                  <span
-                    style={{
-                      color: center.operation?.toLowerCase().startsWith("unidade fechada")
-                        ? "#E21221"
-                        : center.operation?.toLowerCase().startsWith("aberto")
-                          ? "#46d369"
-                          : "#E21221"
-                    }}
-                  >
-                    {center.operation}
-                  </span>
+                  <div className="unit-card-body">
+                    <div className="unit-card-header">
+                      <strong onClick={(e) => handleCardClick(e, center)}>
+                        {center.name}
+                      </strong>
+                    </div>
+
+                    <div className="address-wrapper">
+                      📍​
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                          center.address?.fullAddress || ""
+                        )}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="address-link"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {center.address?.fullAddress}
+                      </a>
+                    </div>
+
+                    <div className="status-badge" data-status={statusType}>
+                      <span className="status-dot"></span>
+                      <span className="status-text">{center.operation}</span>
+                    </div>
+                  </div>
+
+                  <div className="unit-actions">
+                    <button onClick={(e) => handleCardClick(e, center)}>
+                      <span>Saiba mais</span>
+                      <span className="arrow-icon">→</span>
+                    </button>
+                  </div>
 
                 </div>
-
-                <div className="unit-actions">
-
-                  <button
-                    onClick={() => onOpenCenter(center)}
-                  >
-                    ℹ
-                  </button>
-
-                </div>
-
-              </div>
-
-            ))}
-
+              );
+            })}
           </div>
-
         </div>
 
       </div>
-
     </div>
-  )
+  );
 }

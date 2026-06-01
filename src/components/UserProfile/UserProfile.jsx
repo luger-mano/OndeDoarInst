@@ -258,7 +258,7 @@ export default function UserProfile() {
     if (!confirmDelete) return;
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`/api/user/${loggedUser.id}`, {
+      const response = await fetch(`http://localhost:8080/user/${loggedUser.id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -324,7 +324,10 @@ export default function UserProfile() {
                     <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
                     <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option><option>Não sei</option>
                   </select>
-                  <input name="whatsapp" placeholder="WhatsApp" value={registerForm.whatsapp} onChange={handleRegisterChange} maxLength={15} required />
+                  <div className="input-wrapper-whatsapp">
+                    <img src="https://flagcdn.com/w20/br.png" alt="BR" className="whatsapp-flag" />
+                    <input name="whatsapp" placeholder="WhatsApp" value={registerForm.whatsapp} onChange={handleRegisterChange} maxLength={15} required />
+                  </div>
                   <select name="estado" value={registerForm.estado} onChange={handleRegisterChange} required>
                     <option value="">Selecione seu estado</option>
                     <option value="SP">São Paulo</option><option value="RJ">Rio de Janeiro</option><option value="MG">Minas Gerais</option>
@@ -344,7 +347,7 @@ export default function UserProfile() {
             <>
               {menuView === "menu" && (
                 <>
-                    <div className="UserProfile-menu-item user-email-display">{loggedUser.mail}</div>
+                  <div className="UserProfile-menu-item user-email-display">{loggedUser.mail}</div>
                   <div className="UserProfile-menu-item">
                     <button className="botaoLog" onClick={() => setMenuView("edicao")}>Editar Perfil</button>
                   </div>
@@ -367,7 +370,10 @@ export default function UserProfile() {
                     <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
                     <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option><option>Não sei</option>
                   </select>
-                  <input name="whatsapp" placeholder="WhatsApp" value={editForm.whatsapp} onChange={handleEditChange} maxLength={15} />
+                  <div className="input-wrapper-whatsapp">
+                    <img src="https://flagcdn.com/w20/br.png" alt="BR" className="whatsapp-flag" />
+                    <input name="whatsapp" placeholder="WhatsApp" value={editForm.whatsapp} onChange={handleEditChange} maxLength={15} />
+                  </div>
                   <select name="estado" value={editForm.estado} onChange={handleEditChange}>
                     <option value="">Selecione seu estado</option>
                     <option value="SP">São Paulo</option><option value="RJ">Rio de Janeiro</option><option value="MG">Minas Gerais</option>
