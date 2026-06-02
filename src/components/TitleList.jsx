@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Item from "./Item";
+import Item from "./Item/Item";
 
 const VISIBLE = 5;
 

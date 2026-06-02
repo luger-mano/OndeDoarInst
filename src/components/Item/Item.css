@@ -1,0 +1,228 @@
+.Item {
+  flex: 0 0 calc(20% - 4px);
+  min-width: calc(20% - 4px);
+  position: relative;
+  border-radius: 4px;
+  overflow: visible;
+  cursor: pointer;
+  transition: transform 0.3s ease, z-index 0s 0.2s;
+  z-index: 1;
+}
+
+.Item:hover {
+  transform: scale(1.12);
+  z-index: 10;
+  transition: transform 0.3s ease 0.2s, z-index 1ms 0.1s;
+}
+
+.Item:first-child:hover {
+  transform-origin: left center;
+}
+
+.Item:last-child:hover {
+  transform-origin: right center;
+}
+
+.Item .thumb {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  border-radius: 4px;
+  display: block;
+  background: #1a1a1a;
+}
+
+/* ── DINÂMICA DE INTERAÇÃO (HOVER) ── */
+.Item:hover .status-closed-overlay {
+  background: rgba(185, 28, 28, 0.65) !important;
+}
+
+.Item:hover .status-title-huge {
+  opacity: 0.4;
+  transform: scale(0.85) translateY(-4px);
+}
+
+.Item:hover .status-schedule-reveal {
+  opacity: 1;
+  transform: scale(1.05) translateY(-2px);
+}
+
+.Item:hover .schedule-lines li {
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+
+.Item .overlay {
+  background: #eeeeee;
+  border-radius: 0 0 4px 4px;
+  padding: 10px 12px 12px;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  transition: opacity 0.2s;
+  z-index: 11;
+}
+
+.Item:hover .overlay {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.Item .overlay .actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.Item .overlay .card-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--black);
+  background: transparent;
+  color: var(--black);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s;
+}
+
+.Item .overlay .card-btn:hover {
+  border-color: #03030397;
+}
+
+.Item .overlay .card-btn.more {
+  margin-bottom: auto;
+}
+
+.Item .overlay .rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+
+.Item .overlay .rating .match {
+  color: #E21221;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.Item .overlay .plot {
+  font-size: 11px;
+  color: rgba(16, 16, 16, 0.7);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.5;
+}
+
+.thumb-wrapper {
+  position: relative;
+}
+
+.status-bar {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(208, 19, 31, 0.656);
+  color: #fff;
+  text-align: center;
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.status-bar .status-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.status-bar .status-subtitle {
+  font-size: 11px;
+  font-weight: 400;
+  opacity: 0.95;
+}
+
+/* ── OVERLAY SUAVE (VERMELHO MAIS FRACO E MENOS BLUR) ── */
+.status-closed-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 0, 0, 0.521) !important;
+  backdrop-filter: blur(1.5px);
+  -webkit-backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.status-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* TEXTO "FECHADO" (Estado Inicial: Forte) */
+.status-title-huge {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  opacity: 1;
+  transform: scale(1);
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
+}
+
+/* CONTAINER DOS HORÁRIOS (Sempre visível, mas discreto no início) */
+.status-schedule-reveal {
+  opacity: 0.75;
+  transform: scale(0.95);
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
+  margin-top: 12px;
+  text-align: center;
+  width: 100%;
+}
+
+.schedule-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.8);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.schedule-lines {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.schedule-lines li {
+  font-size: 12px;
+  font-weight: 500;
+  color: #ffffff;
+}

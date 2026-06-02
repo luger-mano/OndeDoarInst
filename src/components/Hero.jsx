@@ -3,39 +3,38 @@ import HeroButton from "./HeroButton";
 import Search from "./Search";
 
 // 1. LISTA DE VÍDEOS DO CARROSSEL
-// Adicione os caminhos dos vídeos que estão na sua pasta public/
 const HERO_ITEMS = [
   {
     id: 1,
-    videoSrc: "/doacao_um.jpg", // Seu vídeo atual
+    videoSrc: "/doacao_um.jpg",
     title: "Doe Sangue, Salve Vidas",
     description: "Cada doação pode salvar até 4 vidas.",
   },
   {
     id: 2,
-    videoSrc: "/doacao_dois.jpg", // Substitua por outro vídeo
+    videoSrc: "/doacao_dois.jpg",
     title: "Unidades Abertas Agora",
     description: "Verifique as unidades operando neste exato momento.",
   },
   {
     id: 3,
-    videoSrc: "/doacao_tres.jpg", // Substitua por outro vídeo
+    videoSrc: "/doacao_tres.jpg",
     title: "Unidades Abertas Agora",
     description: "Verifique as unidades operando neste exato momento.",
   }
 ];
 
 const FILTER_OPTIONS = [
-  { id: "zona", name: "Filtrar por Zona", img: "https://cdn-icons-png.flaticon.com/512/854/854878.png" },
-  { id: "abertos", name: "Filtrar por Abertos", img: "https://cdn-icons-png.flaticon.com/512/4149/4149673.png" },
-  { id: "proximos", name: "Mais próximos", img: "https://cdn-icons-png.flaticon.com/512/1865/1865269.png" }
+  { id: "zona", name: "Zona" },
+  { id: "abertos", name: "Abertos" },
+  { id: "proximos", name: "Mais próximos" }
 ];
 
 export default function Hero({ onMoreInfo, onSearch, onFilterChange }) {
-  // ESTADOS
-  const [idx, setIdx] = useState(0); // Controla qual vídeo está passando
-  const [open, setOpen] = useState(false); // Menu de filtros
-  const [selectedFilter, setSelectedFilter] = useState("zona");
+  // ESTADOS - Agora o estado inicial padrão é "zona" em vez de vazio
+  const [idx, setIdx] = useState(0); 
+  const [open, setOpen] = useState(false); 
+  const [selectedFilter, setSelectedFilter] = useState("zona"); 
 
   // REFS
   const timerRef = useRef(null);
@@ -46,7 +45,7 @@ export default function Hero({ onMoreInfo, onSearch, onFilterChange }) {
   useEffect(() => {
     timerRef.current = setInterval(() => {
       setIdx((i) => (i + 1) % HERO_ITEMS.length);
-    }, 8000); // Troca a cada 8 segundos
+    }, 8000);
 
     return () => clearInterval(timerRef.current);
   }, []);
@@ -55,14 +54,12 @@ export default function Hero({ onMoreInfo, onSearch, onFilterChange }) {
   function goTo(i) {
     setIdx(i);
     clearInterval(timerRef.current);
-    // Reinicia o tempo para não pular logo em seguida
     timerRef.current = setInterval(() => {
       setIdx((prevIdx) => (prevIdx + 1) % HERO_ITEMS.length);
     }, 8000);
   }
 
   // VELOCIDADE DO VÍDEO
-  // Atualiza sempre que o `idx` muda (ou seja, quando troca de vídeo)
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.playbackRate = 0.75;
@@ -80,44 +77,55 @@ export default function Hero({ onMoreInfo, onSearch, onFilterChange }) {
     return () => document.removeEventListener("mousedown", handleOutside);
   }, []);
 
+  // LÓGICA DE SELEÇÃO EXCLUSIVA COM PADRÃO "ZONA"
+  const handleCheckboxChange = (filterId) => {
+    let newFilter;
+    
+    if (selectedFilter === filterId) {
+      newFilter = "zona";
+    } else {
+      newFilter = filterId;
+    }
+
+    setSelectedFilter(newFilter);
+    setOpen(false); 
+
+    if (onFilterChange) {
+      onFilterChange(newFilter);
+    }
+  };
+
   const item = HERO_ITEMS[idx];
+
+  const currentFilterText = FILTER_OPTIONS.find(f => f.id === selectedFilter)?.name || "Zona";
 
   return (
     <div className="Hero">
-      {/* VÍDEO DE FUNDO */}
-      {/* A prop 'key' recarrega a tag quando o src muda, garantindo o autoplay */}
+      {/* VÍDEO / IMAGEM DE FUNDO */}
       <img
         key={item.videoSrc}
         ref={videoRef}
         className="bg hero-video-bg"
         src={item.videoSrc}
-        autoPlay
-        loop
-        muted
-        playsInline
+        alt=""
       />
 
       <div className="vignette" />
 
       <div className="content">
-        {/* Título e descrição opcionais do vídeo atual */}
         <h1 className="hero-title">
           {item.title === "Doe Sangue, Salve Vidas" ? (
             <>
               <span className="text-red">Doe Sangue</span>
-
-
-              <span className="text-white">, <p className="salve-vidas">Salve Vidas</p></span>
+              <span className="text-white">, <span className="salve-vidas">Salve Vidas</span></span>
             </>
           ) : (
             <span className="text-white">{item.title}</span>
           )}
         </h1>
-
         <p style={{ marginBottom: "50px", fontSize: "1.2rem", maxWidth: "600px" }}>{item.description}</p>
-
-
       </div>
+
       <div className="button-wrapper">
         {/* SEARCH */}
         <Search onSearch={onSearch} />
@@ -127,45 +135,45 @@ export default function Hero({ onMoreInfo, onSearch, onFilterChange }) {
           <HeroButton
             primary={false}
             text="Filtrar por: "
-            filter={selectedFilter.charAt(0).toUpperCase() + selectedFilter.slice(1)}
+            filter={currentFilterText}
             icon="▾"
             onClick={() => setOpen(!open)}
           />
 
-          {/* MENU DE FILTROS */}
+          {/* MENU DE FILTROS COM CHECKBOX */}
           <div className="UserProfile-menu hero-menu-adjust">
             <div className="UserProfileSwitch">
-              {FILTER_OPTIONS.map((opt) => (
-                <div
-                  key={opt.id}
-                  className="UserProfile-menu-item"
-                  onClick={() => {
-                    setSelectedFilter(opt.id);
-                    setOpen(false);
-                    if (onFilterChange) {
-                      onFilterChange(opt.id);
-                    }
-                  }}
-                >
-                  <img
-                    src={opt.img}
-                    alt={opt.name}
-                    style={{
-                      width: "24px",                 /* Força a largura */
-                      height: "24px",                /* Força a altura */
-                      filter: "brightness(0) invert(0.2)",
-                      opacity: 0.8,
-                      objectFit: "contain"           /* Garante que a imagem não mude de proporção */
-                    }}
-                  />
-                  <span>{opt.name}</span>
-                </div>
-              ))}
+              {FILTER_OPTIONS.map((opt) => {
+                const isChecked = selectedFilter === opt.id;
+                return (
+                  <label 
+                    key={opt.id} 
+                    className={`UserProfile-menu-item hero-checkbox-label ${isChecked ? "active-filter" : ""}`}
+                  >
+                    {/* Checkbox Oculto nativo controlado via onChange */}
+                    <input 
+                      type="checkbox"
+                      className="hero-native-checkbox"
+                      checked={isChecked}
+                      onChange={() => handleCheckboxChange(opt.id)} 
+                    />
+
+                    {/* Custom UI da caixa do Checkbox */}
+                    <div className="hero-custom-checkbox">
+                      {isChecked && <span className="hero-checkbox-checkmark">✓</span>}
+                    </div>
+
+                    {/* Texto da Opção */}
+                    <span>{opt.name}</span>
+                  </label>
+                );
+              })}
             </div>
             <hr className="UserProfile-menu-divider" />
           </div>
         </div>
       </div>
+
       {/* BOLINHAS DE NAVEGAÇÃO (DOTS) */}
       {HERO_ITEMS.length > 1 && (
         <div className="dots">
