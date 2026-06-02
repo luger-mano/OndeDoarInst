@@ -102,7 +102,7 @@ export default function Navigation() {
 
   <TeamCard
     name="Lucas Germano"
-    role="CTO e desenvolvedor Full-Stack"
+    role="CTO e Desenvolvedor Full-Stack"
     email="germanoluc890@gmail.com"
     linkedin="https://www.linkedin.com/in/lucas-germano-dev/"
     photo={luc}
@@ -199,11 +199,6 @@ export default function Navigation() {
   <div className="requirements-top">
 
     <div className="card requirement-small">
-
-      <span className="card-icon">
-        🎂
-      </span>
-
       <strong>
         Faixa Etária
       </strong>
@@ -215,11 +210,7 @@ export default function Navigation() {
     </div>
 
     <div className="card requirement-small">
-
-      <span className="card-icon">
-        ⚖️
-      </span>
-
+      
       <strong>
         Peso Mínimo
       </strong>
@@ -265,7 +256,7 @@ export default function Navigation() {
   onMouseEnter={() => handleMouseEnter("sangue")}
   onMouseLeave={handleMouseLeave}
 >
- <button className="nav-link nav-button need-blood-btn">🚨 Precisa de Sangue?</button>
+ <button className="nav-link nav-button need-blood-btn"> Precisa de Sangue?</button>
 
 
 
@@ -283,7 +274,7 @@ export default function Navigation() {
   </span>
 
   <h2>
-    🚨 Precisa de Sangue?
+    Precisa de Sangue?
   </h2>
 
   <p>

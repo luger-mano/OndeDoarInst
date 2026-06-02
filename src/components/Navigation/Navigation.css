@@ -390,17 +390,11 @@ justify-content: center;
 
   color: white !important;
 
-  border-radius: 999px;
+  border-radius: 5px;
 
-  padding: 8px 18px;
+  padding: 6px 10px;
 
-  font-weight: 700;
-
-  box-shadow:
-    0 4px 14px
-    rgba(211,47,47,.25);
-
-  transition: .2s;
+  font-weight: 600;
 }
 
 .need-blood-btn:hover {
@@ -409,7 +403,7 @@ justify-content: center;
 
   color: white !important;
 
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 .menuOp4 {
