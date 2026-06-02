@@ -227,7 +227,7 @@ export default function Navigation() {
 <div className="requirements-info">
 
   <h3>
-    💚 Saúde Geral e Alimentação
+     Saúde Geral e Alimentação
   </h3>
 
   <p>
