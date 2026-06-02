@@ -19,14 +19,12 @@ export default function NeighborhoodModal({
 
   // ── LÓGICA DE CLICAR E ARRASTAR (MOUSE DRAG) ──
   const handleMouseDown = (e) => {
-    if (item.bloodCenters?.length <= 2) return; // Só ativa se for carrossel
+    if (item.bloodCenters?.length <= 2) return;
     setIsDragging(true);
 
-    // Guarda a posição inicial do clique e o scroll atual do container
     startX.current = e.pageX - carouselRef.current.offsetLeft;
     scrollLeft.current = carouselRef.current.scrollLeft;
 
-    // Evita seleção de textos indesejada enquanto arrasta
     e.preventDefault();
   };
 
@@ -38,15 +36,12 @@ export default function NeighborhoodModal({
     if (!isDragging) return;
     e.preventDefault();
 
-    // Calcula a distância que o mouse moveu
     const x = e.pageX - carouselRef.current.offsetLeft;
-    const walk = (x - startX.current) * 1.5; // O multiplicador altera a velocidade do arrasto
+    const walk = (x - startX.current) * 1.5;
 
-    // Aplica o movimento ao scroll horizontal
     carouselRef.current.scrollLeft = scrollLeft.current - walk;
   };
 
-  // Impede que o clique do arrasto dispare o evento de abrir o card acidentalmente
   const handleCardClick = (e, center) => {
     if (isDragging) {
       e.stopPropagation();
@@ -108,7 +103,7 @@ export default function NeighborhoodModal({
                     </div>
 
                     <div className="address-wrapper">
-                      📍​
+                      📍
                       <a
                         href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
                           center.address?.fullAddress || ""
