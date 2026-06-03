@@ -299,7 +299,13 @@ export default function UserProfile() {
   middleName: editForm.sobrenome,
   phone: editForm.whatsapp.replace(/\D/g, ""),
   mail: editForm.email,
+
+  password:
+    editForm.novaSenha ||
+    editForm.senhaAtual,
+
   state: editForm.estado,
+
   bloodType:
     editForm.tipoSanguineo === "IDK"
       ? "IDK"
@@ -307,9 +313,6 @@ export default function UserProfile() {
           .replace("+", "_POSITIVE")
           .replace("-", "_NEGATIVE")
 };
-if (editForm.novaSenha) {
-  payload.password = editForm.novaSenha;
-}
       console.log(payload);
       await updateUserRequest(loggedUser.id, payload, token);
 
