@@ -1,177 +1,133 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Navigation.css";
+import TeamCard from "../TeamCard/TeamCard";
+import "../TeamCard/TeamSection.css";
+
+import hug from "../../assets/fotosDevs/hug.png";
+import hug2 from "../../assets/fotosDevs/hug2.png";
+
+import kai from "../../assets/fotosDevs/kai.png";
+import kai2 from "../../assets/fotosDevs/kai2.png";
+
+import luc from "../../assets/fotosDevs/luc.png";
+import luc2 from "../../assets/fotosDevs/luc2.png";
+
+import rob from "../../assets/fotosDevs/rob.png";
+import rob2 from "../../assets/fotosDevs/rob2.png";
 
 export default function Navigation() {
-
   const [scrolled, setScrolled] = useState(false);
   const [openMenu, setOpenMenu] = useState(null);
 
   const wrapperRef = useRef(null);
 
-  // SCROLL
   useEffect(() => {
-
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
 
     window.addEventListener("scroll", handleScroll);
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-
   }, []);
 
-  // CLICK FORA
-  useEffect(() => {
-
-    const handleClickOutside = (event) => {
-
-      if (
-        wrapperRef.current &&
-        !wrapperRef.current.contains(event.target)
-      ) {
-        setOpenMenu(null);
-      }
-
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-
-  }, []);
-
-  // TOGGLE
-  const toggleMenu = (menu) => {
-
-    setOpenMenu(
-      openMenu === menu
-        ? null
-        : menu
-    );
-
+  
+  const handleMouseEnter = (menu) => {
+    setOpenMenu(menu);
   };
 
+  const handleMouseLeave = () => {
+    setOpenMenu(null);
+  };
+
+
+
   return (
-
-    <div
-      className="navigation-wrapper"
-      ref={wrapperRef}
-    >
-
+    <div className="navigation-wrapper" ref={wrapperRef}>
       <div className="Navigation">
-
         <nav aria-label="Main navigation">
-
           <ul>
-
             {/* ───────── QUEM SOMOS ───────── */}
-            <li>
-
-              <button
-                className="nav-link nav-button"
-                onClick={() => toggleMenu("quem")}
-              >
+            <li
+              onMouseEnter={() => handleMouseEnter("quem")}
+              onMouseLeave={handleMouseLeave}
+            >
+              <button className="nav-link nav-button">
                 Quem Somos
               </button>
 
               <div
                 className={`
                   menuOp1
+    team-menu
                   ${scrolled ? "menuScrolled" : ""}
                   ${openMenu === "quem" ? "menuVisible" : ""}
                 `}
+                 onMouseLeave={handleMouseLeave}
               >
+                <span className="menu-tag">
+  EQUIPE ONDEDOAR
+</span>
 
-                <div className="menu-about-left">
+<h2>
+  Conheça nossa equipe
+</h2>
 
-                  <span className="menu-tag">
-                    HEMODOAÇÃO
-                  </span>
+<p className="team-description">
+  Somos uma equipe de doadores apaixonada por tecnologia e impacto social,
+  unindo nossas habilidades para facilitar a doação de sangue
+  e conectar pessoas que podem salvar vidas.
+</p>
 
-                  <h2>
-                    Conectando pessoas à doação de sangue
-                  </h2>
+<div className="team-grid">
 
-                  <p>
-                    Somos uma plataforma criada para facilitar o acesso
-                    à doação de sangue no Brasil.
-                  </p>
+  <TeamCard
+    name="Hugo Severo"
+    role="CEO"
+    email="contato@hugosevero.com"
+    linkedin="https://www.linkedin.com/in/hugosevero/"
+    photo={hug}
+    photoDonation={hug2}
+  />
 
-                  <p>
-                    Conectamos doadores a hemocentros próximos
-                    de forma simples, rápida e moderna.
-                  </p>
+  <TeamCard
+    name="Kaiqui Petty"
+    role="DevOps"
+    email="kaiquidejesus@gmail.com"
+    linkedin="https://www.linkedin.com/in/kaiqui-petty-6b9299217/"
+    photo={kai}
+    photoDonation={kai2}
+  />
 
-                  <p>
-                    Nosso objetivo é aumentar o número de doadores
-                    e reduzir a falta de sangue nos bancos.
-                  </p>
+  <TeamCard
+    name="Lucas Germano"
+    role="CTO e Desenvolvedor Full-Stack"
+    email="germanoluc890@gmail.com"
+    linkedin="https://www.linkedin.com/in/lucas-germano-dev/"
+    photo={luc}
+    photoDonation={luc2}
+  />
 
-                  <p>
-                    Acreditamos que tecnologia e solidariedade
-                    podem salvar vidas diariamente.
-                  </p>
+  <TeamCard
+    name="Robson Rioki"
+    role="Desenvolvedor Front-End"
+    email="riokirobson@gmail.com"
+    linkedin="https://www.linkedin.com/in/riokirobson/"
+    photo={rob}
+    photoDonation={rob2}
+  />
 
-                </div>
-
-                {/* CONTATO */}
-                <div className="menu-about-right">
-
-                  <div className="contact-card">
-
-                    <h3>
-                      Informações de contato
-                    </h3>
-
-                    <div className="contact-item">
-                      <span>📞</span>
-
-                      <p>
-                        11 96926-6214
-                      </p>
-                    </div>
-
-                    <div className="contact-item">
-                      <span>✉️</span>
-
-                      <p>
-                        contato@hugosevero.com
-                      </p>
-                    </div>
-
-                    <div className="contact-item">
-                      <span>💼</span>
-
-                      <a
-                        href="https://www.linkedin.com/in/hugosevero/"
-                        target="_blank"
-                        rel="noreferrer"
-                        className="linkedin-link"
-                      >
-                        Linkedin
-                      </a>
-                    </div>
-
-                  </div>
-
-                </div>
-
+</div>
               </div>
-
             </li>
 
             {/* ───────── POR QUE DOAR ───────── */}
-            <li>
-
-              <button
-                className="nav-link nav-button"
-                onClick={() => toggleMenu("doar")}
-              >
+            <li
+              onMouseEnter={() => handleMouseEnter("doar")}
+              onMouseLeave={handleMouseLeave}
+            >
+              <button className="nav-link nav-button">
                 Por que doar?
               </button>
 
@@ -182,76 +138,48 @@ export default function Navigation() {
                   ${openMenu === "doar" ? "menuVisible" : ""}
                 `}
               >
-
-                <span className="menu-tag">
-                  IMPACTO
-                </span>
-
-                <h2>
-                  Sua doação pode salvar até 4 vidas
-                </h2>
+                <span className="menu-tag">IMPACTO</span>
+                <h2>Sua doação pode salvar até 4 vidas</h2>
 
                 <div className="info-boxs">
-
-                  <div className="cards">
-
+                  <div className="cards horizontal-cards">
                     <div className="card">
-
-                      <h3>
-                        ❤️ Salva vidas
-                      </h3>
-
+                      <h3>❤️ Salva vidas</h3>
                       <p>
-                        Uma única doação pode beneficiar até
+                       Uma única doação pode beneficiar até
                         4 pessoas que dependem de transfusões
                         em situações de emergência,
                         cirurgias ou tratamentos.
                       </p>
-
                     </div>
 
                     <div className="card">
-
-                      <h3>
-                        🏥 Sempre necessário
-                      </h3>
-
+                      <h3>🏥 Sempre necessário</h3>
                       <p>
                         Os estoques de sangue precisam ser
                         constantemente repostos.
                         Sua doação faz diferença todos os dias.
                       </p>
-
                     </div>
 
                     <div className="card">
-
-                      <h3>
-                        🔄 Ciclo de ajuda
-                      </h3>
-
+                      <h3>🔄 Ciclo de ajuda</h3>
                       <p>
-                        Hoje você doa, amanhã alguém pode doar
+                       Hoje você doa, amanhã alguém pode doar
                         por você. A doação mantém esse ciclo funcionando.
                       </p>
-
                     </div>
-
                   </div>
-
                 </div>
-
               </div>
-
             </li>
 
             {/* ───────── REQUISITOS ───────── */}
-            <li>
-
-              <button
-                className="nav-link nav-button"
-                onClick={() => toggleMenu("requisitos")}
-              >
+            <li
+              onMouseEnter={() => handleMouseEnter("requisitos")}
+              onMouseLeave={handleMouseLeave}
+            >
+              <button className="nav-link nav-button">
                 Requisitos de Doação
               </button>
 
@@ -262,100 +190,122 @@ export default function Navigation() {
                   ${openMenu === "requisitos" ? "menuVisible" : ""}
                 `}
               >
-
-                <span className="menu-tag">
-                  REQUISITOS
-                </span>
-
-                <h2>
-                  Quem pode doar sangue?
-                </h2>
+                <span className="menu-tag">REQUISITOS</span>
+                <h2>Quem pode doar sangue?</h2>
 
                 <div className="info-boxs">
+                  <div className="requirements-container">
 
-                  <div className="cards">
+  <div className="requirements-top">
 
-                    <div className="card">
+    <div className="card requirement-small">
+      <strong>
+        Faixa Etária
+      </strong>
 
-                      <span className="card-icon">
-                        🎂
-                      </span>
-
-                      <strong>
-                        Faixa etária
-                      </strong>
-
-                      <p>
-                        Entre 16 e 69 anos
-                      </p>
-
-                    </div>
-
-                    <div className="card">
-
-                      <span className="card-icon">
-                        ⚖️
-                      </span>
-
-                      <strong>
-                        Peso mínimo
-                      </strong>
-
-                      <p>
-                        Acima de 50kg
-                      </p>
-
-                    </div>
-
-                    <div className="card">
-
-                      <span className="card-icon">
-                        💚
-                      </span>
-
-                      <strong>
-                        Saúde
-                      </strong>
-
-                      <p>
-                        Estar em boas condições
-                        no dia da doação
-                      </p>
-
-                    </div>
-
-                    <div className="card">
-
-                      <span className="card-icon">
-                        🍽️
-                      </span>
-
-                      <strong>
-                        Alimentação
-                      </strong>
-
-                      <p>
-                        Estar alimentado
-                        e evitar alimentos gordurosos
-                      </p>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-            </li>
-
-          </ul>
-
-        </nav>
-
-      </div>
+      <p>
+        Entre 16 e 69 anos.
+      </p>
 
     </div>
 
+    <div className="card requirement-small">
+      
+      <strong>
+        Peso Mínimo
+      </strong>
+
+      <p>
+        50kg ou mais.
+      </p>
+
+    </div>
+
+  </div>
+<hr className="requirements-divider" />
+
+<div className="requirements-info">
+
+  <h3>
+     Saúde Geral e Alimentação
+  </h3>
+
+  <p>
+    Estar em boas condições de saúde e
+    não apresentar sintomas gripais.
+  </p>
+
+  <p>
+    Estar alimentado e não comparecer
+    em jejum.
+  </p>
+
+  <p>
+    Dormir ao menos 6 horas antes da
+    doação.
+  </p>
+
+</div>
+
+</div>
+                </div>
+              </div>
+            </li>
+            {/* ───────── PRECISA DE SANGUE ───────── */}
+<li
+  onMouseEnter={() => handleMouseEnter("sangue")}
+  onMouseLeave={handleMouseLeave}
+>
+ <button className="nav-link nav-button need-blood-btn"> Precisa de Sangue?</button>
+
+
+
+
+  <div
+  className={`
+    menuOp4
+    ${scrolled ? "menuScrolled" : ""}
+    ${openMenu === "sangue" ? "menuVisible" : ""}
+  `}
+>
+
+  <span className="menu-tag urgent-tag">
+    URGENTE
+  </span>
+
+  <h2>
+    Precisa de Sangue?
+  </h2>
+
+  <p>
+    Está procurando doadores para um familiar,
+    amigo ou paciente?
+  </p>
+
+  <p>
+    Preencha nosso formulário e envie as
+    informações da solicitação.
+  </p>
+
+  <p>
+    Nossa equipe analisará os dados enviados
+    e entrará em contato quando necessário.
+  </p>
+
+  <a
+    href="https://docs.google.com/forms/d/1ef0D_3q29SHkY5J3gLzrxaW2X44yvQiHThqAnOUI8vU/viewform?edit_requested=true"
+    target="_blank"
+    rel="noreferrer"
+    className="need-blood-action"
+  >
+    SOLICITAR DOADORES
+  </a>
+
+</div>
+</li>
+          </ul>
+        </nav>
+      </div>
+    </div>
   );
 }

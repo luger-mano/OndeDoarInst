@@ -1,5 +1,7 @@
 import React from "react";
 
+import "./Item.css";
+
 const PLACEHOLDER =
   "https://via.placeholder.com/400x225?text=Hemocentro";
 
@@ -32,7 +34,7 @@ export default function Item({
     if (stock < 70) return "🟡 Estoque Médio";
     return "🟢 Estoque Alto";
   };
-  
+
   // Lógica de exibição exclusiva: Bairro OU Município
   const getExclusiveLocation = () => {
     if (!address) return "Localização não informada";
@@ -60,9 +62,22 @@ export default function Item({
 
         {/* Exibe APENAS se estiver fechado */}
         {isClosed && (
-          <div className="status-bar" style={{ backgroundColor: 'rgba(200, 0, 0, 0.8)' }}>
-            <div className="status-title">FECHADO</div>
-            <div className="status-subtitle">{op.split("|")[1] || "Verifique o horário"}</div>
+          <div className="status-bar status-closed-overlay">
+            <div className="status-content-wrapper">
+              <div className="status-title-huge">FECHADO</div>
+
+              <div className="status-schedule-reveal">
+                <span className="schedule-label">Horários de Funcionamento</span>
+                <ul className="schedule-lines">
+                  {(op.split("|")[1] || op)
+                    .replace(/Abre de/gi, "")
+                    .split("/")
+                    .map((line, idx) => (
+                      <li key={idx}>{line.trim()}</li>
+                    ))}
+                </ul>
+              </div>
+            </div>
           </div>
         )}
 
@@ -74,7 +89,7 @@ export default function Item({
           </div>
         )}
       </div>
-      
+
       <div className="overlay">
         <div className="title">{title}</div>
         <div className="plot">

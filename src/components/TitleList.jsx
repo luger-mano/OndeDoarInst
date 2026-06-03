@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Item from "./Item";
+import Item from "./Item/Item";
 
 const VISIBLE = 5;
 
@@ -27,7 +27,7 @@ export default function TitleList({
 
     } else {
 
-      const requestUrl = `http://localhost:8080/centers/filter/zone/neighborhoods`;
+      const requestUrl = `/api/centers/filter/region/neighborhoods`;
 
       fetch(requestUrl)
 

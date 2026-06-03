@@ -1,14 +1,15 @@
 import { useState } from "react";
 
-import "./ModalLogin.css";
+// import "./ModalLogin.css";
 
-import RegisterModal
-from "../ModalCadastro/ModalCadastro.jsx";
+// import RegisterModal
+// from "../ModalCadastro/ModalCadastro.jsx";
 
-import "../../pages/infopage/info.css";
+// import "../../pages/infopage/info.css";
 
 import {
-  loginRequest
+  loginRequest,
+  getUserById
 } from "../../services/authService";
 
 export default function ModalLogin({
@@ -31,6 +32,9 @@ export default function ModalLogin({
   const [loading, setLoading] =
     useState(false);
 
+  const [success, setSuccess] =
+    useState(false);
+
   if (!isOpen) return null;
 
   async function handleLogin() {
@@ -41,6 +45,7 @@ export default function ModalLogin({
 
       setError("");
 
+      // LOGIN
       const response =
         await loginRequest({
 
@@ -49,9 +54,60 @@ export default function ModalLogin({
           password: senha
         });
 
+      // TOKEN
       localStorage.setItem(
         "token",
         response.accessToken
+      );
+
+      // LOG RESPONSE
+      console.log(
+        "LOGIN RESPONSE:",
+        response
+      );
+
+      // BUSCA DADOS REAIS
+      const userData =
+        await getUserById(
+
+          response.userId,
+
+          response.accessToken
+        );
+
+      console.log(
+        "USER DATA:",
+        userData
+      );
+
+      // SALVA USER
+      localStorage.setItem(
+
+        "user",
+
+        JSON.stringify({
+
+          id:
+            response.userId,
+
+          email:
+            userData.mail,
+
+          userName:
+            userData.userName,
+
+          bloodType:
+
+            userData.bloodType
+              ?.replace(
+                "_POSITIVE",
+                "+"
+              )
+              ?.replace(
+                "_NEGATIVE",
+                "-"
+              ) || "?"
+        })
       );
 
       console.log(
@@ -59,9 +115,17 @@ export default function ModalLogin({
         response.accessToken
       );
 
-      onClose();
+      // LIMPA CAMPOS
+      setEmail("");
+
+      setSenha("");
+
+      // SUCESSO
+      setSuccess(true);
 
     } catch (err) {
+
+      console.error(err);
 
       setError(
         "Email ou senha inválidos"
@@ -160,6 +224,39 @@ export default function ModalLogin({
         </p>
 
       </div>
+
+      {/* POPUP SUCESSO */}
+      {success && (
+
+        <div className="success-overlay">
+
+          <div className="success-popup">
+
+            <p>
+              Login realizado com sucesso!
+            </p>
+
+            <button
+
+              className="success-btn"
+
+              onClick={() => {
+
+                setSuccess(false);
+
+                onClose();
+
+                window.location.reload();
+              }}
+            >
+              OK
+            </button>
+
+          </div>
+
+        </div>
+
+      )}
 
     </div>
   );

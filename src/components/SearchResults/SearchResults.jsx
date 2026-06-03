@@ -1,6 +1,6 @@
 import React from "react";
 
-import Item from "../Item";
+import Item from "../Item/Item";
 
 import "./SearchResults.css";
 
@@ -23,7 +23,7 @@ export default function SearchResults({ results, onOpen }) {
 
       <div className="search-grid">
 
-        {results.map((center) => (
+        {Array.isArray(results) && results.map((center) => (
 
           <Item
             key={center.bloodCenterId}
