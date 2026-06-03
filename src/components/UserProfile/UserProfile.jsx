@@ -313,7 +313,6 @@ export default function UserProfile() {
           .replace("+", "_POSITIVE")
           .replace("-", "_NEGATIVE")
 };
-      console.log(payload);
       await updateUserRequest(loggedUser.id, payload, token);
 
       const updatedUserSession = {
