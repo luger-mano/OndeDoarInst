@@ -124,8 +124,8 @@ export default function UserProfile() {
           confirmarNovaSenha: ""
         });
       } catch (err) {
-        console.error("Erro detalhado na busca ou token expirado:", err);
-        handleLogout();
+        console.error("Erro detalhado na busca:", err);
+        setError("Não foi possível carregar seus dados. Tente novamente.");
       } finally {
         setLoading(false);
       }
@@ -231,24 +231,28 @@ export default function UserProfile() {
 
       const response = await registerRequest(payload);
 
-      localStorage.setItem("user", JSON.stringify({
-        id: response.userId,
-        mail: response.mail || registerForm.email,
-        userName: registerForm.nome,
-        middleName: registerForm.sobrenome,
-        bloodType: registerForm.tipoSanguineo === "Não sei" || !registerForm.tipoSanguineo ? "?" : registerForm.tipoSanguineo
-      }));
-
-      setLoggedUser({
-        id: response.userId,
-        mail: response.mail || registerForm.email,
-        userName: registerForm.nome,
-        middleName: registerForm.sobrenome,
-        bloodType: registerForm.tipoSanguineo === "Não sei" || !registerForm.tipoSanguineo ? "?" : registerForm.tipoSanguineo
+      const loginResponse = await loginRequest({
+        mail: registerForm.email,
+        password: registerForm.senha
       });
+      localStorage.setItem("token", loginResponse.accessToken);
+
+      const userData = await getUserById(loginResponse.userId, loginResponse.accessToken);
+
+      const userSessionData = {
+        id: loginResponse.userId,
+        mail: userData.mail,
+        userName: userData.userName,
+        middleName: userData.middleName,
+        bloodType: userData.bloodType?.replace("_POSITIVE", "+").replace("_NEGATIVE", "-") || "?",
+      };
+
+      localStorage.setItem("user", JSON.stringify(userSessionData));
+      setLoggedUser(userSessionData);
 
       setSuccess(`Olá, ${registerForm.nome}! Seja bem-vindo(a) à nossa plataforma. É um prazer ter você conosco.`);
     } catch (err) {
+      console.error("Erro no cadastro:", err);
       setError("Erro ao cadastrar usuário.");
     } finally {
       setLoading(false);
@@ -287,18 +291,21 @@ export default function UserProfile() {
 
       await updateUserRequest(loggedUser.id, payload, token);
 
-      localStorage.setItem("user", JSON.stringify({
+      const updatedUserSession = {
         ...loggedUser,
-        email: editForm.email,
+        mail: editForm.email,
         userName: editForm.nome,
+        middleName: editForm.sobrenome,
         bloodType: editForm.tipoSanguineo || loggedUser.bloodType
-      }));
+      };
 
-      setSuccess("Informações updated com sucesso!");
+      localStorage.setItem("user", JSON.stringify(updatedUserSession));
+      setLoggedUser(updatedUserSession);
+
+      setSuccess("Informações atualizadas com sucesso!");
     } catch (err) {
       console.error(err);
-      // Se a falha na atualização for por token expirado (401/403)
-      alert("Sua sessão expirou. Faça login novamente para salvar alterações.");
+      alert("Sua sessão expirou ou ocorreu um erro. Faça login novamente para salvar alterações.");
       handleLogout();
     } finally {
       setLoading(false);
@@ -402,26 +409,26 @@ export default function UserProfile() {
                     <input name="whatsapp" placeholder="WhatsApp" value={registerForm.whatsapp} onChange={handleRegisterChange} maxLength={15} required />
                   </div>
                   <select
-  name="estado"
-  value={registerForm.estado}
-  onChange={handleRegisterChange}
-  required
->
-  <option value="">
-    Selecione seu estado
-  </option>
+                    name="estado"
+                    value={registerForm.estado}
+                    onChange={handleRegisterChange}
+                    required
+                  >
+                    <option value="">
+                      Selecione seu estado
+                    </option>
 
-  {ESTADOS.map((estado) => (
+                    {ESTADOS.map((estado) => (
 
-    <option
-      key={estado.sigla}
-      value={estado.sigla}
-    >
-      {estado.nome}
-    </option>
+                      <option
+                        key={estado.sigla}
+                        value={estado.sigla}
+                      >
+                        {estado.nome}
+                      </option>
 
-  ))}
-</select>
+                    ))}
+                  </select>
                   <input type="password" name="senha" placeholder="Senha" value={registerForm.senha} onChange={handleRegisterChange} required />
                   <input type="password" name="confirmarSenha" placeholder="Confirmar" value={registerForm.confirmarSenha} onChange={handleRegisterChange} required />
                   {error && <p className="inline-form-error">{error}</p>}
@@ -467,25 +474,25 @@ export default function UserProfile() {
                     <input name="whatsapp" placeholder="WhatsApp" value={editForm.whatsapp} onChange={handleEditChange} maxLength={15} />
                   </div>
                   <select
-  name="estado"
-  value={editForm.estado}
-  onChange={handleEditChange}
->
-  <option value="">
-    Selecione seu estado
-  </option>
+                    name="estado"
+                    value={editForm.estado}
+                    onChange={handleEditChange}
+                  >
+                    <option value="">
+                      Selecione seu estado
+                    </option>
 
-  {ESTADOS.map((estado) => (
+                    {ESTADOS.map((estado) => (
 
-    <option
-      key={estado.sigla}
-      value={estado.sigla}
-    >
-      {estado.nome}
-    </option>
+                      <option
+                        key={estado.sigla}
+                        value={estado.sigla}
+                      >
+                        {estado.nome}
+                      </option>
 
-  ))}
-</select>
+                    ))}
+                  </select>
 
                   <hr className="inline-form-divider-pills" />
                   <input type="password" name="senhaAtual" placeholder="Senha atual (se for alterar)" value={editForm.senhaAtual} onChange={handleEditChange} />
