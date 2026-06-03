@@ -68,7 +68,7 @@ export default function UserProfile() {
   const [editForm, setEditForm] = useState(initialEditForm);
 
   const bloodType =
-    loggedUser?.bloodType && loggedUser.bloodType !== "Não sei"
+    loggedUser?.bloodType && loggedUser.bloodType !== "IDK"
       ? loggedUser.bloodType
       : "?";
 
@@ -114,9 +114,14 @@ export default function UserProfile() {
           nome: userData.userName || "",
           sobrenome: userData.middleName || "",
           email: userData.mail || "",
-          tipoSanguineo: userData.bloodType
-            ? userData.bloodType.replace("_POSITIVE", "+").replace("_NEGATIVE", "-")
-            : "Não sei",
+          tipoSanguineo:
+  userData.bloodType === "IDK"
+    ? "IDK"
+    : userData.bloodType
+      ? userData.bloodType
+          .replace("_POSITIVE", "+")
+          .replace("_NEGATIVE", "-")
+      : "",
           whatsapp: userData.phone || "",
           estado: userData.state || "",
           senhaAtual: "",
@@ -193,7 +198,12 @@ export default function UserProfile() {
         mail: userData.mail,
         userName: userData.userName,
         middleName: userData.middleName,
-        bloodType: userData.bloodType?.replace("_POSITIVE", "+").replace("_NEGATIVE", "-") || "?",
+        bloodType:
+  userData.bloodType === "IDK"
+    ? "IDK"
+    : userData.bloodType
+      ?.replace("_POSITIVE", "+")
+      ?.replace("_NEGATIVE", "-") || "?",
       }));
       setSuccess("Login realizado com sucesso!");
     } catch (err) {
@@ -225,8 +235,14 @@ export default function UserProfile() {
         mail: registerForm.email,
         password: registerForm.senha,
         state: registerForm.estado,
-        bloodType: registerForm.tipoSanguineo && registerForm.tipoSanguineo !== "Não sei"
-          ? registerForm.tipoSanguineo.replace("+", "_POSITIVE").replace("-", "_NEGATIVE") : ""
+       bloodType:
+  registerForm.tipoSanguineo === "IDK"
+    ? "IDK"
+    : registerForm.tipoSanguineo
+      ? registerForm.tipoSanguineo
+          .replace("+", "_POSITIVE")
+          .replace("-", "_NEGATIVE")
+      : null
       };
 
       const response = await registerRequest(payload);
@@ -278,17 +294,23 @@ export default function UserProfile() {
       }
 
       const token = localStorage.getItem("token");
-      const payload = {
-        userName: editForm.nome,
-        middleName: editForm.sobrenome,
-        phone: editForm.whatsapp.replace(/\D/g, ""),
-        mail: editForm.email,
-        state: editForm.estado,
-        password: editForm.novaSenha || editForm.senhaAtual,
-        bloodType: editForm.tipoSanguineo && editForm.tipoSanguineo !== "Não sei"
-          ? editForm.tipoSanguineo.replace("+", "_POSITIVE").replace("-", "_NEGATIVE") : "A_POSITIVE"
-      };
-
+     const payload = {
+  userName: editForm.nome,
+  middleName: editForm.sobrenome,
+  phone: editForm.whatsapp.replace(/\D/g, ""),
+  mail: editForm.email,
+  state: editForm.estado,
+  bloodType:
+    editForm.tipoSanguineo === "IDK"
+      ? "IDK"
+      : editForm.tipoSanguineo
+          .replace("+", "_POSITIVE")
+          .replace("-", "_NEGATIVE")
+};
+if (editForm.novaSenha) {
+  payload.password = editForm.novaSenha;
+}
+      console.log(payload);
       await updateUserRequest(loggedUser.id, payload, token);
 
       const updatedUserSession = {
@@ -304,10 +326,15 @@ export default function UserProfile() {
 
       setSuccess("Informações atualizadas com sucesso!");
     } catch (err) {
-      console.error(err);
-      alert("Sua sessão expirou ou ocorreu um erro. Faça login novamente para salvar alterações.");
-      handleLogout();
-    } finally {
+
+  console.error("ERRO COMPLETO:", err);
+
+  alert(
+    err.message ||
+    "Erro ao atualizar perfil"
+  );
+
+}finally {
       setLoading(false);
     }
   }
@@ -319,7 +346,7 @@ export default function UserProfile() {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const response = await fetch(`/api/user/${loggedUser.id}`, {
+      const response = await fetch(`http://localhost:8080/user/${loggedUser.id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -402,7 +429,7 @@ export default function UserProfile() {
                   <select name="tipoSanguineo" value={registerForm.tipoSanguineo} onChange={handleRegisterChange}>
                     <option value="">Tipo sanguíneo (opcional)</option>
                     <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
-                    <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option><option>Não sei</option>
+                    <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option><option value="IDK">Não sei</option>
                   </select>
                   <div className="input-wrapper-whatsapp">
                     <img src="https://flagcdn.com/w20/br.png" alt="BR" className="whatsapp-flag" />
@@ -467,7 +494,7 @@ export default function UserProfile() {
                   <select name="tipoSanguineo" value={editForm.tipoSanguineo} onChange={handleEditChange}>
                     <option value="">Tipo sanguíneo</option>
                     <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
-                    <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option><option>Não sei</option>
+                    <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option><option value="IDK">Não sei</option>
                   </select>
                   <div className="input-wrapper-whatsapp">
                     <img src="https://flagcdn.com/w20/br.png" alt="BR" className="whatsapp-flag" />
