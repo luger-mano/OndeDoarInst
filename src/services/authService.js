@@ -1,7 +1,6 @@
 const API_URL =
   "http://localhost:8080";
 
-// GERA CHAVE ÚNICA
 function generateKey() {
 
   return crypto.randomUUID();
@@ -94,7 +93,7 @@ export async function deleteAccountRequest(
   const response =
     await fetch(
 
-      `http://localhost:8080/user/${userId}`,
+      `/api/user/${userId}`,
 
       {
 
@@ -127,7 +126,7 @@ export async function updateUserRequest(
   const response =
     await fetch(
 
-      `http://localhost:8080/user/${userId}`,
+      `/api/user/${userId}`,
 
       {
 
@@ -178,7 +177,7 @@ export async function getUserById(
   const response =
     await fetch(
 
-      `http://localhost:8080/user/${userId}`,
+      `/api/user/${userId}`,
 
       {
 

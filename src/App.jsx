@@ -66,10 +66,10 @@
       };
 
       Promise.all([
-        fetch("http://localhost:8080/centers/filter/region/neighborhoods?regiao=capital").then(res => res.json()),
-        fetch("http://localhost:8080/centers/filter/region/neighborhoods?regiao=metropole").then(res => res.json()),
-        fetch("http://localhost:8080/centers/filter/region/neighborhoods?regiao=interior").then(res => res.json()),
-        fetch("http://localhost:8080/centers").then(res => res.json()).catch(() => [])
+        fetch("/api/centers/filter/region/neighborhoods?regiao=capital").then(res => res.json()),
+        fetch("/api/centers/filter/region/neighborhoods?regiao=metropole").then(res => res.json()),
+        fetch("/api/centers/filter/region/neighborhoods?regiao=interior").then(res => res.json()),
+        fetch("/api/centers").then(res => res.json()).catch(() => [])
       ])
       .then(([capitalData, metropolisData, interiorData, allData]) => {
         setCapitalZones(capitalData || []);
@@ -106,7 +106,7 @@ setLoadingNearest(true);
     const response =
       await fetch(
 
-        `http://localhost:8080/centers/filter/nearest?latitudeStarting=${location.latitude}&longitudeStarting=${location.longitude}`
+        `/api/centers/filter/nearest?latitudeStarting=${location.latitude}&longitudeStarting=${location.longitude}`
 
       );
 
@@ -163,7 +163,7 @@ useEffect(() => {
         return;
       }
       try {
-        const response = await fetch(`http://localhost:8080/centers/filter/search?search=${encodeURIComponent(query)}`);
+        const response = await fetch(`/api/centers/filter/search?search=${encodeURIComponent(query)}`);
         if (!response.ok) {
 
   console.error(

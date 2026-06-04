@@ -348,7 +348,7 @@ export default function UserProfile() {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:8080/user/${loggedUser.id}`, {
+      const response = await fetch(`/api/user/${loggedUser.id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
