@@ -59,7 +59,7 @@
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 4px;
   min-width: 210px;
-  padding: 8px 0;
+  padding: 20px 0;
   opacity: 0;
   pointer-events: none;
   transform: translateY(-4px);
@@ -524,7 +524,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999; /* Garante que ficará sobre qualquer outro elemento */
+  z-index: 9999;
+  /* Garante que ficará sobre qualquer outro elemento */
 }
 
 .delete-modal-container {
@@ -596,7 +597,8 @@
   font-family: monospace;
   font-size: 13px;
   color: #24292f;
-  user-select: all; /* Facilita a cópia ou seleção se necessário */
+  user-select: all;
+  /* Facilita a cópia ou seleção se necessário */
 }
 
 .delete-confirmation-input {
@@ -639,7 +641,8 @@
 
 .delete-btn-confirm {
   padding: 10px;
-  background-color: #cf222e; /* Vermelho GitHub destrutivo */
+  background-color: #cf222e;
+  /* Vermelho GitHub destrutivo */
   border: 1px solid rgba(27, 31, 36, 0.15);
   border-radius: 6px;
   color: #ffffff;
@@ -683,7 +686,8 @@
 }
 
 .expired-btn {
-  background-color: #e53e3e !important; /* Vermelho suave de aviso */
+  background-color: #e53e3e !important;
+  /* Vermelho suave de aviso */
   color: #fff;
   border: none;
   transition: background 0.2s ease;
@@ -717,11 +721,9 @@
   transform: scale(1.01);
 
   background:
-    linear-gradient(
-      135deg,
+    linear-gradient(135deg,
       #c61b1b,
-      #ef4444
-    );
+      #ef4444);
 
 
   transition: 0.2s ease;
@@ -746,3 +748,136 @@
 
 
 
+
+/* ==========================================================================
+   RESPONSIVIDADE MOBILE — POP-UP DE LOGIN E CADASTRO
+   ========================================================================== */
+@media (max-width: 768px) {
+
+  /* O menu dropdown passa a ser um painel centralizado na tela */
+  .UserProfile-menu {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    right: auto;
+    width: 90vw;
+    max-width: 340px;
+    max-height: 85vh;
+    overflow-y: auto;
+    border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    z-index: 10002;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  /* Quando aberto */
+  .UserProfile.open .UserProfile-menu {
+    opacity: 1;
+    pointer-events: all;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  /* Overlay escuro atrás do popup */
+  .UserProfile.open::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 10001;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+  }
+
+  /* Formulário interno ocupa toda a largura disponível */
+  .inline-dropdown-form {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px;
+  }
+
+  /* Botões iniciais (Entrar/Cadastrar) v1.7: área ampliada */
+  .UserProfile-menu:not(.menu-expand-cadastro) .UserNavigation>div:has(.botaoLog) {
+    width: 100% !important;
+    padding: 30px 20px; /* Aumentado de 20px v1.7 */
+    gap: 15px; /* Aumentado v1.7 */
+  }
+
+  .UserProfile-menu:not(.menu-expand-cadastro) .UserProfile-menu-item {
+    width: 100% !important;
+    padding: 0 20px !important;
+    margin-bottom: 15px !important; /* Aumentado v1.7 */
+  }
+
+  .UserProfile-menu:not(.menu-expand-cadastro) .UserProfile-menu-item .botaoLog {
+    padding: 14px 10px !important; /* Área de toque 44px+ */
+    font-size: 15px !important;
+  }
+
+  .UserProfile-menu.menu-expand-cadastro {
+    min-width: unset;
+    width: 90vw;
+    max-width: 340px;
+  }
+
+  .UserProfile-menu.menu-expand-cadastro .inline-dropdown-form {
+    width: 100%;
+  }
+
+  /* Remover triângulo decorativo no mobile (não faz sentido com posição fixa) */
+  .UserProfile-menu::before {
+    display: none;
+  }
+
+  /* Inputs e botões com área de toque confortável */
+  .inline-dropdown-form input,
+  .inline-dropdown-form select {
+    padding: 12px;
+    font-size: 14px;
+    min-height: 44px;
+  }
+
+  .inline-form-btn {
+    min-height: 44px;
+    font-size: 15px;
+  }
+
+  /* Botão fechar (X) v1.6 — Padronizado com NeighborhoodModal */
+  .mobile-profile-close {
+    display: flex !important;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    z-index: 210;
+    font-size: 16px;
+    transition: all 0.2s ease;
+  }
+
+  .UserProfile-menu.menu-expand-cadastro {
+    min-width: unset;
+    width: 92vw; /* Aumentado v1.6 */
+    max-width: 360px; /* Aumentado v1.6 */
+  }
+
+  .UserProfile-menu:not(.menu-expand-cadastro) {
+    width: 92vw;
+    max-width: 360px;
+  }
+}
+
+/* Esconder por padrão no desktop */
+.mobile-profile-close {
+  display: none;
+}
