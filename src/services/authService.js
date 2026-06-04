@@ -1,7 +1,6 @@
 const API_URL =
   "/api";
 
-// GERA CHAVE ÚNICA
 function generateKey() {
 
   return crypto.randomUUID();
