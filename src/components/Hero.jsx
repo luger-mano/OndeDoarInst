@@ -66,16 +66,17 @@ export default function Hero({ onMoreInfo, onSearch, onFilterChange }) {
     }
   }, [idx]);
 
-  // CLIQUE FORA DO MENU DE FILTROS
+  // CLIQUE FORA DO MENU DE FILTROS v1.9
   useEffect(() => {
     const handleOutside = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
+      // Se o menu estiver aberto e o clique for fora do container, fecha o menu
+      if (open && menuRef.current && (!menuRef.current.contains(e.target) || e.target === menuRef.current)) {
         setOpen(false);
       }
     };
     document.addEventListener("mousedown", handleOutside);
     return () => document.removeEventListener("mousedown", handleOutside);
-  }, []);
+  }, [open]);
 
   // LÓGICA DE SELEÇÃO EXCLUSIVA COM PADRÃO "ZONA"
   const handleCheckboxChange = (filterId) => {
@@ -142,6 +143,7 @@ export default function Hero({ onMoreInfo, onSearch, onFilterChange }) {
 
           {/* MENU DE FILTROS COM CHECKBOX */}
           <div className="UserProfile-menu hero-menu-adjust">
+            
             <div className="UserProfileSwitch">
               {FILTER_OPTIONS.map((opt) => {
                 const isChecked = selectedFilter === opt.id;
