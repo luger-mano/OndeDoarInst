@@ -1,16 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 const PLACEHOLDER = "https://via.placeholder.com/400x225?text=Bairro";
 const VISIBLE = 5; // Quantidade de cards inteiros visíveis por vez
 
 export default function ZoneSection({ title, bairros, onOpenNeighborhood }) {
   const [offset, setOffset] = useState(0);
+  const containerRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const canPrev = offset > 0;
   const canNext = offset + VISIBLE < bairros.length;
 
-  // CORRIGIDO: Pegamos VISIBLE + 1 para renderizar o card que vai ficar "espiando" na borda
-  const visibleBairros = bairros.slice(offset, offset + VISIBLE + 1);
+  // Em mobile rendera todos para permitir o swipe nativo via CSS
+  // Em desktop mantem a logica de slice original
+  const visibleBairros = isMobile ? bairros : bairros.slice(offset, offset + VISIBLE + 1);
 
   const deveExibirZona = title && !["INTERIOR", "METROPOLIS", "METROPOLE"].includes(title.toUpperCase());
 
@@ -25,8 +34,11 @@ export default function ZoneSection({ title, bairros, onOpenNeighborhood }) {
         </div>
 
         {/* SLIDER */}
-        <div className="slider-wrap">
-          {/* BOTÃO ESQUERDA */}
+        <div
+          className="slider-wrap"
+          ref={containerRef}
+        >
+          {/* BOTÃO ESQUERDA - Oculto via CSS no mobile */}
           <button
             className={`slider-btn prev ${!canPrev ? "hidden" : ""}`}
             onClick={() => setOffset((o) => Math.max(0, o - VISIBLE))}
@@ -76,7 +88,7 @@ export default function ZoneSection({ title, bairros, onOpenNeighborhood }) {
             </div>
           </div>
 
-          {/* BOTÃO DIREITA */}
+          {/* BOTÃO DIREITA - Oculto via CSS no mobile */}
           <button
             className={`slider-btn next ${!canNext ? "hidden" : ""}`}
             onClick={() =>
