@@ -141,7 +141,7 @@ export default function UserProfile() {
   // FECHAR MENU AO CLICAR FORA
   useEffect(() => {
     const handleOutside = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) {
+      if (ref.current && (!ref.current.contains(e.target) || e.target === ref.current)) {
         if (!showDeleteModal) {
           setOpen(false);
           resetAllViews();
@@ -383,6 +383,7 @@ export default function UserProfile() {
 
       {/* MENU DROPDOWN DINÂMICO */}
       <div className={`UserProfile-menu ${menuView === "cadastro" || menuView === "edicao" || menuView === "login" ? "menu-expand-cadastro" : ""}`}>
+        
         <div className="UserNavigation">
 
           {/* SEM SESSÃO */}

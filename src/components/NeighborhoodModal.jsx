@@ -19,7 +19,7 @@ export default function NeighborhoodModal({
 
   // ── LÓGICA DE CLICAR E ARRASTAR (MOUSE DRAG) ──
   const handleMouseDown = (e) => {
-    if (item.bloodCenters?.length <= 2) return;
+    if (item.bloodCenters?.length <= 1) return;
     setIsDragging(true);
 
     startX.current = e.pageX - carouselRef.current.offsetLeft;
@@ -52,7 +52,7 @@ export default function NeighborhoodModal({
 
   if (!item) return null;
 
-  const isCarousel = item.bloodCenters?.length > 2;
+  const isCarousel = item.bloodCenters?.length > 1;
 
   return (
     <div className="Modal-overlay" onClick={onClose}>

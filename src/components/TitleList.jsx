@@ -17,6 +17,14 @@ export default function TitleList({
 
   const [animating, setAnimating] = useState(false);
 
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   useEffect(() => {
 
     if (initialItems && initialItems.length > 0) {
@@ -91,8 +99,7 @@ export default function TitleList({
   const canNext =
     offset + VISIBLE < items.length;
 
-  const visible =
-    items.slice(offset, offset + VISIBLE);
+  const visible = isMobile ? items : items.slice(offset, offset + VISIBLE);
 
   // SEM ITENS
   if (loaded && items.length === 0) {
