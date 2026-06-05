@@ -5,10 +5,21 @@
   import Hero from "./components/Hero";
   import TitleList from "./components/TitleList";
   import ZoneSection from "./components/ZoneSection/ZoneSection";
-  import SearchResults from "./components/SearchResults/SearchResults.jsx";
+  import SearchResults from "./components/SearchResults/SearchResults";
   import Modal from "./components/Modal";
   import NeighborhoodModal from "./components/NeighborhoodModal";
-  import Info from "./pages/infopage/info.jsx";
+  import Info from "./pages/infopage/info";
+  import TeamCard from "./components/TeamCard/TeamCard";
+  import "./components/TeamCard/TeamSection.css";
+
+  import hug from "./assets/fotosDevs/hug.png";
+  import hug2 from "./assets/fotosDevs/hug2.png";
+  import kai from "./assets/fotosDevs/kai.png";
+  import kai2 from "./assets/fotosDevs/kai2.png";
+  import luc from "./assets/fotosDevs/luc.png";
+  import luc2 from "./assets/fotosDevs/luc2.png";
+  import rob from "./assets/fotosDevs/rob.png";
+  import rob2 from "./assets/fotosDevs/rob2.png";
 
   import "./App.css";
 
@@ -50,6 +61,7 @@
     const [neighborhoodModal, setNeighborhoodModal] = useState(null);
     const [selectedFilter, setSelectedFilter] = useState("zona");
     const [nearestCenters, setNearestCenters] = useState([]);
+    const [showTeam, setShowTeam] = useState(false);
 
     // ===> NOVO: Estado para lembrar de qual bairro o usuário veio <===
     const [previousNeighborhood, setPreviousNeighborhood] = useState(null);
@@ -354,9 +366,34 @@ useEffect(() => {
           </Routes>
         </div>
 
-        {/* FOOTER ADICIONADO AQUI */}
-        <footer className="main-footer">
-          Desenvolvido por doadores &copy; Onde Doar 2026
+        {/* FOOTER COM DROPUP v2.1 */}
+        <footer 
+          className="main-footer"
+          onMouseEnter={() => setShowTeam(true)}
+          onMouseLeave={() => setShowTeam(false)}
+          onClick={() => setShowTeam(!showTeam)}
+        >
+          {showTeam && (
+            <div className="footer-team-dropup" onClick={(e) => e.stopPropagation()}>
+              <div className="mobile-section-content" style={{ padding: '30px', textAlign: 'left', background: '#fff', borderRadius: '24px 24px 0 0', boxShadow: '0 -10px 40px rgba(0,0,0,0.1)' }}>
+                <span className="menu-tag">EQUIPE ONDEDOAR</span>
+                <h2 style={{ margin: '10px 0' }}>Conheça nossa equipe</h2>
+                <p className="team-description" style={{ marginBottom: '20px', color: '#666' }}>
+                  Somos uma equipe de doadores apaixonada por tecnologia e impacto social,
+                  unindo nossas habilidades para facilitar a doação de sangue.
+                </p>
+                <div className="team-grid">
+                  <TeamCard name="Hugo Severo" role="CEO" email="contato@hugosevero.com" linkedin="https://www.linkedin.com/in/hugosevero/" photo={hug} photoDonation={hug2} />
+                  <TeamCard name="Kaiqui Petty" role="DevOps" email="kaiquidejesus@gmail.com" linkedin="https://www.linkedin.com/in/kaiqui-petty-6b9299217/" photo={kai} photoDonation={kai2} />
+                  <TeamCard name="Lucas Germano" role="CTO e Desenvolvedor Full-Stack" email="germanoluc890@gmail.com" linkedin="https://www.linkedin.com/in/lucas-germano-dev/" photo={luc} photoDonation={luc2} />
+                  <TeamCard name="Robson Rioki" role="Desenvolvedor Front-End" email="riokirobson@gmail.com" linkedin="https://www.linkedin.com/in/riokirobson/" photo={rob} photoDonation={rob2} />
+                </div>
+              </div>
+            </div>
+          )}
+          <span className={`footer-text ${showTeam ? 'active' : ''}`}>
+            Desenvolvido por doadores &copy; Onde Doar 2026
+          </span>
         </footer>
       </div>
     </BrowserRouter>

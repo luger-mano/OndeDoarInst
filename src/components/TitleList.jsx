@@ -99,7 +99,7 @@ export default function TitleList({
   const canNext =
     offset + VISIBLE < items.length;
 
-  const visible = isMobile ? items : items.slice(offset, offset + VISIBLE);
+  const visible = isMobile ? items : items.slice(offset, offset + VISIBLE + 1);
 
   // SEM ITENS
   if (loaded && items.length === 0) {
