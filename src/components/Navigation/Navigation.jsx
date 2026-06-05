@@ -85,11 +85,6 @@ export default function Navigation() {
           <nav aria-label="Mobile navigation">
             <ul>
               <li>
-                <button className="mobile-menu-link" onClick={() => openSection("quem")}>
-                  Quem Somos
-                </button>
-              </li>
-              <li>
                 <button className="mobile-menu-link" onClick={() => openSection("doar")}>
                   Por que doar?
                 </button>
@@ -106,29 +101,6 @@ export default function Navigation() {
               </li>
             </ul>
           </nav>
-        )}
-
-        {/* ── Seção: Quem Somos ── */}
-        {mobileSection === "quem" && (
-          <div className="mobile-section-content">
-            <button className="mobile-back-btn" onClick={() => setMobileSection(null)}>
-              ← Voltar
-            </button>
-            <span className="menu-tag">EQUIPE ONDEDOAR</span>
-            <h2>Conheça nossa equipe</h2>
-            <p className="team-description">
-              Somos uma equipe de doadores apaixonada por tecnologia e impacto social,
-              unindo nossas habilidades para facilitar a doação de sangue
-              e conectar pessoas que podem salvar vidas.
-            </p>
-            {/* Cards com swipe horizontal via CSS .team-grid dentro do drawer */}
-            <div className="team-grid">
-              <TeamCard name="Hugo Severo" role="CEO" email="contato@hugosevero.com" linkedin="https://www.linkedin.com/in/hugosevero/" photo={hug} photoDonation={hug2} />
-              <TeamCard name="Kaiqui Petty" role="DevOps" email="kaiquidejesus@gmail.com" linkedin="https://www.linkedin.com/in/kaiqui-petty-6b9299217/" photo={kai} photoDonation={kai2} />
-              <TeamCard name="Lucas Germano" role="CTO e Desenvolvedor Full-Stack" email="germanoluc890@gmail.com" linkedin="https://www.linkedin.com/in/lucas-germano-dev/" photo={luc} photoDonation={luc2} />
-              <TeamCard name="Robson Rioki" role="Desenvolvedor Front-End" email="riokirobson@gmail.com" linkedin="https://www.linkedin.com/in/riokirobson/" photo={rob} photoDonation={rob2} />
-            </div>
-          </div>
         )}
 
         {/* ── Seção: Por que doar ── */}
@@ -215,26 +187,6 @@ export default function Navigation() {
       <div className="Navigation">
         <nav aria-label="Main navigation">
           <ul>
-            {/* ── QUEM SOMOS ── */}
-            <li onMouseEnter={() => handleMouseEnter("quem")} onMouseLeave={handleMouseLeave}>
-              <button className="nav-link nav-button">Quem Somos</button>
-              <div className={`menuOp1 team-menu ${scrolled ? "menuScrolled" : ""} ${openMenu === "quem" ? "menuVisible" : ""}`} onMouseLeave={handleMouseLeave}>
-                <span className="menu-tag">EQUIPE ONDEDOAR</span>
-                <h2>Conheça nossa equipe</h2>
-                <p className="team-description">
-                  Somos uma equipe de doadores apaixonada por tecnologia e impacto social,
-                  unindo nossas habilidades para facilitar a doação de sangue
-                  e conectar pessoas que podem salvar vidas.
-                </p>
-                <div className="team-grid">
-                  <TeamCard name="Hugo Severo" role="CEO" email="contato@hugosevero.com" linkedin="https://www.linkedin.com/in/hugosevero/" photo={hug} photoDonation={hug2} />
-                  <TeamCard name="Kaiqui Petty" role="DevOps" email="kaiquidejesus@gmail.com" linkedin="https://www.linkedin.com/in/kaiqui-petty-6b9299217/" photo={kai} photoDonation={kai2} />
-                  <TeamCard name="Lucas Germano" role="CTO e Desenvolvedor Full-Stack" email="germanoluc890@gmail.com" linkedin="https://www.linkedin.com/in/lucas-germano-dev/" photo={luc} photoDonation={luc2} />
-                  <TeamCard name="Robson Rioki" role="Desenvolvedor Front-End" email="riokirobson@gmail.com" linkedin="https://www.linkedin.com/in/riokirobson/" photo={rob} photoDonation={rob2} />
-                </div>
-              </div>
-            </li>
-
             {/* ── POR QUE DOAR ── */}
             <li onMouseEnter={() => handleMouseEnter("doar")} onMouseLeave={handleMouseLeave}>
               <button className="nav-link nav-button">Por que doar?</button>

@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 const PLACEHOLDER = "https://via.placeholder.com/400x225?text=Bairro";
 const VISIBLE = 5; 
 
-export default function ZoneSection({ title, bairros, onOpenNeighborhood }) {
+function ZoneSection({ title, bairros, onOpenNeighborhood }) {
   const [offset, setOffset] = useState(0);
   const containerRef = useRef(null);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -19,9 +19,18 @@ export default function ZoneSection({ title, bairros, onOpenNeighborhood }) {
 
   // Em mobile rendera todos para permitir o swipe nativo via CSS
   // Em desktop mantem a logica de slice original
+  // v2.5: Restaurado + 1 para mostrar o próximo hemocentro (peek)
   const visibleBairros = isMobile ? bairros : bairros.slice(offset, offset + VISIBLE + 1);
 
   const deveExibirZona = title && !["INTERIOR", "METROPOLIS", "METROPOLE"].includes(title.toUpperCase());
+
+  // v2.1: Renomear titulos especificos
+  let displayTitle = title;
+  if (title?.toUpperCase() === "METROPOLIS" || title?.toUpperCase() === "METROPOLE") {
+    displayTitle = "GRANDE SÃO PAULO";
+  } else if (title?.toUpperCase() === "INTERIOR") {
+    displayTitle = "INTERIOR DE SÃO PAULO";
+  }
 
   return (
     <div className="TitleList" data-loaded="true">
@@ -29,7 +38,7 @@ export default function ZoneSection({ title, bairros, onOpenNeighborhood }) {
         {/* HEADER */}
         <div className="row-header">
           <span className="row-title">
-            {deveExibirZona ? `ZONA ${title}` : title}
+            {deveExibirZona ? `ZONA ${displayTitle}` : displayTitle}
           </span>
         </div>
 
@@ -103,3 +112,5 @@ export default function ZoneSection({ title, bairros, onOpenNeighborhood }) {
     </div>
   );
 }
+
+export default ZoneSection;

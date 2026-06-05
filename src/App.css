@@ -160,7 +160,7 @@
   opacity: 1;
 }
 
-/* ── FOOTER ── */
+/* ── FOOTER COM DROPUP v2.1 ── */
 .main-footer {
   text-align: center;
   padding: 50px 20px 15px 10px;
@@ -169,6 +169,69 @@
   color: #666666;
   background-color: #ffffff;
   margin-top: 40px;
+  position: relative; 
+  /* z-index: 1 removido na v2.6 para permitir que o dropup fixo sobreponha a Hero corretamente */
+}
+
+.footer-text {
+  cursor: pointer;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.footer-text.active,
+.footer-text:hover {
+  color: #e21221; /* Vermelho v2.1 */
+}
+
+.footer-team-dropup {
+  position: fixed; /* Grudado no final da tela v2.1 */
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1001;
+  pointer-events: none; /* Deixa passar clique para o footer se necessario, mas o menu interno tem pointer-events auto */
+  display: flex;
+  justify-content: center;
+  animation: dropupSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes dropupSlideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.footer-team-dropup .mobile-section-content {
+  pointer-events: auto;
+  width: 95vw;
+  max-width: 1100px;
+  border-radius: 24px 24px 0 0 !important; /* Bordas do topo arredondadas v2.1 */
+  box-shadow: 0 -20px 50px rgba(0,0,0,0.15) !important;
+  margin-bottom: 0;
+  padding-bottom: 60px !important; /* Espaço para o texto do footer não cobrir */
+}
+
+@media (max-width: 768px) {
+  .footer-team-dropup .mobile-section-content {
+    width: 100vw;
+    max-width: none;
+    border-radius: 20px 20px 0 0 !important;
+    padding: 20px 16px 80px !important;
+  }
+
+  .footer-team-dropup .team-grid {
+    display: flex !important;
+    overflow-x: auto !important;
+    gap: 12px !important;
+    padding-bottom: 20px !important;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+  }
+
+  .footer-team-dropup .team-card {
+    flex: 0 0 260px !important;
+    scroll-snap-align: center;
+  }
 }
 
 /* ==========================================================================
@@ -280,7 +343,7 @@
   position: absolute;
   right: 60px;
   bottom: 130px;
-  z-index: 2;
+  z-index: 1;
 }
 
 .Hero .maturity-rating {
@@ -640,12 +703,18 @@
 }
 
 .slider-wrap:hover .slider-btn {
+  opacity: 0; /* v2.5: Default hover on wrap is now hidden */
+}
+
+/* v2.5: Seta aparece apenas quando o usuário passa o mouse sobre algum Item */
+.slider-wrap:has(.Item:hover) .slider-btn {
   opacity: 1;
 }
 
 .slider-btn:hover {
   background: rgba(0, 0, 0, 0.85);
   color: var(--white);
+  opacity: 1 !important; /* v2.5: Garante visibilidade ao interagir com a seta */
 }
 
 .slider-btn.prev {
@@ -1397,209 +1466,199 @@
   font-weight: 600;
 }
 
-/* ── UNIDADES E CARDS DO MODAL ── */
+.modal-units {
+  padding: 0 40px 30px; /* Alinhado com o título v2.2 */
+}
+
+.modal-units h3 {
+  font-size: 15px; /* Reduzido levemente v2.2 */
+  margin-top: 24px;
+  margin-bottom: 20px;
+  font-weight: 600;
+  color: #8e8e8e; /* Cinza mais claro v2.2 */
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ── UNIDADES E CARDS DO MODAL (v2.5: MAIS COMPACTO) ── */
 .unit-card {
-  background: #f7f8fa;
-  border: 1px solid #e4e6eb;
-  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid #eef0f2;
+  border-radius: 16px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row; 
   overflow: hidden;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease;
+  height: auto; /* Garantir que o card cresça com o conteúdo v2.6 */
+  min-height: 140px; 
+  margin-bottom: 16px; 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
 .unit-card:hover {
-  transform: translateY(-4px);
-  background: #ffffff;
-  border-color: #ccd0d5;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
-}
-
-.unit-card>img {
-  width: 120px;
-  height: 70px;
-  object-fit: cover;
-  border-radius: 4px;
+  transform: translateY(-5px);
+  border-color: #e2122144;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
 }
 
 .unit-thumb-wrapper {
-  width: 100%;
-  height: 140px;
+  width: 220px; /* Reduzido de 320px v2.5 */
+  height: auto;
+  min-height: 140px;
   overflow: hidden;
   cursor: pointer;
-  background: #e4e6eb;
+  background: #f0f2f5;
+  flex-shrink: 0;
 }
 
 .unit-thumb {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  object-position: center;
+  transition: transform 0.5s ease;
 }
 
 .unit-card:hover .unit-thumb {
-  transform: scale(1.03);
+  transform: scale(1.05);
 }
 
 .unit-card-body {
-  padding: 20px;
+  padding: 16px 20px; /* Reduzido v2.5 */
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  min-width: 0; /* Evita quebra de flex */
 }
 
 .unit-card-header strong {
-  font-size: 16px;
-  color: #050505;
+  font-size: 17px; /* Reduzido v2.5 */
+  color: #1a1a1a;
   font-weight: 700;
+  margin-bottom: 4px;
+  display: block;
   cursor: pointer;
-  line-height: 1.3;
-  display: inline-block;
-  transition: color 0.15s;
+  transition: color 0.2s ease;
+  line-height: 1.2;
+  word-break: break-word; /* v2.4/v2.5: Evita quebra de layout por nomes longos */
 }
 
 .unit-card-header strong:hover {
-  color: #e21221;
+  color: #e21221; /* Vermelho v2.2 */
 }
 
-.unit-card-body .address-wrapper {
+.unit-info-footer {
   display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  margin: 10px 0 16px 0;
-}
-
-.unit-card-body .address-icon {
-  width: 14px;
-  height: 14px;
-  margin-top: 2px;
-  opacity: 0.7;
-}
-
-.unit-card-body p {
-  font-size: 13px;
-  color: #4b4b4b;
-  margin: 0;
-  line-height: 1.4;
-}
-
-.unit-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.unit-info strong {
-  font-size: 15px;
-  color: #1a1a1a;
-  font-weight: 600;
-  transition: color 0.2s ease;
-}
-
-.unit-info strong:hover {
-  color: #e21221;
-}
-
-.unit-info p {
-  font-size: 13px;
-  margin: 6px 0 12px 0;
-  color: #555;
-  line-height: 1.4;
-}
-
-.modal-units {
-  padding: 0 32px 40px;
-}
-
-.modal-units h3 {
-  font-size: 16px;
-  margin-top: 24px;
-  margin-bottom: 24px;
-  font-weight: 600;
-  color: #65676b;
-  letter-spacing: 0.5px;
-}
-
-.units-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-}
-
-.units-grid.has-carousel {
-  display: flex !important;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  gap: 16px;
-  padding: 8px 4px 20px 4px;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  cursor: grab;
-  user-select: none;
-}
-
-.units-grid.has-carousel.is-dragging {
-  cursor: grabbing;
-  scroll-snap-type: none;
-  scroll-behavior: auto;
-}
-
-.units-grid.has-carousel img {
-  pointer-events: none;
-}
-
-.units-grid.has-carousel::-webkit-scrollbar {
-  height: 6px;
-}
-
-.units-grid.has-carousel::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.units-grid.has-carousel::-webkit-scrollbar-thumb {
-  background: #ccd0d5;
-  border-radius: 10px;
-}
-
-.units-grid.has-carousel .unit-card {
-  flex: 0 0 78%;
-  scroll-snap-align: center;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px; /* Reduzido v2.5 */
+  gap: 12px;
 }
 
 .unit-actions {
-  padding: 0 20px 20px;
+  padding: 0;
 }
 
 .unit-actions button {
-  width: 100%;
-  background: #ffffff;
-  border: 1px solid #ccd0d5;
-  padding: 10px 16px;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  padding: 6px 14px; /* Reduzido v2.5 */
   border-radius: 8px;
-  color: #4b4b4b;
-  font-size: 13px;
+  color: #495057;
+  font-size: 13px; /* Reduzido v2.5 */
   font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  transition: all 0.15s ease;
+  white-space: nowrap;
 }
 
 .unit-actions button:hover {
   background: #e21221;
-  color: #ffffff;
+  color: #fff;
   border-color: #e21221;
 }
 
-.unit-actions button .arrow-icon {
-  transition: transform 0.15s;
+.units-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Reduzido v2.5 */
+  max-height: 500px; /* Reduzido v2.5 para caber melhor na tela */
+  overflow-y: auto;
+  padding: 10px 15px 15px 0; /* Padding lateral para scroll */
 }
 
-.unit-actions button:hover .arrow-icon {
-  transform: translateX(3px);
+/* Scrollbar estilizada v2.3 */
+.units-grid::-webkit-scrollbar {
+  width: 5px;
+}
+
+.units-grid::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+  .Modal-container, .Modal {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: 88vh !important; 
+    border-radius: 20px 20px 0 0 !important;
+    animation: modalSlideUp 0.3s ease-out;
+    margin: 0 !important;
+    overflow-y: auto !important; /* Habilitar scroll vertical na modal v2.3 */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .modal-body {
+    padding: 16px;
+    gap: 16px;
+    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modal-units {
+    padding: 0 16px 40px !important; /* Padding ajustado v2.3 */
+  }
+
+  .units-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    overflow-y: visible !important; 
+    max-height: none !important;
+    gap: 20px !important;
+    padding: 0 !important;
+  }
+
+  .unit-card {
+    flex-direction: column !important; 
+    min-height: auto;
+    border-radius: 14px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  }
+
+  .unit-thumb-wrapper {
+    width: 100% !important;
+    height: 180px !important; /* Altura melhorada v2.3 */
+  }
+
+  .unit-card-body {
+    padding: 20px !important;
+  }
+
+  .unit-info-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .unit-actions {
+    width: 100%;
+  }
+
+  .unit-actions button {
+    width: 100%;
+    padding: 12px;
+  }
 }
 
 .address-icon {
@@ -1628,6 +1687,7 @@
   position: relative;
   display: inline-block;
   cursor: pointer;
+  word-break: break-word; /* v2.4/v2.5: Evita quebra de layout por endereços longos */
 }
 
 .address-link::after {
@@ -1667,6 +1727,7 @@
   height: 7px;
   border-radius: 50%;
   display: inline-block;
+  flex-shrink: 0; /* v2.4/v2.5: Evita que a bolinha seja achatada */
 }
 
 .status-badge[data-status="aberto"] {
@@ -1793,7 +1854,9 @@
 /* ── TELAS PEQUENAS (Ajustes Adicionais p/ Units Grid) ── */
 @media (min-width: 768px) {
   .units-grid {
-    grid-template-columns: repeat(2, 1fr);
+    /* v2.4/v2.5: Removido grid de 2 colunas para garantir lista vertical e evitar quebras */
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -1893,6 +1956,11 @@
 
   /* Ocultar hambúrguer quando o UserProfile (Login/Cadastro) estiver aberto v1.3 */
   .Header:has(.UserProfile.open) .mobile-hamburger {
+    display: none !important;
+  }
+
+  /* Ocultar avatar do usuário quando o drawer lateral estiver aberto v2.2 */
+  .Header:has(.mobile-drawer.open) .UserProfile {
     display: none !important;
   }
 
@@ -2039,7 +2107,7 @@
   .Modal-container, .Modal {
     max-width: 100% !important;
     width: 100% !important;
-    height: 94vh !important; /* Aumentado v1.5 */
+    height: 88vh !important; /* Reduzido v2.0 para evitar barra do navegador */
     border-radius: 20px 20px 0 0 !important;
     animation: modalSlideUp 0.3s ease-out;
     margin: 0 !important;
@@ -2051,11 +2119,11 @@
   }
 
   .modal-hero {
-    height: 160px; /* Reduzido levemente v1.5 para dar espaço aos cards */
+    height: 150px; /* Reduzido v2.0 */
   }
 
   .modal-title {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
   }
 
   .modal-body {
@@ -2068,7 +2136,34 @@
   }
 
   .modal-units {
-    padding: 0 16px 40px; /* Padding reduzido v1.5 */
+    padding: 0 16px 20px;
+  }
+
+  .units-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    overflow-y: visible !important; /* Scroll será no corpo da modal */
+    max-height: none !important;
+    gap: 16px !important;
+    padding: 0 !important;
+  }
+
+  .unit-card {
+    flex-direction: column !important; /* Imagem no topo no mobile v2.0 */
+    min-height: auto;
+  }
+
+  .unit-thumb-wrapper {
+    width: 100% !important;
+    height: 140px !important;
+  }
+
+  .unit-card-body {
+    padding: 16px !important;
+  }
+
+  .unit-actions {
+    padding: 0 16px 16px !important;
   }
 
   .info-grid {
@@ -2078,35 +2173,9 @@
     gap: 16px;
   }
 
-  .units-grid.has-carousel {
-    display: flex !important;
-    overflow-x: auto !important;
-    scroll-snap-type: x mandatory !important;
-    -webkit-overflow-scrolling: touch !important;
-    gap: 12px !important;
-    padding: 10px 4px 30px !important; /* Padding inferior aumentado v1.5 */
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .units-grid.has-carousel::-webkit-scrollbar {
-    display: none;
-  }
-
-  .units-grid.has-carousel .unit-card {
-    flex: 0 0 85% !important;
-    min-width: 85% !important;
-    scroll-snap-align: center !important;
-    scroll-snap-stop: always !important;
-  }
-
-  .unit-card-body {
-    padding: 16px; /* Padding interno v1.5 */
-  }
-
   .modal-close {
-    top: 15px;
-    right: 15px;
+    top: 12px;
+    right: 12px;
     z-index: 100;
   }
 }

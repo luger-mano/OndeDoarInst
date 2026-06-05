@@ -16,9 +16,10 @@ export default function Item({
 }) {
   const op = operation || "";
 
-  const isClosed = operation?.includes("FECHADO") || operation?.includes("Unidade fechada");
-  const isConsult = operation?.includes("CONSULTAR");
-  const isOpen = operation?.includes("ABERTO") || operation?.includes("Unidade aberta");
+  // Nova lógica: É considerado fechado se a string contiver "Abre" (Abre amanhã, Abre segunda, Abre hoje às...)
+  const isClosed = op.toLowerCase().includes("abre");
+  const isConsult = op.includes("CONSULTAR") || op.includes("Ligar ou acessar");
+  const isOpen = op.includes("ABERTO") || op.includes("Unidade aberta");
 
   const bg =
     facadeImageUrl ||
@@ -37,7 +38,6 @@ export default function Item({
   const getExclusiveLocation = () => {
     if (!address) return "Localização não informada";
 
-
     const { bairro, municipio, zone } = address;
     const hasBairro = bairro && bairro.toLowerCase() !== "s/b";
     const hasMunicipio = municipio && municipio.toLowerCase() !== "s/m";
@@ -53,16 +53,22 @@ export default function Item({
     return location ? `${location}${zoneText}` : "Localização disponível";
   };
 
+  const parts = op.split("|");
+  const statusTitle = parts[0].trim(); 
+  const statusSubtitle = parts[1] ? parts[1].trim() : "Verifique o horário"; 
+
   return (
     <div className="Item" onClick={() => onOpen && onOpen()}>
       <div className="thumb-wrapper">
         <img className="thumb" src={bg} alt={title} loading="lazy" />
 
-        {/* Exibe APENAS se estiver fechado */}
+        {/* Exibe se o status indicar que o local está fechado no momento */}
         {isClosed && (
           <div className="status-bar" style={{ backgroundColor: 'rgba(200, 0, 0, 0.8)' }}>
-            <div className="status-title">FECHADO</div>
-            <div className="status-subtitle">{op.split("|")[1] || "Verifique o horário"}</div>
+            <div className="status-title" style={{ textTransform: 'uppercase' }}>
+              {statusTitle}
+            </div>
+            <div className="status-subtitle">{statusSubtitle}</div>
           </div>
         )}
 
