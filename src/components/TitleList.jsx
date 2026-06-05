@@ -35,7 +35,7 @@ export default function TitleList({
 
     } else {
 
-      const requestUrl = `/api/centers/filter/region/neighborhoods`;
+      const requestUrl = `http://localhost:8080/centers/filter/region/neighborhoods`;
 
       fetch(requestUrl)
 
@@ -99,7 +99,7 @@ export default function TitleList({
   const canNext =
     offset + VISIBLE < items.length;
 
-  const visible = isMobile ? items : items.slice(offset, offset + VISIBLE);
+  const visible = isMobile ? items : items.slice(offset, offset + VISIBLE + 1);
 
   // SEM ITENS
   if (loaded && items.length === 0) {
