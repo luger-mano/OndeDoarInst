@@ -17,7 +17,7 @@ Antes de escrever qualquer código, o agente deve **ler e entender os arquivos d
 3. Mapear onde cada adaptação mobile precisa ser aplicada, com base nos arquivos reais do projeto
 4. Somente depois de entender o contexto, implementar as mudanças de forma cirúrgica e coerente com o código existente
 
-O agente **não deve criar padrões novos** que conflitem com o que já existe no projeto — deve seguir a mesma convenção de nomes, organização de arquivos e abordagem de estilo já adotada.
+O agente **não deve criar padrões novos** que conflitem com o que já existe no projeto — deve seguir a mesma convenção de nomes, organization de arquivos e abordagem de estilo já adotada.
 
 ---
 
@@ -132,7 +132,7 @@ Dentro das páginas acessadas pelo menu (como "Quem Somos"), caso existam **card
 ### Navegação
 - [ ] Menu horizontal oculto em mobile
 - [ ] Ícone hambúrguer visível apenas em mobile
-- [ ] Drawer lateral abre ao clicar no hambúrguer
+- [ ] Drawer lateral abre au clicar no hambúrguer
 - [ ] Drawer fecha ao clicar fora (sem botão X)
 - [ ] Logo e demais elementos da navbar ajustados para mobile
 
@@ -191,7 +191,7 @@ Dentro das páginas acessadas pelo menu (como "Quem Somos"), caso existam **card
     - **Layout de Item (Item.jsx, Item.css):**
       - Remover a informação "Clique para visualizar os hemocentros deste bairro.". Deve aparecer somente o item, sem os detalhes de baixo (igual ao passar o mouse em cima do Item no desktop).
     - **Exibição de Bairros:**
-      - Exibir dois bairros por tela ao invés de um só.
+      - Exibir dois bairros por tela au invés de um só.
     - **Modais (NeighborhoodModal.jsx, Modal.jsx, App.css):**
       - Arrumar a modal de hemocentro e bairro para serem responsivas.
 
@@ -242,9 +242,80 @@ Dentro das páginas acessadas pelo menu (como "Quem Somos"), caso existam **card
   - **Responsividade Mobile (Celular/Tablet) - SEM alterar Desktop**
     - **Modais (UserProfile.jsx, Hero.jsx, App.css):**
       - Remover o botão "X" das modais de "Entrar" ou "Cadastrar-se" (UserProfile) e do filtro (Hero).
-      - Ambas as modais (UserProfile e filtro) devem fechar ao clicar fora delas (dropdown), retornando à tela inicial.
+      - Ambas as modais (UserProfile e filtro) devem fechar au clicar fora delas (dropdown), retornando à tela inicial.
 
 - Versão 1.9:
   - **Responsividade Mobile (Celular/Tablet) - SEM alterar Desktop**
     - **Menu de Filtros com Checkbox (Hero.jsx, App.css):**
       - O menu de filtros com checkbox deve fechar ao clicar fora dele, seguindo a mesma funcionalidade do menu dropdown de UserProfile da versão 1.8.
+
+- Versão 2.0:
+  - **Responsividade Mobile (Celular/Tablet) - SEM alterar Desktop**
+    - **Modais (Modal.jsx, Neighborhood.jsx, App.css):**
+      - Diminuir o tamanho da Modal.jsx e Neighborhood.jsx para evitar que o botão de fechar (close) desapareça atrás da barra de pesquisa do navegador no celular.
+    - **Neighborhood.jsx (Desktop e Mobile):**
+      - Os cards de hemocentros devem ser exibidos in linhas (um abaixo do outro) em vez de lado a lado.
+      - Na versão desktop, deve haver uma barra de rolagem para essa seção.
+      - Na versão mobile, o usuário deve poder arrastar para baixo para visualizar todos os hemocentros.
+    - **Seção "Quem somos" (App.jsx, Navigation.jsx, TeamCard.jsx):**
+      - Remover "Quem somos" da Navigation.jsx.
+      - Quando o usuário passar o mouse (desktop) ou clicar (mobile) em "Desenvolvido por doadores © Onde Doar 2026" no footer de App.jsx, um menu "dropup" com os membros (TeamCard) deve ser exibido, mantendo o visual existente.
+    - **Status Bar (Item.jsx):**
+      - Para desktop e mobile, a "status-bar" não deve mais preencher o item inteiro quando estiver fechado.
+      - Deve ser uma faixa vermelha retangular no meio do item, indicando que está fechado.
+
+- Versão 2.1:
+  - **Responsividade Mobile (Celular/Tablet) - SEM alterar Desktop**
+    - **NeighborhoodModal.jsx (Desktop):**
+      - Organizar os elementos "Saiba Mais", status de funcionamento ("operation") e as imagens, padronizando o tamanho das imagens.
+    - **NeighborhoodModal.jsx (Mobile):**
+      - Quando houver mais de um hemocentro, deve ter a funcionalidade do usuário arrastar para baixo para ver os hemocentros daquele bairro.
+    - **Footer (App.jsx) - "Desenvolvido por doadores © Onde Doar 2026" (Desktop e Mobile):**
+      - A parte de baixo do menu dos membros deve estar grudada no final da tela, não flutuando.
+      - Quando o usuário clicar ou passar o mouse, trocar a cor do texto para vermelho e subir o menu dos integrantes, com as bordas do topo arredondadas.
+    - **ZoneSection.jsx (Desktop e Mobile):**
+      - Se for "METROPOLIS" substituir para "GRANDE SÃO PAULO".
+      - Se for "INTERIOR" colocar logo em seguida do "INTERIOR DE" o estado, no caso "SÃO PAULO", ficando "INTERIOR DE SÃO PAULO".
+
+- Versão 2.2:
+  - **Responsividade Mobile (Celular/Tablet) - SEM alterar Desktop**
+    - **NeighborhoodModal.jsx (Desktop):**
+      - A imagem do hemocentro (`unit-thumb-wrapper`) deve encaixar corretamente no card (`unit-card`), sem cortar a parte de baixo.
+      - Ao passar o mouse no nome do hemocentro, ele deve mudar de cor para vermelho.
+      - O texto "Hemocentros disponíveis neste bairro" deve ficar alinhado com o nome do bairro e ter uma cor cinza claro.
+    - **Navigation.jsx (Mobile):**
+      - Quando o menu hambúrguer for clicado e aberto, o avatar do usuário (`UserProfile`) deve desaparecer.
+      - O menu hambúrguer deve funcionar corretamente no Google Chrome para celular e tablet.
+
+- Versão 2.3:
+  - **Responsividade Mobile (Celular/Tablet) - SEM alterar Desktop**
+    - **NeighborhoodModal.jsx (Mobile):**
+      - Quando houver mais de um hemocentro de um determinado bairro, deve ter a funcionalidade de arrastar para baixo (scroll vertical) para ver os hemocentros daquele bairro.
+    - **NeighborhoodModal.jsx (Desktop):**
+      - Organizar o conteúdo dentro da modal de bairro: os cards de hemocentro devem ser exibidos em forma de lista (um embaixo do outro), com a imagem, o conteúdo e as informações do hemocentro visíveis e sem quebras. A imagem não deve estar cortada.
+
+- Versão 2.4:
+  - **Responsividade Mobile (Celular/Tablet) - SEM alterar Desktop**
+    - **NeighborhoodModal.jsx (Desktop):**
+      - Corrigir a `status-bar` para hemocentros fechados: evitar que a bolinha vermelha interna fique achatada.
+      - Resolver quebras de informação em bairros com mais de 2 hemocentros: garantir que nomes longos de hemocentros e endereços não quebrem o layout do card.
+    - **Navegação de Cards (ZoneSection.jsx, SearchResults.jsx, Filtros):**
+      - Corrigir o comportamento das setas de navigation: quando o usuário clica na seta direita (`›`), a seta esquerda (`‹`) deve aparecer e permitir a visualização dos hemocentros anteriores corretamente. Aplicar essa correção na `ZoneSection`, nos resultados de busca e nos filtros por "Abertos" e "Mais próximos".
+
+- Versão 2.5:
+  - **Responsividade Mobile (Celular/Tablet) - SEM alterar Desktop**
+    - **Navegação de Cards (Desktop):**
+      - Não remover a regra do `TitleList` para mostrar o próximo hemocentro; deve aparecer que há um próximo hemocentro para não dar a falsa impressão de que a lista acabou.
+      - O usuário deve passar o mouse sobre algum `Item` para que a seta apareça.
+      - Ao clicar na seta direita (`›`) para exibir os próximos hemocentros, a seta esquerda (`‹`) deve mostrar os hemocentros que já passaram, sem dar a falsa impressão de que só existem aqueles hemocentros na tela.
+    - **NeighborhoodModal.jsx (Desktop):**
+      - Arrumar o conteúdo dos hemocentros que estão quebrando o layout.
+      - Diminuir o conteúdo de dentro dos cards que plota os hemocentros de um determinado bairro, permitindo a visualização de todos os elementos internos.
+      - Corrigir especificamente quando há mais de dois hemocentros: evitar que o status de funcionamento (`operation`) e o botão "Saiba mais" desçam dentro dos cards e fiquem invisíveis. O layout deve garantir que esses elementos permaneçam visíveis e organizados.
+
+- Versão 2.6:
+  - **versão Desktop**
+    - **NeighborhoodModal.jsx (Desktop):**
+      - Corrigir a quebra de card para hemocentros com nomes muito longos (ex: Iamspe). O card deve se adaptar automaticamente para que elementos como o status de funcionamento (`operation`) e o botão "Saiba mais →" não fiquem cortados ou invisíveis.
+    - **Footer (Desktop):**
+      - Quando o usuário passar o mouse sobre o footer "Desenvolvido por doadores © Onde Doar 2026", o menu de integrantes que subir deve **sobrepor** os campos de pesquisa e filtro localizados na seção Hero, garantindo total visibilidade.
