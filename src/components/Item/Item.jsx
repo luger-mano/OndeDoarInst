@@ -60,24 +60,12 @@ export default function Item({
       <div className="thumb-wrapper">
         <img className="thumb" src={bg} alt={title} loading="lazy" />
 
-        {/* Exibe APENAS se estiver fechado */}
+        {/* Exibe APENAS se estiver fechado - v2.7: Faixa vermelha horizontal no meio */}
         {isClosed && (
-          <div className="status-bar status-closed-overlay">
-            <div className="status-content-wrapper">
-              <div className="status-title-huge">FECHADO</div>
-
-              <div className="status-schedule-reveal">
-                <span className="schedule-label">Horários de Funcionamento</span>
-                <ul className="schedule-lines">
-                  {(op.split("|")[1] || op)
-                    .replace(/Abre de/gi, "")
-                    .split("/")
-                    .map((line, idx) => (
-                      <li key={idx}>{line.trim()}</li>
-                    ))}
-                </ul>
-              </div>
-            </div>
+          <div className="status-bar-horizontal">
+            <span className="status-detail-text">
+              {op.includes("|") ? op.split("|")[1].trim() : op.trim()}
+            </span>
           </div>
         )}
 

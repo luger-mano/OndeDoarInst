@@ -6,8 +6,8 @@ export default function Logo() {
     <Link to='/' id="logo" className="Logo">
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="40"
-        height="40"
+        width="35"
+        height="35"
         viewBox="0 0 100 190"
         fill="none"
         role="img"

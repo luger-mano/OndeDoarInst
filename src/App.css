@@ -1524,7 +1524,7 @@
 }
 
 .unit-card-body {
-  padding: 16px 20px; /* Reduzido v2.5 */
+  padding: 12px 18px; /* Reduzido v2.7: Mais espaço interno */
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -1533,14 +1533,14 @@
 }
 
 .unit-card-header strong {
-  font-size: 17px; /* Reduzido v2.5 */
+  font-size: 16px; /* Reduzido v2.7: Ajuste para nomes longos (Iamspe) */
   color: #1a1a1a;
   font-weight: 700;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   display: block;
   cursor: pointer;
   transition: color 0.2s ease;
-  line-height: 1.2;
+  line-height: 1.15; /* v2.7: Mais compacto */
   word-break: break-word; /* v2.4/v2.5: Evita quebra de layout por nomes longos */
 }
 
@@ -1552,8 +1552,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 8px; /* Reduzido v2.5 */
-  gap: 12px;
+  margin-top: 6px; /* Reduzido v2.7 */
+  gap: 10px; /* Reduzido v2.7 */
 }
 
 .unit-actions {
@@ -1563,10 +1563,10 @@
 .unit-actions button {
   background: #f8f9fa;
   border: 1px solid #dee2e6;
-  padding: 6px 14px; /* Reduzido v2.5 */
+  padding: 5px 12px; /* Reduzido v2.7 */
   border-radius: 8px;
   color: #495057;
-  font-size: 13px; /* Reduzido v2.5 */
+  font-size: 12px; /* Reduzido v2.7 */
   font-weight: 600;
   white-space: nowrap;
 }

@@ -7,10 +7,10 @@
 .mobile-hamburger {
   display: none;
   position: relative; /* Mudado de absolute para relative v1.2 */
-  margin-left: 15px; /* Espaço em relação à logo */
+  margin-left: 20px; /* Espaço em relação à logo */
   margin-bottom: 10px;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   background: none;
   border: none;
   cursor: pointer;
@@ -18,16 +18,16 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
   padding: 0;
 }
 
 .mobile-hamburger span {
   display: block;
-  width: 20px;
+  width: 25px;
   height: 2px;
-  background: #b10303;
-  border-radius: 2px;
+  background: #e50914;
+  border-radius: 1.5px;
   transition: all 0.3s ease;
 }
 
@@ -145,7 +145,7 @@
 
   left: 0;
 
-  top: 48px;
+  top: 45px;
 
   width: 530px;
 
@@ -172,7 +172,7 @@
 
   left: 0;
 
-  top: 48px;
+  top: 45px;
 
   width: 950px;
 
@@ -204,7 +204,7 @@
 
   left: 0;
 
-  top: 48px;
+  top: 45px;
 
   width: 1000px;
 
@@ -510,7 +510,7 @@
 
   left: 0;
 
-  top: 49px;
+  top: 45px;
 
   width: 550px;
 
