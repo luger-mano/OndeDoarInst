@@ -107,7 +107,7 @@ export default function Navigation() {
         {mobileSection === "doar" && (
           <div className="mobile-section-content">
             <button className="mobile-back-btn" onClick={() => setMobileSection(null)}>
-              ← Voltar
+              ←
             </button>
             <span className="menu-tag">IMPACTO</span>
             <h2>Sua doação pode salvar até 4 vidas</h2>
@@ -133,7 +133,7 @@ export default function Navigation() {
         {mobileSection === "requisitos" && (
           <div className="mobile-section-content">
             <button className="mobile-back-btn" onClick={() => setMobileSection(null)}>
-              ← Voltar
+              ←
             </button>
             <span className="menu-tag">REQUISITOS</span>
             <h2>Quem pode doar sangue?</h2>
@@ -163,7 +163,7 @@ export default function Navigation() {
         {mobileSection === "sangue" && (
           <div className="mobile-section-content">
             <button className="mobile-back-btn" onClick={() => setMobileSection(null)}>
-              ← Voltar
+              ←
             </button>
             <span className="menu-tag urgent-tag">URGENTE</span>
             <h2>Precisa de Sangue?</h2>
