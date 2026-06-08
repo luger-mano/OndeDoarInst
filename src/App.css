@@ -1876,9 +1876,9 @@
 @media (max-width: 768px) {
 
   /* Oculta apenas o menu desktop; navigation-wrapper continua visível para o hambúrguer */
-  .Navigation {
-    display: none !important;
-  }
+ .Navigation {
+  display: flex !important;
+}
 
   .menuOp1,
   .menuOp2,
@@ -1954,10 +1954,7 @@
     display: none !important;
   }
 
-  /* Ocultar hambúrguer quando o UserProfile (Login/Cadastro) estiver aberto v1.3 */
-  .Header:has(.UserProfile.open) .mobile-hamburger {
-    display: none !important;
-  }
+
 
   /* Ocultar avatar do usuário quando o drawer lateral estiver aberto v2.2 */
   .Header:has(.mobile-drawer.open) .UserProfile {
