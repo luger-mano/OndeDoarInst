@@ -375,9 +375,21 @@ export default function UserProfile() {
             {loggedUser.userName || loggedUser.mail.split("@")[0]}
           </span>
         )}
-        <div className="image blood-avatar">
+       <div className="image blood-avatar">
   {loggedUser ? (
-    <span>{bloodType}</span>
+    bloodType === "?" ? (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="white"
+      >
+        <path d="M12 2C12 2 5 10 5 15a7 7 0 0 0 14 0C19 10 12 2 12 2z" />
+      </svg>
+    ) : (
+      <span>{bloodType}</span>
+    )
   ) : (
     <svg
       xmlns="http://www.w3.org/2000/svg"

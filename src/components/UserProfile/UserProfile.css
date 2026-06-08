@@ -731,6 +731,10 @@
   box-shadow: 0 2px 8px rgba(229, 9, 20, 0.25);
 }
 
+.blood-avatar svg {
+  flex-shrink: 0;
+}
+
 .user-name {
 
   font-size: 14px;
