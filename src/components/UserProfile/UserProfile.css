@@ -717,16 +717,18 @@
   font-size: 14px;
 }
 
+.blood-avatar {
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
 .blood-avatar:hover {
-  transform: scale(1.01);
+  background: linear-gradient(
+    135deg,
+    #c61b1b,
+    #ef4444
+  );
 
-  background:
-    linear-gradient(135deg,
-      #c61b1b,
-      #ef4444);
-
-
-  transition: 0.2s ease;
+  box-shadow: 0 2px 8px rgba(229, 9, 20, 0.25);
 }
 
 .user-name {
