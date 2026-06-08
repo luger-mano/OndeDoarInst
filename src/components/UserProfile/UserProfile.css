@@ -881,3 +881,11 @@
 .mobile-profile-close {
   display: none;
 }
+
+@media (max-width: 768px) {
+
+  .user-name {
+    display: none;
+  }
+
+}
