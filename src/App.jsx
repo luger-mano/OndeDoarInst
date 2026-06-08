@@ -8,6 +8,7 @@
   import SearchResults from "./components/SearchResults/SearchResults";
   import Modal from "./components/Modal";
   import NeighborhoodModal from "./components/NeighborhoodModal";
+  import MapModal from "./components/MapModal";
   import Info from "./pages/infopage/info";
   import TeamCard from "./components/TeamCard/TeamCard";
   import "./components/TeamCard/TeamSection.css";
@@ -62,6 +63,7 @@
     const [selectedFilter, setSelectedFilter] = useState("zona");
     const [nearestCenters, setNearestCenters] = useState([]);
     const [showTeam, setShowTeam] = useState(false);
+    const [showMap, setShowMap] = useState(false);
 
     // ===> NOVO: Estado para lembrar de qual bairro o usuário veio <===
     const [previousNeighborhood, setPreviousNeighborhood] = useState(null);
@@ -323,12 +325,19 @@ useEffect(() => {
               element={
                 <div>
                   <Header onSearch={handleSearch} />
-                  <Hero onSearch={handleSearch} onFilterChange={setSelectedFilter} />
+                  <Hero 
+                    onSearch={handleSearch} 
+                    onFilterChange={setSelectedFilter} 
+                    onOpenMap={() => setShowMap(true)}
+                  />
                   {searchResults !== null ? (
                     <SearchResults results={searchResults} onOpen={setModalItem} />
                   ) : (
                     renderFilteredContent()
                   )}
+
+                  {/* MODAL DE MAPA v2.8 */}
+                  {showMap && <MapModal onClose={() => setShowMap(false)} />}
 
                   {/* MODAL DE BAIRROS */}
                   {neighborhoodModal && (
