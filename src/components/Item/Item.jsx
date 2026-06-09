@@ -60,20 +60,9 @@ export default function Item({
       <div className="thumb-wrapper">
         <img className="thumb" src={bg} alt={title} loading="lazy" />
 
-        {/* Exibe APENAS se estiver fechado - v2.7: Faixa vermelha horizontal no meio */}
-        {isClosed && (
-          <div className="status-bar-horizontal">
-            <span className="status-detail-text">
-              {op.includes("|") ? op.split("|")[1].trim() : op.trim()}
-            </span>
-          </div>
-        )}
-
-        {/* Exibe APENAS se for consultar */}
-        {isConsult && (
-          <div className="status-bar" style={{ backgroundColor: 'rgba(255, 165, 0, 0.8)' }}>
-            <div className="status-title">CONSULTAR</div>
-            <div className="status-subtitle">{op}</div>
+        {operation && !operation.toLowerCase().startsWith("unidade aberta") && (
+          <div className="status-bar">
+            {operation}
           </div>
         )}
       </div>

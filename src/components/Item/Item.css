@@ -115,20 +115,28 @@
   position: relative;
 }
 
-/* ── STATUS BAR HORIZONTAL (v2.7) ── */
-.status-bar-horizontal {
+/* ── STATUS BAR HORIZONTAL (v4.7) ── */
+.status-bar {
   position: absolute;
   top: 50%;
   left: 0;
   right: 0;
+  width: 100%;
   transform: translateY(-50%);
-  background: rgba(226, 18, 33, 0.9);
-  color: #fff;
-  padding: 8px 12px;
+  background-color: #E21221; /* Cor vermelha do projeto */
+  color: #ffffff;
   text-align: center;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
   z-index: 5;
-  backdrop-filter: blur(2px);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.Item:hover .status-bar {
+  background: #c80000;
 }
 
 .status-detail-text {
@@ -138,5 +146,3 @@
   text-transform: uppercase;
   display: block;
 }
-
-.status-bar {
