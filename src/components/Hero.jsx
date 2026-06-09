@@ -30,7 +30,7 @@ const FILTER_OPTIONS = [
   { id: "proximos", name: "Mais próximos" }
 ];
 
-export default function Hero({ onMoreInfo, onSearch, onFilterChange }) {
+export default function Hero({ onMoreInfo, onSearch, onFilterChange, onOpenMap }) {
   // ESTADOS - Agora o estado inicial padrão é "zona" em vez de vazio
   const [idx, setIdx] = useState(0); 
   const [open, setOpen] = useState(false); 
@@ -174,6 +174,11 @@ export default function Hero({ onMoreInfo, onSearch, onFilterChange }) {
             <hr className="UserProfile-menu-divider" />
           </div>
         </div>
+
+        {/* ÍCONE DO MAPA v2.8 */}
+        <button className="map-icon-button" onClick={onOpenMap} aria-label="Abrir mapa">
+          <img src="/icon_map.svg" alt="Mapa" />
+        </button>
       </div>
 
       {/* BOLINHAS DE NAVEGAÇÃO (DOTS) */}

@@ -33,25 +33,9 @@
 }
 
 /* ── DINÂMICA DE INTERAÇÃO (HOVER) ── */
-.Item:hover .status-closed-overlay {
-  background: rgba(185, 28, 28, 0.65) !important;
+.Item:hover .status-bar-horizontal {
+  background: #c80000 !important;
 }
-
-.Item:hover .status-title-huge {
-  opacity: 0.4;
-  transform: scale(0.85) translateY(-4px);
-}
-
-.Item:hover .status-schedule-reveal {
-  opacity: 1;
-  transform: scale(1.05) translateY(-2px);
-}
-
-.Item:hover .schedule-lines li {
-  font-weight: 700;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-}
-
 
 .Item .overlay {
   background: #eeeeee;
@@ -131,98 +115,28 @@
   position: relative;
 }
 
-.status-bar {
+/* ── STATUS BAR HORIZONTAL (v2.7) ── */
+.status-bar-horizontal {
   position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: rgba(208, 19, 31, 0.656);
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  background: rgba(226, 18, 33, 0.9);
   color: #fff;
+  padding: 8px 12px;
   text-align: center;
-  border-radius: 4px;
-  padding: 20px;
+  z-index: 5;
+  backdrop-filter: blur(2px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
-.status-bar .status-title {
-  font-size: 1.6rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-  margin-bottom: 12px;
-}
-
-.status-bar .status-subtitle {
-  font-size: 11px;
-  font-weight: 400;
-  opacity: 0.95;
-}
-
-/* ── OVERLAY SUAVE (VERMELHO MAIS FRACO E MENOS BLUR) ── */
-.status-closed-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(255, 0, 0, 0.521) !important;
-  backdrop-filter: blur(1.5px);
-  -webkit-backdrop-filter: blur(2px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
-.status-content-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-}
-
-/* TEXTO "FECHADO" (Estado Inicial: Forte) */
-.status-title-huge {
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
-  font-weight: 700;
-  color: #ffffff;
-  text-transform: uppercase;
-  opacity: 1;
-  transform: scale(1);
-  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
-}
-
-/* CONTAINER DOS HORÁRIOS (Sempre visível, mas discreto no início) */
-.status-schedule-reveal {
-  opacity: 0.75;
-  transform: scale(0.95);
-  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
-  margin-top: 12px;
-  text-align: center;
-  width: 100%;
-}
-
-.schedule-label {
-  font-size: 12px;
+.status-detail-text {
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.5px;
-  color: rgba(255, 255, 255, 0.8);
+  text-transform: uppercase;
   display: block;
-  margin-bottom: 4px;
 }
 
-.schedule-lines {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.schedule-lines li {
-  font-size: 12px;
-  font-weight: 500;
-  color: #ffffff;
-}
+.status-bar {

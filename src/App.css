@@ -382,6 +382,34 @@
   display: inline-block;
 }
 
+/* ÍCONE DO MAPA v2.8 */
+.map-icon-button {
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.map-icon-button:hover {
+  transform: translateY(-2px);
+}
+
+.map-icon-button img {
+  width: 24px;
+  height: 24px;
+}
+
+@media (max-width: 768px) {
+  .map-icon-button {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 auto !important;
+  }
+}
+
 /* ==========================================================================
    ── MENU DE FILTROS (MANTENDO SUA BASE DE POSICIONAMENTO) ──
    ========================================================================== */
@@ -1060,6 +1088,56 @@
   transform: scale(1.1);
 }
 
+/* ── MAP MODAL v2.8 ── */
+.map-modal-overlay {
+  padding: 0;
+  background: #000;
+  overflow: hidden; /* v2.9: Evita scrolls na overlay */
+}
+
+.MapModal-container {
+  background: #ffffff;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  animation: modalScaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden; /* v2.9: Elimina qualquer scroll do container */
+}
+
+.map-wrapper {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* v2.9: Garante que o iframe não cause scroll */
+}
+
+.map-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block; /* Remove possíveis espaços extras na base */
+}
+
+.map-modal-close {
+  top: 30px;
+  right: 30px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  z-index: 99999 !important; /* Garantir que o botão fique sempre acima do iframe */
+}
+
+.map-modal-close:hover {
+  background: #fff;
+  transform: scale(1.1);
+}
+
 /* ── HERO SECTION ── */
 .modal-hero {
   position: relative;
@@ -1524,7 +1602,7 @@
 }
 
 .unit-card-body {
-  padding: 16px 20px; /* Reduzido v2.5 */
+  padding: 12px 18px; /* Reduzido v2.7: Mais espaço interno */
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -1533,14 +1611,14 @@
 }
 
 .unit-card-header strong {
-  font-size: 17px; /* Reduzido v2.5 */
+  font-size: 16px; /* Reduzido v2.7: Ajuste para nomes longos (Iamspe) */
   color: #1a1a1a;
   font-weight: 700;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   display: block;
   cursor: pointer;
   transition: color 0.2s ease;
-  line-height: 1.2;
+  line-height: 1.15; /* v2.7: Mais compacto */
   word-break: break-word; /* v2.4/v2.5: Evita quebra de layout por nomes longos */
 }
 
@@ -1552,8 +1630,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 8px; /* Reduzido v2.5 */
-  gap: 12px;
+  margin-top: 6px; /* Reduzido v2.7 */
+  gap: 10px; /* Reduzido v2.7 */
 }
 
 .unit-actions {
@@ -1563,10 +1641,10 @@
 .unit-actions button {
   background: #f8f9fa;
   border: 1px solid #dee2e6;
-  padding: 6px 14px; /* Reduzido v2.5 */
+  padding: 5px 12px; /* Reduzido v2.7 */
   border-radius: 8px;
   color: #495057;
-  font-size: 13px; /* Reduzido v2.5 */
+  font-size: 12px; /* Reduzido v2.7 */
   font-weight: 600;
   white-space: nowrap;
 }
@@ -2004,20 +2082,35 @@
     right: 16px;
     bottom: 30px;
     pointer-events: auto;
+    align-items: stretch;
   }
 
   .Hero .button-wrapper > * {
-    flex: 1 1 50%;
+    flex: 1 1 0%;
     min-width: 0;
+  }
+
+  .Hero .button-wrapper > .map-icon-button {
+    flex: 0 0 auto !important;
   }
 
   .Hero .button-wrapper .Search.open {
     width: 100%;
+    height: auto;
+    padding: 6px 4px; /* Ajustado para bater EXATAMENTE com o padding de 10px 4px do botão Filtro */
+    box-sizing: border-box;
+    border-radius: 5px; /* Botões usam 5px */
+    display: flex;
+    align-items: center;
+  }
+
+  .Hero .button-wrapper .Search input {
+    height: 100%;
   }
 
   .Hero .button-wrapper .Search input::placeholder {
-    font-size: 10px; /* Reduzido levemente v1.3 para garantir que cabe */
-    letter-spacing: -0.2px;
+    font-size: 12px; /* Aumentado para bater mais com a fonte do botão (12px) */
+    letter-spacing: normal;
   }
 
   /* Seção "Filtrar por" responsiva v1.3 */
@@ -2042,6 +2135,7 @@
     padding: 10px 4px;
     font-size: 12px;
     justify-content: center;
+    margin-top: 4px; /* Adicionado na v3.3 para alinhamento simétrico com o campo de busca */
   }
 
   /* Ocultar bolinhas (dots) em mobile/tablet v1.3 */
@@ -2170,10 +2264,11 @@
     gap: 16px;
   }
 
-  .modal-close {
-    top: 12px;
-    right: 12px;
-    z-index: 100;
+  .map-modal-close {
+    top: 50%; /* Movido para o centro da tela verticalmente na v3.3 */
+    transform: translateY(-50%);
+    right: 20px; /* Mantido próximo ao canto da tela no lado direito */
+    z-index: 999999 !important; /* Incrementado o z-index para garantir sobreposição do popup de erro */
   }
 }
 

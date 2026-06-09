@@ -117,7 +117,7 @@
 
   left: 0;
 
-  top: 48px;
+  top: 45px;
 
   width: 530px;
 
@@ -144,7 +144,7 @@
 
   left: 0;
 
-  top: 48px;
+  top: 45px;
 
   width: 950px;
 
@@ -176,7 +176,7 @@
 
   left: 0;
 
-  top: 48px;
+  top: 45px;
 
   width: 1000px;
 
@@ -482,7 +482,7 @@
 
   left: 0;
 
-  top: 49px;
+  top: 45px;
 
   width: 550px;
 
@@ -777,7 +777,7 @@
   gap: 4px;
   background: none;
   border: none;
-  font-size: 13px;
+  font-size: 20px;
   font-weight: 600;
   color: rgba(0, 0, 0, 0.5);
   cursor: pointer;
