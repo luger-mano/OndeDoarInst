@@ -895,3 +895,32 @@
   }
 
 }
+
+/* --- NOVOS ESTILOS V3.4 --- */
+.forgot-password-link {
+  background: transparent;
+  border: none;
+  color: #e50914;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  font-weight: 600;
+  text-align: right;
+  margin-top: -8px;
+  transition: color 0.2s;
+  width: fit-content;
+  align-self: flex-end;
+}
+
+.forgot-password-link:hover {
+  color: #c40812;
+  text-decoration: underline;
+}
+
+.form-helper-text {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
