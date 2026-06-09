@@ -1,5 +1,5 @@
 const API_URL =
-  "/api";
+  "http://localhost:8080/";
 
 function generateKey() {
 
