@@ -973,7 +973,7 @@
     align-items: center;
     justify-content: flex-start !important;
     /* NOVO v4.3: Tags para esquerda para não bater no Close */
-    gap: 120px !important;
+    gap: 15px !important;
     /* NOVO v4.3 */
     width: 100% !important;
     /* NOVO v4.4 */
