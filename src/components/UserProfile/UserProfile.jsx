@@ -68,7 +68,7 @@ export default function UserProfile() {
   const [editForm, setEditForm] = useState(initialEditForm);
 
   const bloodType =
-    loggedUser?.bloodType && loggedUser.bloodType !== "Não sei"
+    loggedUser?.bloodType && loggedUser.bloodType !== "IDK"
       ? loggedUser.bloodType
       : "?";
 
@@ -114,9 +114,14 @@ export default function UserProfile() {
           nome: userData.userName || "",
           sobrenome: userData.middleName || "",
           email: userData.mail || "",
-          tipoSanguineo: userData.bloodType
-            ? userData.bloodType.replace("_POSITIVE", "+").replace("_NEGATIVE", "-")
-            : "Não sei",
+          tipoSanguineo:
+  userData.bloodType === "IDK"
+    ? "IDK"
+    : userData.bloodType
+      ? userData.bloodType
+          .replace("_POSITIVE", "+")
+          .replace("_NEGATIVE", "-")
+      : "",
           whatsapp: userData.phone || "",
           estado: userData.state || "",
           senhaAtual: "",
@@ -124,8 +129,8 @@ export default function UserProfile() {
           confirmarNovaSenha: ""
         });
       } catch (err) {
-        console.error("Erro detalhado na busca ou token expirado:", err);
-        handleLogout();
+        console.error("Erro detalhado na busca:", err);
+        setError("Não foi possível carregar seus dados. Tente novamente.");
       } finally {
         setLoading(false);
       }
@@ -193,7 +198,12 @@ export default function UserProfile() {
         mail: userData.mail,
         userName: userData.userName,
         middleName: userData.middleName,
-        bloodType: userData.bloodType?.replace("_POSITIVE", "+").replace("_NEGATIVE", "-") || "?",
+        bloodType:
+  userData.bloodType === "IDK"
+    ? "IDK"
+    : userData.bloodType
+      ?.replace("_POSITIVE", "+")
+      ?.replace("_NEGATIVE", "-") || "?",
       }));
       setSuccess("Login realizado com sucesso!");
     } catch (err) {
@@ -225,30 +235,40 @@ export default function UserProfile() {
         mail: registerForm.email,
         password: registerForm.senha,
         state: registerForm.estado,
-        bloodType: registerForm.tipoSanguineo && registerForm.tipoSanguineo !== "Não sei"
-          ? registerForm.tipoSanguineo.replace("+", "_POSITIVE").replace("-", "_NEGATIVE") : ""
+       bloodType:
+  registerForm.tipoSanguineo === "IDK"
+    ? "IDK"
+    : registerForm.tipoSanguineo
+      ? registerForm.tipoSanguineo
+          .replace("+", "_POSITIVE")
+          .replace("-", "_NEGATIVE")
+      : null
       };
 
       const response = await registerRequest(payload);
 
-      localStorage.setItem("user", JSON.stringify({
-        id: response.userId,
-        mail: response.mail || registerForm.email,
-        userName: registerForm.nome,
-        middleName: registerForm.sobrenome,
-        bloodType: registerForm.tipoSanguineo === "Não sei" || !registerForm.tipoSanguineo ? "?" : registerForm.tipoSanguineo
-      }));
-
-      setLoggedUser({
-        id: response.userId,
-        mail: response.mail || registerForm.email,
-        userName: registerForm.nome,
-        middleName: registerForm.sobrenome,
-        bloodType: registerForm.tipoSanguineo === "Não sei" || !registerForm.tipoSanguineo ? "?" : registerForm.tipoSanguineo
+      const loginResponse = await loginRequest({
+        mail: registerForm.email,
+        password: registerForm.senha
       });
+      localStorage.setItem("token", loginResponse.accessToken);
+
+      const userData = await getUserById(loginResponse.userId, loginResponse.accessToken);
+
+      const userSessionData = {
+        id: loginResponse.userId,
+        mail: userData.mail,
+        userName: userData.userName,
+        middleName: userData.middleName,
+        bloodType: userData.bloodType?.replace("_POSITIVE", "+").replace("_NEGATIVE", "-") || "?",
+      };
+
+      localStorage.setItem("user", JSON.stringify(userSessionData));
+      setLoggedUser(userSessionData);
 
       setSuccess(`Olá, ${registerForm.nome}! Seja bem-vindo(a) à nossa plataforma. É um prazer ter você conosco.`);
     } catch (err) {
+      console.error("Erro no cadastro:", err);
       setError("Erro ao cadastrar usuário.");
     } finally {
       setLoading(false);
@@ -274,33 +294,49 @@ export default function UserProfile() {
       }
 
       const token = localStorage.getItem("token");
-      const payload = {
-        userName: editForm.nome,
-        middleName: editForm.sobrenome,
-        phone: editForm.whatsapp.replace(/\D/g, ""),
-        mail: editForm.email,
-        state: editForm.estado,
-        password: editForm.novaSenha || editForm.senhaAtual,
-        bloodType: editForm.tipoSanguineo && editForm.tipoSanguineo !== "Não sei"
-          ? editForm.tipoSanguineo.replace("+", "_POSITIVE").replace("-", "_NEGATIVE") : "A_POSITIVE"
-      };
+     const payload = {
+  userName: editForm.nome,
+  middleName: editForm.sobrenome,
+  phone: editForm.whatsapp.replace(/\D/g, ""),
+  mail: editForm.email,
 
+  password:
+    editForm.novaSenha ||
+    editForm.senhaAtual,
+
+  state: editForm.estado,
+
+  bloodType:
+    editForm.tipoSanguineo === "IDK"
+      ? "IDK"
+      : editForm.tipoSanguineo
+          .replace("+", "_POSITIVE")
+          .replace("-", "_NEGATIVE")
+};
       await updateUserRequest(loggedUser.id, payload, token);
 
-      localStorage.setItem("user", JSON.stringify({
+      const updatedUserSession = {
         ...loggedUser,
-        email: editForm.email,
+        mail: editForm.email,
         userName: editForm.nome,
+        middleName: editForm.sobrenome,
         bloodType: editForm.tipoSanguineo || loggedUser.bloodType
-      }));
+      };
 
-      setSuccess("Informações updated com sucesso!");
+      localStorage.setItem("user", JSON.stringify(updatedUserSession));
+      setLoggedUser(updatedUserSession);
+
+      setSuccess("Informações atualizadas com sucesso!");
     } catch (err) {
-      console.error(err);
-      // Se a falha na atualização for por token expirado (401/403)
-      alert("Sua sessão expirou. Faça login novamente para salvar alterações.");
-      handleLogout();
-    } finally {
+
+  console.error("ERRO COMPLETO:", err);
+
+  alert(
+    err.message ||
+    "Erro ao atualizar perfil"
+  );
+
+}finally {
       setLoading(false);
     }
   }
@@ -339,9 +375,33 @@ export default function UserProfile() {
             {loggedUser.userName || loggedUser.mail.split("@")[0]}
           </span>
         )}
-        <div className="image blood-avatar">
-          <span>{bloodType}</span>
-        </div>
+       <div className="image blood-avatar">
+  {loggedUser ? (
+    bloodType === "?" ? (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="white"
+      >
+        <path d="M12 2C12 2 5 10 5 15a7 7 0 0 0 14 0C19 10 12 2 12 2z" />
+      </svg>
+    ) : (
+      <span>{bloodType}</span>
+    )
+  ) : (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+    >
+      <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+    </svg>
+  )}
+</div>
         <span className="caret">▾</span>
       </div>
 
@@ -382,33 +442,33 @@ export default function UserProfile() {
                   <select name="tipoSanguineo" value={registerForm.tipoSanguineo} onChange={handleRegisterChange}>
                     <option value="">Tipo sanguíneo (opcional)</option>
                     <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
-                    <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option><option>Não sei</option>
+                    <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option><option value="IDK">Não sei</option>
                   </select>
                   <div className="input-wrapper-whatsapp">
                     <img src="https://flagcdn.com/w20/br.png" alt="BR" className="whatsapp-flag" />
                     <input name="whatsapp" placeholder="WhatsApp" value={registerForm.whatsapp} onChange={handleRegisterChange} maxLength={15} required />
                   </div>
                   <select
-  name="estado"
-  value={registerForm.estado}
-  onChange={handleRegisterChange}
-  required
->
-  <option value="">
-    Selecione seu estado
-  </option>
+                    name="estado"
+                    value={registerForm.estado}
+                    onChange={handleRegisterChange}
+                    required
+                  >
+                    <option value="">
+                      Selecione seu estado
+                    </option>
 
-  {ESTADOS.map((estado) => (
+                    {ESTADOS.map((estado) => (
 
-    <option
-      key={estado.sigla}
-      value={estado.sigla}
-    >
-      {estado.nome}
-    </option>
+                      <option
+                        key={estado.sigla}
+                        value={estado.sigla}
+                      >
+                        {estado.nome}
+                      </option>
 
-  ))}
-</select>
+                    ))}
+                  </select>
                   <input type="password" name="senha" placeholder="Senha" value={registerForm.senha} onChange={handleRegisterChange} required />
                   <input type="password" name="confirmarSenha" placeholder="Confirmar" value={registerForm.confirmarSenha} onChange={handleRegisterChange} required />
                   {error && <p className="inline-form-error">{error}</p>}
@@ -447,32 +507,32 @@ export default function UserProfile() {
                   <select name="tipoSanguineo" value={editForm.tipoSanguineo} onChange={handleEditChange}>
                     <option value="">Tipo sanguíneo</option>
                     <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
-                    <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option><option>Não sei</option>
+                    <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option><option value="IDK">Não sei</option>
                   </select>
                   <div className="input-wrapper-whatsapp">
                     <img src="https://flagcdn.com/w20/br.png" alt="BR" className="whatsapp-flag" />
                     <input name="whatsapp" placeholder="WhatsApp" value={editForm.whatsapp} onChange={handleEditChange} maxLength={15} />
                   </div>
                   <select
-  name="estado"
-  value={editForm.estado}
-  onChange={handleEditChange}
->
-  <option value="">
-    Selecione seu estado
-  </option>
+                    name="estado"
+                    value={editForm.estado}
+                    onChange={handleEditChange}
+                  >
+                    <option value="">
+                      Selecione seu estado
+                    </option>
 
-  {ESTADOS.map((estado) => (
+                    {ESTADOS.map((estado) => (
 
-    <option
-      key={estado.sigla}
-      value={estado.sigla}
-    >
-      {estado.nome}
-    </option>
+                      <option
+                        key={estado.sigla}
+                        value={estado.sigla}
+                      >
+                        {estado.nome}
+                      </option>
 
-  ))}
-</select>
+                    ))}
+                  </select>
 
                   <hr className="inline-form-divider-pills" />
                   <input type="password" name="senhaAtual" placeholder="Senha atual (se for alterar)" value={editForm.senhaAtual} onChange={handleEditChange} />

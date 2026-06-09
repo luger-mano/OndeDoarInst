@@ -3,15 +3,6 @@ import "./Navigation.css";
 import TeamCard from "../TeamCard/TeamCard";
 import "../TeamCard/TeamSection.css";
 
-import hug from "../../assets/fotosDevs/hug.png";
-import hug2 from "../../assets/fotosDevs/hug2.png";
-import kai from "../../assets/fotosDevs/kai.png";
-import kai2 from "../../assets/fotosDevs/kai2.png";
-import luc from "../../assets/fotosDevs/luc.png";
-import luc2 from "../../assets/fotosDevs/luc2.png";
-import rob from "../../assets/fotosDevs/rob.png";
-import rob2 from "../../assets/fotosDevs/rob2.png";
-
 export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [openMenu, setOpenMenu] = useState(null);
@@ -48,25 +39,15 @@ export default function Navigation() {
     setMobileDrawerOpen(false);
     setMobileSection(null);
   };
-
-  const openSection = (section) => setMobileSection(section);
+ const handleMobileNavClick = (section) => {
+  if (window.innerWidth <= 768) {
+    setMobileSection(section);
+    setMobileDrawerOpen(true);
+  }
+};
 
   return (
     <div className="navigation-wrapper" ref={wrapperRef}>
-
-      {/* ───────── HAMBÚRGUER — só aparece em mobile via CSS ───────── */}
-      {!mobileDrawerOpen && (
-        <button
-          className="mobile-hamburger"
-          onClick={() => setMobileDrawerOpen(true)}
-          aria-label="Menu"
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-      )}
-
       {/* ───────── OVERLAY — clicar fora fecha o drawer ───────── */}
       {mobileDrawerOpen && (
         <div
@@ -80,34 +61,13 @@ export default function Navigation() {
         className={`mobile-drawer ${mobileDrawerOpen ? "open" : ""}`}
         ref={mobileDrawerRef}
       >
-        {/* Lista principal de opções */}
-        {!mobileSection && (
-          <nav aria-label="Mobile navigation">
-            <ul>
-              <li>
-                <button className="mobile-menu-link" onClick={() => openSection("doar")}>
-                  Por que doar?
-                </button>
-              </li>
-              <li>
-                <button className="mobile-menu-link" onClick={() => openSection("requisitos")}>
-                  Requisitos de Doação
-                </button>
-              </li>
-              <li>
-                <button className="mobile-menu-link" onClick={() => openSection("sangue")}>
-                  Precisa de Sangue?
-                </button>
-              </li>
-            </ul>
-          </nav>
-        )}
+      
 
         {/* ── Seção: Por que doar ── */}
         {mobileSection === "doar" && (
           <div className="mobile-section-content">
-            <button className="mobile-back-btn" onClick={() => setMobileSection(null)}>
-              ←
+            <button className="mobile-back-btn"onClick={closeDrawer}>
+              ← Voltar
             </button>
             <span className="menu-tag">IMPACTO</span>
             <h2>Sua doação pode salvar até 4 vidas</h2>
@@ -132,8 +92,8 @@ export default function Navigation() {
         {/* ── Seção: Requisitos ── */}
         {mobileSection === "requisitos" && (
           <div className="mobile-section-content">
-            <button className="mobile-back-btn" onClick={() => setMobileSection(null)}>
-              ←
+            <button className="mobile-back-btn" onClick={closeDrawer}>
+              ← Voltar
             </button>
             <span className="menu-tag">REQUISITOS</span>
             <h2>Quem pode doar sangue?</h2>
@@ -162,8 +122,8 @@ export default function Navigation() {
         {/* ── Seção: Precisa de Sangue ── */}
         {mobileSection === "sangue" && (
           <div className="mobile-section-content">
-            <button className="mobile-back-btn" onClick={() => setMobileSection(null)}>
-              ←
+            <button className="mobile-back-btn" onClick={closeDrawer}>
+              ← Voltar
             </button>
             <span className="menu-tag urgent-tag">URGENTE</span>
             <h2>Precisa de Sangue?</h2>
@@ -189,7 +149,12 @@ export default function Navigation() {
           <ul>
             {/* ── POR QUE DOAR ── */}
             <li onMouseEnter={() => handleMouseEnter("doar")} onMouseLeave={handleMouseLeave}>
-              <button className="nav-link nav-button">Por que doar?</button>
+              <button
+  className="nav-link nav-button"
+  onClick={() => handleMobileNavClick("doar")}
+>
+  Por quê?
+</button>
               <div className={`menuOp2 ${scrolled ? "menuScrolled" : ""} ${openMenu === "doar" ? "menuVisible" : ""}`}>
                 <span className="menu-tag">IMPACTO</span>
                 <h2>Sua doação pode salvar até 4 vidas</h2>
@@ -214,7 +179,12 @@ export default function Navigation() {
 
             {/* ── REQUISITOS ── */}
             <li onMouseEnter={() => handleMouseEnter("requisitos")} onMouseLeave={handleMouseLeave}>
-              <button className="nav-link nav-button">Requisitos de Doação</button>
+              <button
+  className="nav-link nav-button"
+  onClick={() => handleMobileNavClick("requisitos")}
+>
+  Requisitos
+</button>
               <div className={`menuOp3 ${scrolled ? "menuScrolled" : ""} ${openMenu === "requisitos" ? "menuVisible" : ""}`}>
                 <span className="menu-tag">REQUISITOS</span>
                 <h2>Quem pode doar sangue?</h2>
@@ -244,7 +214,12 @@ export default function Navigation() {
 
             {/* ── PRECISA DE SANGUE ── */}
             <li onMouseEnter={() => handleMouseEnter("sangue")} onMouseLeave={handleMouseLeave}>
-              <button className="nav-link nav-button need-blood-btn">Precisa de Sangue?</button>
+             <button
+  className="nav-link nav-button need-blood-btn"
+  onClick={() => handleMobileNavClick("sangue")}
+>
+  Precisa de Sangue?
+</button>
               <div className={`menuOp4 ${scrolled ? "menuScrolled" : ""} ${openMenu === "sangue" ? "menuVisible" : ""}`}>
                 <span className="menu-tag urgent-tag">URGENTE</span>
                 <h2>Precisa de Sangue?</h2>

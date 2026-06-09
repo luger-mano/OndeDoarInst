@@ -3,34 +3,6 @@
   position: relative;
 }
 
-/* ───────── HAMBURGER BUTTON (MOBILE ONLY) ───────── */
-.mobile-hamburger {
-  display: none;
-  position: relative; /* Mudado de absolute para relative v1.2 */
-  margin-left: 20px; /* Espaço em relação à logo */
-  margin-bottom: 10px;
-  width: 20px;
-  height: 20px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  z-index: 10001;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
-  padding: 0;
-}
-
-.mobile-hamburger span {
-  display: block;
-  width: 25px;
-  height: 2px;
-  background: #e50914;
-  border-radius: 1.5px;
-  transition: all 0.3s ease;
-}
-
 /* ───────── MOBILE DRAWER ───────── */
 .mobile-drawer {
   display: none;
@@ -697,13 +669,10 @@
 
   /* Ocultar o menu horizontal desktop */
   .Navigation {
-    display: none !important;
+    display: flex !important;
   }
 
   /* ───────── MOBILE HAMBURGER SHOW ───────── */
-  .mobile-hamburger {
-    display: flex;
-  }
 
   .mobile-drawer-overlay {
     display: block;
@@ -833,4 +802,23 @@
   margin-top: 8px;
   font-size: 14px;
   padding: 14px 16px;
+}
+
+@media (max-width: 768px) {
+
+  .Navigation {
+    margin-left: 4px;
+  }
+
+  .Navigation nav ul {
+    gap: 0;
+  }
+
+  .nav-link {
+    padding: 3px 5px;
+    font-size: 11px;
+  }
+.need-blood-btn {
+  padding: 4px 6px;
+}
 }

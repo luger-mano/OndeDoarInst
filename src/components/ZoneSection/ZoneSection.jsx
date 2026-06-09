@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 
 const PLACEHOLDER = "https://via.placeholder.com/400x225?text=Bairro";
-const VISIBLE = 5; // Quantidade de cards inteiros visíveis por vez
+const VISIBLE = 5; 
 
 function ZoneSection({ title, bairros, onOpenNeighborhood }) {
   const [offset, setOffset] = useState(0);
