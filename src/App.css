@@ -2027,6 +2027,13 @@
     display: none !important;
   }
 
+  /* NOVO v4.8: Ocultar menu hamburger quando UserProfile (Login/Cadastro) estiver aberto */
+  .Header:has(.UserProfile.open) .hamburger-button {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
   .Hero {
     height: 65vh;
     min-height: 400px;
