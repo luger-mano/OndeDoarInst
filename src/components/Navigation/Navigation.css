@@ -3,71 +3,6 @@
   position: relative;
 }
 
-/* ───────── MOBILE DRAWER ───────── */
-.mobile-drawer {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: -280px;
-  width: 280px;
-  height: 100vh;
-  background: #ffffff;
-  z-index: 10000;
-  transition: left 0.3s ease;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
-}
-
-.mobile-drawer.open {
-  left: 0;
-}
-
-.mobile-drawer nav ul {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  list-style: none;
-  margin: 0;
-  padding: 80px 0 0 0;
-}
-
-.mobile-drawer nav ul li {
-  margin: 0;
-  padding: 0;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.mobile-menu-link {
-  display: block;
-  width: 100%;
-  padding: 16px 20px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 15px;
-  font-weight: 500;
-  color: rgba(19, 19, 19, 0.9);
-  text-align: left;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-
-.mobile-menu-link:hover {
-  background: rgba(0, 0, 0, 0.02);
-  color: #000;
-}
-
-/* ───────── MOBILE DRAWER OVERLAY ───────── */
-.mobile-drawer-overlay {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 9999;
-}
-
 /* ───────── NAVIGATION ───────── */
 .Navigation {
   display: flex;
@@ -109,6 +44,7 @@
   color: black;
 }
 
+
 /* ───────── MENUS ───────── */
 
 .menuOp3 {
@@ -117,7 +53,7 @@
 
   left: 0;
 
-  top: 45px;
+  top: 47px;
 
   width: 530px;
 
@@ -144,7 +80,7 @@
 
   left: 0;
 
-  top: 45px;
+  top: 47px;
 
   width: 950px;
 
@@ -252,6 +188,41 @@
   letter-spacing: 1px;
   display: inline-block;
   margin-bottom: 16px;
+}
+
+/* NOVO v3.8: Classes utilitárias */
+.mobile-menu-header {
+  display: none;
+  /* Escondido por padrão no desktop */
+}
+
+.desktop-only {
+  display: inline-block;
+}
+
+/* NOVO v4.0: Estilos do Botão Hambúrguer de 4 Linhas */
+.hamburger-button {
+  display: none;
+  /* Escondido no desktop */
+  flex-direction: column;
+  justify-content: space-between;
+  width: 20px;
+  height: 15px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 8px;
+  z-index: 10006;
+  border-radius: 10px;
+}
+
+.hamburger-button span {
+  width: 100%;
+  height: 2px;
+  background-color: #ffffff;
+  border-radius: 2px;
+  transition: all 0.3s ease;
 }
 
 /* ───────── TITLES ───────── */
@@ -648,6 +619,7 @@
 
 /* ───────── RESPONSIVIDADE ───────── */
 @media (max-width: 1250px) {
+
   .menuOp1,
   .menuOp2,
   .menuOp3,
@@ -656,169 +628,497 @@
   }
 }
 
-@media (max-width: 1024px) {
-  /* Ocultar o menu horizontal desktop no Tablet e Mobile para dar lugar ao hambúrguer se necessário, 
-     ou apenas no mobile conforme a regra de 768px. As instruções pedem hambúrguer no mobile. */
-}
-
 @media (max-width: 768px) {
-  /* Manter navigation-wrapper visível — contém o hambúrguer */
   .navigation-wrapper {
-    display: block;
-  }
-
-  /* Ocultar o menu horizontal desktop */
-  .Navigation {
-    display: flex !important;
-  }
-
-  /* ───────── MOBILE HAMBURGER SHOW ───────── */
-
-  .mobile-drawer-overlay {
-    display: block;
-  }
-
-  .mobile-drawer {
-    display: block;
-  }
-
-  /* Cards do team-grid dentro do drawer: scroll horizontal com swipe */
-  .mobile-drawer .team-grid {
     display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
+    align-items: center;
+  }
+
+  /* NOVO v4.0: Hambúrguer de 4 linhas */
+  .hamburger-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: #e50914;
+    border-radius: 50%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 8px;
+    box-sizing: border-box;
+    margin-bottom: 8px;
+    margin-left: 5px;
+  }
+
+  /* NOVO v4.4: Ajuste do tamanho das linhas internas do hamburger */
+  .hamburger-button span {
+    width: 20px;
+    margin: 1.5px 0;
+  }
+
+  /* NOVO v4.3: Esconde o botão hamburger quando ele está aberto (X) para não sobrepor a modal */
+  .hamburger-button.open {
+    display: none !important;
+  }
+
+  .hamburger-button.open span:nth-child(1) {
+    transform: translateY(11px) rotate(45deg);
+  }
+
+  .hamburger-button.open span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger-button.open span:nth-child(3) {
+    opacity: 0;
+  }
+
+  .hamburger-button.open span:nth-child(4) {
+    transform: translateY(-11px) rotate(-45deg);
+  }
+
+  /* NOVO v4.0: Menu Vertical Flutuante */
+  .Navigation {
+    position: fixed;
+    top: 70px;
+    left: 20px;
+    right: 20px;
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+    z-index: 10005;
+    margin-left: 0;
+    width: auto;
+  }
+
+  .Navigation.hamburger-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .Navigation nav ul {
+    flex-direction: column;
+    align-items: flex-start;
     gap: 12px;
-    padding: 10px 16px 20px; /* Padding para respirar */
-    margin-top: 10px;
   }
 
-  .mobile-drawer .team-grid::-webkit-scrollbar {
-    display: none;
+  .nav-link {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 15px;
+    background: #f8fafc;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #1e293b;
+    border: 1px solid #f1f5f9;
+    box-sizing: border-box;
   }
 
-  .mobile-drawer .team-grid {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+  .nav-icon-mobile {
+    display: inline-block;
+    font-size: 16px;
   }
 
-  .mobile-drawer .team-grid .team-card {
-    flex: 0 0 85%; /* Parte do próximo card visível */
-    scroll-snap-align: center;
-    scroll-snap-stop: always;
-    min-width: 0;
+  .need-blood-btn {
+    background: #fee2e2 !important;
+    border: 1px solid #fecaca !important;
+    color: #dc2626 !important;
+    width: 100%;
+    box-sizing: border-box;
   }
 
-  /* Cards de "Por que doar" e "Requisitos" dentro do drawer */
-  .mobile-drawer .cards,
-  .mobile-drawer .horizontal-cards {
+  /* REUTILIZAÇÃO v3.9: Estratégia de Bottom Sheet para as Opções */
+  .menuOp2,
+  .menuOp3,
+  .menuOp4 {
+    position: fixed !important;
+    bottom: 0 !important;
+    top: auto !important;
+    left: 0 !important;
+    width: 100vw !important;
+    max-width: none !important;
+    height: auto !important;
+    max-height: 85vh !important;
+    border-radius: 32px 32px 0 0 !important;
+    overflow-y: auto !important;
+    padding: 20px 24px 40px !important;
+    box-sizing: border-box !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15) !important;
+    z-index: 10010 !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(100%);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .menuVisible {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+  }
+
+  .mobile-sheet-grabber {
+    width: 40px;
+    height: 5px;
+    background: #e2e8f0;
+    border-radius: 10px;
+    margin: 0 auto 20px;
+    flex-shrink: 0;
+  }
+
+  .nav-mobile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 10004;
+    display: block !important;
+  }
+
+  .mobile-menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0;
+    background: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+
+  .mobile-menu-close {
+    background: #f1f5f9;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #64748b;
+    cursor: pointer;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  /* Reset de posicionamento v4.0 */
+  .navigation-wrapper {
+    position: static;
+  }
+
+  /* NOVO v4.1: Modal Única (Hamburger) */
+  .Navigation {
+    position: fixed;
+    top: 70px;
+    left: 20px;
+    right: 20px;
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+    z-index: 10005;
+    margin-left: 0;
+    width: auto;
+    /* Ajustes para conteúdo interno dinâmico v4.1 */
+    max-height: 85vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    /* NOVO v4.3: Prevenir overflow e quebra de palavras */
+    overflow-x: hidden !important;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    box-sizing: border-box;
+  }
+
+  .Navigation.hamburger-visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+
+  .Navigation nav ul {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+    /* Ocupar todo espaço interno */
+    transition: opacity 0.2s ease;
+  }
+
+  /* NOVO v4.2: Oculta apenas os itens não ativos quando na subpágina */
+  .Navigation nav ul.hidden-mobile li:not(.active-subpage) {
+    display: none !important;
+  }
+
+  .Navigation nav ul.hidden-mobile li.active-subpage {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .Navigation nav ul.hidden-mobile li.active-subpage .nav-button {
+    display: none !important;
+  }
+
+  .nav-link {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 15px;
+    background: #f8fafc;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #1e293b;
+    border: 1px solid #f1f5f9;
+    box-sizing: border-box;
+  }
+
+  .nav-icon-mobile {
+    display: inline-block;
+    font-size: 16px;
+  }
+
+  .need-blood-btn {
+    background: #fee2e2 !important;
+    border: 1px solid #fecaca !important;
+    color: #dc2626 !important;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* NOVO v4.3: Ajuste do botão fechar para não cobrir tags e seguir padrão Modal.jsx */
+  .navigation-close-mobile {
+    display: flex !important;
+    position: absolute;
+    top: 20px !important;
+    right: 20px !important;
+    z-index: 10010 !important;
+    width: 36px !important;
+    height: 36px !important;
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-radius: 50%;
+    border: none !important;
+    color: #333 !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* NOVO v4.1: Subpáginas internas na Modal Única */
+  .menuOp2,
+  .menuOp3,
+  .menuOp4 {
+    /* Reseta comportamentos absolutos/fixos da v3.9 e do desktop */
+    position: static !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+    max-height: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    z-index: auto !important;
+
+    display: none !important;
+    /* Escondido por padrão */
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    /* NOVO v4.4: Alinhamento à esquerda */
+    text-align: left !important;
+    /* NOVO v4.4: Alinhamento à esquerda */
+    opacity: 0;
+    transform: translateX(10px);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Exibe a subpágina ativa */
+  .menuVisible {
+    display: flex !important;
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+  }
+
+  .mobile-menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start !important;
+    /* NOVO v4.3: Tags para esquerda para não bater no Close */
+    gap: 120px !important;
+    /* NOVO v4.3 */
+    width: 100% !important;
+    /* NOVO v4.4 */
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0;
+    background: #fff;
+    position: sticky;
+    top: -20px;
+    /* Gruda no topo interno do padding da Navigation */
+    z-index: 5;
+    padding-top: 10px;
+    /* Compensação visual */
+    padding-right: 45px;
+    /* NOVO v4.3: Espaço para o botão Close */
+  }
+
+  .menu-tag {
+    margin-bottom: 0 !important;
+    /* NOVO v4.3: Alinha melhor no header */
+  }
+
+  /* NOVO v4.1: Estilo do botão voltar */
+  .mobile-menu-back {
+    background: transparent;
+    border: none;
+    font-size: 15px;
+    color: #181818;
+    /* Azul para indicar link/ação */
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0;
+  }
+
+  .mobile-menu-back::before {
+    content: "←";
+    margin-right: 6px;
+    font-size: 18px;
+  }
+
+  .nav-mobile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 10004;
+    display: block !important;
+  }
+
+  .menuOp2 h2,
+  .menuOp3 h2,
+  .menuOp4 h2 {
+    font-size: 20px !important;
+    /* Reduzido v4.2 */
+    margin-top: 0;
+    /* Correção para o topo */
+    margin-bottom: 15px !important;
+    text-align: left !important;
+    /* NOVO v4.4 */
+    width: 100%;
+  }
+
+  .menuOp2 p,
+  .menuOp3 p,
+  .menuOp4 p {
+    font-size: 14px !important;
+    /* Reduzido v4.2 */
+    line-height: 1.5 !important;
+    text-align: left !important;
+    /* NOVO v4.4 */
+    width: 100%;
+  }
+
+  .info-boxs {
+    display: block;
+    width: 100%;
+    /* NOVO v4.4 */
+  }
+
+  /* Cards Mobile (Swipe Horizontal) */
+  .cards,
+  .horizontal-cards {
     display: flex !important;
     flex-wrap: nowrap !important;
     overflow-x: auto !important;
     scroll-snap-type: x mandatory !important;
     -webkit-overflow-scrolling: touch !important;
     gap: 12px !important;
-    padding: 10px 16px 20px !important;
-    margin: 0 !important;
+    padding-bottom: 10px !important;
+    justify-content: flex-start !important;
+    /* NOVO v4.4 */
   }
 
-  .mobile-drawer .cards::-webkit-scrollbar,
-  .mobile-drawer .horizontal-cards::-webkit-scrollbar {
+  .cards::-webkit-scrollbar {
     display: none;
   }
 
-  .mobile-drawer .card {
-    flex: 0 0 85% !important; /* Parte do próximo card visível */
+  .card {
+    flex: 0 0 85% !important;
     scroll-snap-align: center !important;
-    scroll-snap-stop: always !important;
-    min-width: 0 !important;
     height: auto !important;
+    min-height: 150px;
+    padding: 16px !important;
+    /* Reduzido v4.2 */
+    text-align: left !important;
+    /* NOVO v4.4 */
   }
 
-  .mobile-drawer .info-boxs {
-    display: block;
-    margin-top: 0;
-  }
-}
-
-/* ───────── CONTEÚDO INTERNO DAS SEÇÕES DO DRAWER ───────── */
-.mobile-section-content {
-  padding: 20px 16px 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.mobile-section-content h2 {
-  font-size: 22px;
-  margin: 4px 0 8px;
-  line-height: 1.2;
-}
-
-.mobile-section-content p {
-  font-size: 14px;
-  line-height: 1.6;
-  color: rgba(0, 0, 0, 0.72);
-  margin: 0;
-}
-
-.mobile-section-content .team-description {
-  font-size: 13px;
-  line-height: 1.6;
-  color: rgba(0, 0, 0, 0.65);
-  margin-bottom: 4px;
-}
-
-/* Botão Voltar */
-.mobile-back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: none;
-  border: none;
-  font-size: 20px;
-  font-weight: 600;
-  color: rgba(0, 0, 0, 0.5);
-  cursor: pointer;
-  padding: 0 0 4px 0;
-  transition: color 0.2s;
-  margin-bottom: 4px;
-}
-
-.mobile-back-btn:hover {
-  color: #000;
-}
-
-/* Dentro do drawer: requirements-top em 2 colunas fixas (não usa swipe) */
-.mobile-section-content .requirements-top {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-/* Link de ação "Precisa de Sangue" dentro do drawer */
-.mobile-section-content .need-blood-action {
-  margin-top: 8px;
-  font-size: 14px;
-  padding: 14px 16px;
-}
-
-@media (max-width: 768px) {
-
-  .Navigation {
-    margin-left: 4px;
+  .card h3 {
+    font-size: 16px !important;
+    /* Reduzido v4.2 */
+    text-align: left !important;
+    /* NOVO v4.4 */
   }
 
-  .Navigation nav ul {
-    gap: 0;
+  .card p {
+    font-size: 13px !important;
+    /* Reduzido v4.2 */
+    text-align: left !important;
+    /* NOVO v4.4 */
   }
 
-  .nav-link {
-    padding: 3px 5px;
-    font-size: 11px;
+  .requirements-top {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    justify-items: start !important;
+    /* NOVO v4.4 */
   }
-.need-blood-btn {
-  padding: 4px 6px;
-}
+
+  .requirement-small {
+    min-height: 100px;
+    width: 100%;
+    /* NOVO v4.4 */
+  }
+
+  .requirements-info h3 {
+    font-size: 18px !important;
+    /* Reduzido v4.2 */
+    text-align: left !important;
+    /* NOVO v4.4 */
+  }
 }
