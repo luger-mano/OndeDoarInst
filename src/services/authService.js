@@ -1,5 +1,5 @@
-const API_URL =
-  "http://localhost:8080/";
+export const API_URL =
+  "http://localhost:8080";
 
 function generateKey() {
 
@@ -84,6 +84,18 @@ export async function registerRequest(
   return response.json();
 }
 
+export async function verifyEmailRequest(token) {
+  const response = await fetch(`${API_URL}/user/email/verify?token=${token}`, {
+    method: "GET",
+  });
+
+  if (!response.ok) {
+    throw new Error("Link de verificação inválido ou expirado.");
+  }
+
+  return response.json();
+}
+
 /* EXCLUIR CONTA */
 export async function deleteAccountRequest(
   userId,
@@ -93,7 +105,7 @@ export async function deleteAccountRequest(
   const response =
     await fetch(
 
-      `http://localhost:8080/user/${userId}`,
+      `${API_URL}/user/${userId}`,
 
       {
 
@@ -126,7 +138,7 @@ export async function updateUserRequest(
   const response =
     await fetch(
 
-      `http://localhost:8080/user/${userId}`,
+      `${API_URL}/user/${userId}`,
 
       {
 
@@ -153,18 +165,18 @@ export async function updateUserRequest(
 
   if (!response.ok) {
 
-  const errorText =
-    await response.text();
+    const errorText =
+      await response.text();
 
-  console.log(
-    "ERRO BACKEND:",
-    errorText
-  );
+    console.log(
+      "ERRO BACKEND:",
+      errorText
+    );
 
-  throw new Error(
-    errorText
-  );
-}
+    throw new Error(
+      errorText
+    );
+  }
 
   return response.json();
 }
@@ -177,7 +189,7 @@ export async function getUserById(
   const response =
     await fetch(
 
-      `http://localhost:8080/user/${userId}`,
+      `${API_URL}/user/${userId}`,
 
       {
 
@@ -198,5 +210,25 @@ export async function getUserById(
     );
   }
 
+  return response.json();
+}
+
+/* ESQUECEU A SENHA - SOLICITAR E-MAIL */
+export async function forgotPasswordRequest(mail) {
+  const response = await fetch(`${API_URL}/user/password/forgot?mail=${encodeURIComponent(mail)}`, {
+    method: "POST",
+  });
+  if (!response.ok) throw new Error("Erro ao solicitar redefinição de senha");
+  return response.text(); // Pode retornar uma mensagem de sucesso
+}
+
+/* REDEFINIR SENHA */
+export async function resetPasswordRequest(token, newPassword) {
+  const response = await fetch(`${API_URL}/user/password/reset?token=${token}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ password: newPassword }),
+  });
+  if (!response.ok) throw new Error("Erro ao redefinir senha");
   return response.json();
 }

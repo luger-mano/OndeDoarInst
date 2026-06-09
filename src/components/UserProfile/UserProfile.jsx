@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import { loginRequest, registerRequest, updateUserRequest, getUserById } from "../../services/authService";
+import {
+  loginRequest,
+  registerRequest,
+  updateUserRequest,
+  getUserById,
+  forgotPasswordRequest,
+  resetPasswordRequest,
+  verifyEmailRequest
+} from "../../services/authService";
 import "./UserProfile.css";
 
 const ESTADOS = [
@@ -37,7 +45,7 @@ export default function UserProfile() {
   const ref = useRef(null);
   const [loggedUser, setLoggedUser] = useState(null);
 
-  // Controle de telas do menu dropdown: "menu", "login", "cadastro" ou "edicao"
+  // Controle de telas do menu dropdown: "menu", "login", "cadastro", "edicao", "esqueceuSenha" ou "redefinirSenha"
   const [menuView, setMenuView] = useState("menu");
 
   // ESTADOS GERAIS DE FEEDBACK
@@ -67,6 +75,14 @@ export default function UserProfile() {
   };
   const [editForm, setEditForm] = useState(initialEditForm);
 
+  // 4. FORMULÁRIO DE ESQUECEU SENHA
+  const [emailForgot, setEmailForgot] = useState("");
+
+  // 5. FORMULÁRIO DE REDEFINIR SENHA
+  const [resetToken, setResetToken] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+
   const bloodType =
     loggedUser?.bloodType && loggedUser.bloodType !== "IDK"
       ? loggedUser.bloodType
@@ -90,7 +106,89 @@ export default function UserProfile() {
     if (user) {
       setLoggedUser(JSON.parse(user));
     }
+
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+    const action = params.get("action");
+
+    if (token) {
+      if (action === "reset") {
+        setResetToken(token);
+        setMenuView("redefinirSenha");
+        setOpen(true);
+
+        window.history.replaceState({}, document.title, window.location.pathname);
+      } else {
+        handleEmailVerificationAndLogin(token);
+      }
+    }
   }, []);
+
+  async function handleEmailVerificationAndLogin(tokenFromEmail) {
+    try {
+      setLoading(true);
+      setError("");
+
+      // 1. Envia o token para o Back-end ativar a conta e gerar as credenciais
+      const loginData = await verifyEmailRequest(tokenFromEmail);
+
+      // 2. Salva o token de acesso que o back-end gerou na hora
+      localStorage.setItem("token", loginData.accessToken);
+
+      // 3. Busca os dados detalhados do usuário para montar a sessão
+      const userData = await getUserById(loginData.userId, loginData.accessToken);
+
+      const userSessionData = {
+        id: loginData.userId,
+        mail: userData.mail,
+        userName: userData.userName,
+        middleName: userData.middleName,
+        bloodType: userData.bloodType === "IDK"
+          ? "IDK"
+          : userData.bloodType?.replace("_POSITIVE", "+").replace("_NEGATIVE", "-") || "?",
+      };
+
+      // 4. Salva o usuário no LocalStorage e atualiza o estado global do componente
+      localStorage.setItem("user", JSON.stringify(userSessionData));
+      setLoggedUser(userSessionData);
+
+      // 5. Exibe a mensagem de sucesso na tela
+      setSuccess("Sua conta foi ativada com sucesso e você já está conectado!");
+
+      // Limpa o token da URL do navegador para a estética ficar perfeita
+      window.history.replaceState({}, document.title, window.location.pathname);
+
+    } catch (err) {
+      console.error("Erro na ativação de conta:", err);
+      setError("Não foi possível verificar seu e-mail. O link pode ter expirado.");
+      setOpen(true); // Abre o menu para exibir o erro se falhar
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleAutoLoginAfterVerify(userId, token) {
+    try {
+      setLoading(true);
+      localStorage.setItem("token", token);
+      const userData = await getUserById(userId, token);
+      const userSessionData = {
+        id: userId,
+        mail: userData.mail,
+        userName: userData.userName,
+        middleName: userData.middleName,
+        bloodType: userData.bloodType?.replace("_POSITIVE", "+").replace("_NEGATIVE", "-") || "?",
+      };
+      localStorage.setItem("user", JSON.stringify(userSessionData));
+      setLoggedUser(userSessionData);
+      setSuccess("E-mail verificado com sucesso! Você já está logado.");
+    } catch (err) {
+      console.error("Erro no auto-login:", err);
+      setError("Erro ao autenticar após verificação.");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   // CARREGA DADOS DE EDIÇÃO QUANDO ENTRA NA TELA (BLINDADO CONTRA EXPIRAÇÃO)
   useEffect(() => {
@@ -115,13 +213,13 @@ export default function UserProfile() {
           sobrenome: userData.middleName || "",
           email: userData.mail || "",
           tipoSanguineo:
-  userData.bloodType === "IDK"
-    ? "IDK"
-    : userData.bloodType
-      ? userData.bloodType
-          .replace("_POSITIVE", "+")
-          .replace("_NEGATIVE", "-")
-      : "",
+            userData.bloodType === "IDK"
+              ? "IDK"
+              : userData.bloodType
+                ? userData.bloodType
+                  .replace("_POSITIVE", "+")
+                  .replace("_NEGATIVE", "-")
+                : "",
           whatsapp: userData.phone || "",
           estado: userData.state || "",
           senhaAtual: "",
@@ -158,6 +256,9 @@ export default function UserProfile() {
     setSuccess("");
     setEmailLogin("");
     setSenhaLogin("");
+    setEmailForgot("");
+    setNewPassword("");
+    setConfirmNewPassword("");
     setRegisterForm(initialRegisterForm);
   };
 
@@ -189,25 +290,39 @@ export default function UserProfile() {
     try {
       setLoading(true);
       setError("");
+      
       const response = await loginRequest({ mail: emailLogin, password: senhaLogin });
-      localStorage.setItem("token", response.accessToken);
-      const userData = await getUserById(response.userId, response.accessToken);
+      console.log("Resposta do Login no Front:", response);
 
-      localStorage.setItem("user", JSON.stringify({
+      if (!response || !response.accessToken) {
+        throw new Error("Token não recebido.");
+      }
+
+      localStorage.setItem("token", response.accessToken);
+
+      const userData = await getUserById(response.userId, response.accessToken);
+      console.log("Dados do usuário buscando por ID:", userData);
+
+      const userSessionData = {
         id: response.userId,
-        mail: userData.mail,
-        userName: userData.userName,
-        middleName: userData.middleName,
-        bloodType:
-  userData.bloodType === "IDK"
-    ? "IDK"
-    : userData.bloodType
-      ?.replace("_POSITIVE", "+")
-      ?.replace("_NEGATIVE", "-") || "?",
-      }));
+        mail: userData?.mail || emailLogin,
+        userName: userData?.userName || "",
+        middleName: userData?.middleName || "",
+        bloodType: userData?.bloodType === "IDK"
+          ? "IDK"
+          : userData?.bloodType
+            ?.replace("_POSITIVE", "+")
+            ?.replace("_NEGATIVE", "-") || "?",
+      };
+
+      localStorage.setItem("user", JSON.stringify(userSessionData));
+      setLoggedUser(userSessionData);
+
       setSuccess("Login realizado com sucesso!");
+
     } catch (err) {
-      setError("Email ou senha inválidos");
+      console.error("Erro detalhado no handleLogin do Front:", err);
+      setError("Email ou senha inválidos ou erro ao carregar perfil.");
     } finally {
       setLoading(false);
     }
@@ -235,41 +350,55 @@ export default function UserProfile() {
         mail: registerForm.email,
         password: registerForm.senha,
         state: registerForm.estado,
-       bloodType:
-  registerForm.tipoSanguineo === "IDK"
-    ? "IDK"
-    : registerForm.tipoSanguineo
-      ? registerForm.tipoSanguineo
-          .replace("+", "_POSITIVE")
-          .replace("-", "_NEGATIVE")
-      : null
+        bloodType:
+          registerForm.tipoSanguineo === "IDK"
+            ? "IDK"
+            : registerForm.tipoSanguineo
+              ? registerForm.tipoSanguineo
+                .replace("+", "_POSITIVE")
+                .replace("-", "_NEGATIVE")
+              : null
       };
 
-      const response = await registerRequest(payload);
+      await registerRequest(payload);
 
-      const loginResponse = await loginRequest({
-        mail: registerForm.email,
-        password: registerForm.senha
-      });
-      localStorage.setItem("token", loginResponse.accessToken);
-
-      const userData = await getUserById(loginResponse.userId, loginResponse.accessToken);
-
-      const userSessionData = {
-        id: loginResponse.userId,
-        mail: userData.mail,
-        userName: userData.userName,
-        middleName: userData.middleName,
-        bloodType: userData.bloodType?.replace("_POSITIVE", "+").replace("_NEGATIVE", "-") || "?",
-      };
-
-      localStorage.setItem("user", JSON.stringify(userSessionData));
-      setLoggedUser(userSessionData);
-
-      setSuccess(`Olá, ${registerForm.nome}! Seja bem-vindo(a) à nossa plataforma. É um prazer ter você conosco.`);
+      setSuccess(`Um e-mail de confirmação de criação de conta foi enviado para ${registerForm.email}. Verifique sua caixa de entrada para ativar sua conta.`);
     } catch (err) {
       console.error("Erro no cadastro:", err);
       setError("Erro ao cadastrar usuário.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // REQUISIÇÃO: ESQUECEU SENHA
+  async function handleForgot(e) {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      setError("");
+      await forgotPasswordRequest(emailForgot);
+      setSuccess(`Um e-mail foi enviado para ${emailForgot} para alteração de senha.`);
+    } catch (err) {
+      setError("Erro ao solicitar redefinição de senha. Verifique o e-mail digitado.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // REQUISIÇÃO: REDEFINIR SENHA
+  async function handleResetPassword(e) {
+    e.preventDefault();
+    if (newPassword !== confirmNewPassword) return setError("As senhas não coincidem.");
+    if (newPassword.length < 8) return setError("A senha deve ter no mínimo 8 caracteres.");
+
+    try {
+      setLoading(true);
+      setError("");
+      await resetPasswordRequest(resetToken, newPassword);
+      setSuccess("Senha redefinida com sucesso! Agora você pode entrar com sua nova senha.");
+    } catch (err) {
+      setError("Erro ao redefinir senha ou token expirado.");
     } finally {
       setLoading(false);
     }
@@ -294,25 +423,25 @@ export default function UserProfile() {
       }
 
       const token = localStorage.getItem("token");
-     const payload = {
-  userName: editForm.nome,
-  middleName: editForm.sobrenome,
-  phone: editForm.whatsapp.replace(/\D/g, ""),
-  mail: editForm.email,
+      const payload = {
+        userName: editForm.nome,
+        middleName: editForm.sobrenome,
+        phone: editForm.whatsapp.replace(/\D/g, ""),
+        mail: editForm.email,
 
-  password:
-    editForm.novaSenha ||
-    editForm.senhaAtual,
+        password:
+          editForm.novaSenha ||
+          editForm.senhaAtual,
 
-  state: editForm.estado,
+        state: editForm.estado,
 
-  bloodType:
-    editForm.tipoSanguineo === "IDK"
-      ? "IDK"
-      : editForm.tipoSanguineo
-          .replace("+", "_POSITIVE")
-          .replace("-", "_NEGATIVE")
-};
+        bloodType:
+          editForm.tipoSanguineo === "IDK"
+            ? "IDK"
+            : editForm.tipoSanguineo
+              .replace("+", "_POSITIVE")
+              .replace("-", "_NEGATIVE")
+      };
       await updateUserRequest(loggedUser.id, payload, token);
 
       const updatedUserSession = {
@@ -329,14 +458,14 @@ export default function UserProfile() {
       setSuccess("Informações atualizadas com sucesso!");
     } catch (err) {
 
-  console.error("ERRO COMPLETO:", err);
+      console.error("ERRO COMPLETO:", err);
 
-  alert(
-    err.message ||
-    "Erro ao atualizar perfil"
-  );
+      alert(
+        err.message ||
+        "Erro ao atualizar perfil"
+      );
 
-}finally {
+    } finally {
       setLoading(false);
     }
   }
@@ -348,7 +477,7 @@ export default function UserProfile() {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:8080/user/${loggedUser.id}`, {
+      const response = await fetch(`${API_URL}/user/${loggedUser.id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -375,39 +504,39 @@ export default function UserProfile() {
             {loggedUser.userName || loggedUser.mail.split("@")[0]}
           </span>
         )}
-       <div className="image blood-avatar">
-  {loggedUser ? (
-    bloodType === "?" ? (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        viewBox="0 0 24 24"
-        fill="white"
-      >
-        <path d="M12 2C12 2 5 10 5 15a7 7 0 0 0 14 0C19 10 12 2 12 2z" />
-      </svg>
-    ) : (
-      <span>{bloodType}</span>
-    )
-  ) : (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-    >
-      <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
-    </svg>
-  )}
-</div>
+        <div className="image blood-avatar">
+          {loggedUser ? (
+            bloodType === "?" ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="white"
+              >
+                <path d="M12 2C12 2 5 10 5 15a7 7 0 0 0 14 0C19 10 12 2 12 2z" />
+              </svg>
+            ) : (
+              <span>{bloodType}</span>
+            )
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z" />
+            </svg>
+          )}
+        </div>
         <span className="caret">▾</span>
       </div>
 
       {/* MENU DROPDOWN DINÂMICO */}
-      <div className={`UserProfile-menu ${menuView === "cadastro" || menuView === "edicao" || menuView === "login" ? "menu-expand-cadastro" : ""}`}>
-        
+      <div className={`UserProfile-menu ${menuView === "cadastro" || menuView === "edicao" || menuView === "login" || menuView === "esqueceuSenha" || menuView === "redefinirSenha" ? "menu-expand-cadastro" : ""}`}>
+
         <div className="UserNavigation">
 
           {/* SEM SESSÃO */}
@@ -425,9 +554,32 @@ export default function UserProfile() {
                   <h3>Entrar</h3>
                   <input type="email" placeholder="Email" value={emailLogin} onChange={(e) => setEmailLogin(e.target.value)} required />
                   <input type="password" placeholder="Senha" value={senhaLogin} onChange={(e) => setSenhaLogin(e.target.value)} required />
+                  <button type="button" className="forgot-password-link" onClick={() => setMenuView("esqueceuSenha")}>Esqueceu a senha?</button>
                   {error && <p className="inline-form-error">{error}</p>}
                   <button type="submit" className="inline-form-btn" disabled={loading}>Entrar</button>
                   <button type="button" className="inline-back-link" onClick={resetAllViews}>Voltar</button>
+                </form>
+              )}
+
+              {menuView === "esqueceuSenha" && (
+                <form className="inline-dropdown-form" onSubmit={handleForgot}>
+                  <h3>Esqueceu a senha?</h3>
+                  <p className="form-helper-text">Digite seu e-mail para receber as instruções de redefinição.</p>
+                  <input type="email" placeholder="Email" value={emailForgot} onChange={(e) => setEmailForgot(e.target.value)} required />
+                  {error && <p className="inline-form-error">{error}</p>}
+                  <button type="submit" className="inline-form-btn" disabled={loading}>Enviar</button>
+                  <button type="button" className="inline-back-link" onClick={() => setMenuView("login")}>Voltar</button>
+                </form>
+              )}
+
+              {menuView === "redefinirSenha" && (
+                <form className="inline-dropdown-form" onSubmit={handleResetPassword}>
+                  <h3>Nova Senha</h3>
+                  <input type="password" placeholder="Nova senha" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required />
+                  <input type="password" placeholder="Confirmar senha" value={confirmNewPassword} onChange={(e) => setConfirmNewPassword(e.target.value)} required />
+                  {error && <p className="inline-form-error">{error}</p>}
+                  <button type="submit" className="inline-form-btn" disabled={loading}>Pronto</button>
+                  <button type="button" className="inline-back-link" onClick={resetAllViews}>Cancelar</button>
                 </form>
               )}
 
@@ -557,7 +709,19 @@ export default function UserProfile() {
         <div className="global-success-overlay">
           <div className="global-success-popup">
             <p className="success-message-text">{success}</p>
-            <button className="success-ok-btn" onClick={() => { resetAllViews(); setOpen(false); window.location.reload(); }}>
+            <button
+              className="success-ok-btn"
+              onClick={() => {
+                if (menuView === "redefinirSenha") {
+                  resetAllViews();
+                  setMenuView("login");
+                  setOpen(true);
+                } else {
+                  resetAllViews();
+                  setOpen(false);
+                }
+              }}
+            >
               Ok
             </button>
           </div>
