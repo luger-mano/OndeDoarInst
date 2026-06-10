@@ -2021,7 +2021,7 @@
   .UserProfile {
     flex-shrink: 0;
     position: relative;
-    z-index: 10000;
+    z-index: 3;
   }
 
   .UserProfile .User {
