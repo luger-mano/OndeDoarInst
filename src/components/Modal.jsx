@@ -3,12 +3,15 @@ import React, { useEffect } from "react";
 const formatOperationUI = (opString) => {
   if (!opString) return { statusText: null, statusType: "fechado", schedules: [] };
 
-  const [statusText, timesPart] = opString.split("|").map(s => s.trim());
+  // Parse operation string based on the first " - "
+  const firstDash = opString.indexOf(" - ");
+  const statusText = firstDash !== -1 ? opString.slice(0, firstDash).trim() : opString;
+  const timesPart = firstDash !== -1 ? opString.slice(firstDash + 3).trim() : "";
 
   let statusType = "fechado";
   const lowerStatus = statusText.toLowerCase();
 
-  if (lowerStatus.includes("abert")) {
+  if (lowerStatus.includes("abert") || lowerStatus.includes("abre ")) {
     statusType = "aberto";
   } else if (lowerStatus.includes("atenç") || lowerStatus.includes("atenc")) {
     statusType = "atencao";
