@@ -25,11 +25,11 @@ export default function Navigation() {
     if (window.innerWidth > 768) setOpenMenu(null);
   };
   const openMobileModal = (menu) => {
-    if (window.innerWidth <= 768) {
-      setIsHamburgerOpen(true);
-      setOpenMenu(menu);
-    }
-  };
+  if (window.innerWidth <= 768) {
+    setIsHamburgerOpen(true);
+    setOpenMenu(menu);
+  }
+};
 
   // Fechar menu ao clicar fora (Apenas Desktop v4.3)
   useEffect(() => {
@@ -61,19 +61,19 @@ export default function Navigation() {
 
       {/* Overlay de fundo para Mobile (Apenas quando o hambúrguer está aberto) */}
       {isHamburgerOpen && (
-        <div
-          className="nav-mobile-overlay"
-          onClick={() => {
-            setIsHamburgerOpen(false);
-            setOpenMenu(null);
-          }}
-        />
-      )}
-
+  <div
+    className="nav-mobile-overlay"
+    onClick={() => {
+      setIsHamburgerOpen(false);
+      setOpenMenu(null);
+    }}
+  />
+)}
+      
       {/* ───────── MENU DE NAVEGAÇÃO ───────── */}
       <div className={`Navigation ${isHamburgerOpen ? "hamburger-visible" : ""}`}>
-
-
+        
+    
 
         <nav aria-label="Main navigation">
           {/* A lista principal de links é ocultada se uma subpágina estiver aberta no mobile */}
@@ -120,7 +120,7 @@ export default function Navigation() {
             >
               <button
                 className="nav-link nav-button"
-                onClick={() => openMobileModal("requisitos")}
+               onClick={() => openMobileModal("requisitos")}
               >
                 <span className="nav-icon-mobile"></span> Requisitos
               </button>

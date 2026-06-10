@@ -636,13 +636,13 @@ export default function UserProfile() {
             <>
               {menuView === "menu" && (
                 <>
-                  <div className="UserProfile-menu-item user-email-display">
-                    <strong>
-                      {loggedUser.userName} {loggedUser.middleName}
-                    </strong>
-                    <br />
-                    {loggedUser.mail}
-                  </div>
+                 <div className="UserProfile-menu-item user-email-display">
+  <strong>
+    {loggedUser.userName} {loggedUser.middleName}
+  </strong>
+  <br />
+  {loggedUser.mail}
+</div>
                   <div className="UserProfile-menu-item">
                     <button className="botaoLog" onClick={() => setMenuView("edicao")}>Editar Perfil</button>
                   </div>

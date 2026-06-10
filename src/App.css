@@ -21,6 +21,9 @@
   font-size: 12px;
   letter-spacing: 0.5px;
 }
+.regions-container{
+  background: #fcfcfc;
+}
 
 .skeleton {
   background: linear-gradient(90deg, #1a1a1a 25%, #242424 50%, #1a1a1a 75%);
@@ -64,12 +67,12 @@
   padding: 0 60px;
   height: 68px;
   transition: background 0.4s ease;
-  background-color: #ffffff;
+  background-color: #fcfcfc;
 }
 
 .Header.scrolled,
 .Header:not(.scrolled) {
-  background: #ffffff;
+  background: #fcfcfc;
 }
 
 .div-logo-nav {
@@ -168,7 +171,7 @@
   font-size: 13px; /* Aumentado na v4.9 */
   font-weight: 500;
   color: #666666;
-  background-color: #ffffff;
+  background-color: #fcfcfc;
   margin-top: 40px;
   position: relative; 
   /* z-index: 1 removido na v2.6 para permitir que o dropup fixo sobreponha a Hero corretamente */
