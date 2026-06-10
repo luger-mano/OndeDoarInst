@@ -6,7 +6,8 @@ import {
   getUserById,
   forgotPasswordRequest,
   resetPasswordRequest,
-  verifyEmailRequest
+  verifyEmailRequest,
+  deleteAccountRequest
 } from "../../services/authService";
 import "./UserProfile.css";
 
@@ -57,6 +58,9 @@ export default function UserProfile() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteConfirmationInput, setDeleteConfirmationInput] = useState("");
 
+  // ESTADO PARA O FEEDBACK DE SUCESSO NA EXCLUSÃO (VERSÃO 5.3)
+  const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
+
   // 1. FORMULÁRIO DE LOGIN
   const [emailLogin, setEmailLogin] = useState("");
   const [senhaLogin, setSenhaLogin] = useState("");
@@ -96,6 +100,7 @@ export default function UserProfile() {
     setEditForm(initialEditForm);
     setRegisterForm(initialRegisterForm);
     setDeleteConfirmationInput("");
+    setShowDeleteSuccess(false);
     setOpen(false);
     setMenuView("menu");
     window.location.reload();
@@ -476,19 +481,22 @@ export default function UserProfile() {
 
     try {
       setLoading(true);
-      const token = localStorage.getItem("token");
-      const response = await fetch(`${API_URL}/user/${loggedUser.id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!response.ok) throw new Error();
+      setError("");
 
-      alert("Conta excluída com sucesso!");
+      const token = localStorage.getItem("token");
+      await deleteAccountRequest(loggedUser.id, token);
+
+      // Fecha o modal de confirmação e abre o de sucesso (Versão 5.3)
       setShowDeleteModal(false);
-      handleLogout();
+      setShowDeleteSuccess(true);
+
+      // Fecha automaticamente e desloga após 3 segundos (seguindo padrão de outras modais)
+      setTimeout(() => {
+        handleLogout();
+      }, 3000);
     } catch (err) {
-      alert("Erro ao excluir conta ou sessão expirada.");
-      handleLogout();
+      console.error("Erro ao excluir conta:", err);
+      setError("Erro ao excluir conta ou sua sessão expirou.");
     } finally {
       setLoading(false);
     }
@@ -788,6 +796,22 @@ export default function UserProfile() {
                 </div>
               </form>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* FEEDBACK DE SUCESSO NA EXCLUSÃO (VERSÃO 5.3) */}
+      {showDeleteSuccess && (
+        <div className="global-success-overlay">
+          <div className="global-success-popup">
+            <h3 className="success-message-title">Conta excluída</h3>
+            <p className="success-message-text">Sua conta foi excluída com sucesso.</p>
+            <button
+              className="success-ok-btn"
+              onClick={handleLogout}
+            >
+              Ok
+            </button>
           </div>
         </div>
       )}

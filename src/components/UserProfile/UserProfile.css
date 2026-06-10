@@ -434,6 +434,14 @@
   /* Animação com leve "efeito elástico" */
 }
 
+.success-message-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f2937;
+  letter-spacing: -0.3px;
+}
+
 /* Ícone de check animado (Adicionado via CSS para complementar o visual) */
 .global-success-popup::before {
   content: '✓';
