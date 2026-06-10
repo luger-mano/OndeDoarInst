@@ -634,19 +634,46 @@ export default function UserProfile() {
           {/* COM SESSÃO */}
           {loggedUser && (
             <>
-              {menuView === "menu" && (
-                <>
-                  <div className="UserProfile-menu-item user-email-display">{loggedUser.mail}</div>
-                  <div className="UserProfile-menu-item">
-                    <button className="botaoLog" onClick={() => setMenuView("edicao")}>Editar Perfil</button>
-                  </div>
-                  <div className="UserProfile-menu-item">
-                    <button className="botaoLog" onClick={() => { setShowDeleteModal(true); setDeleteConfirmationInput(""); }}>Excluir Conta</button>
-                  </div>
-                  <hr className="UserProfile-menu-divider" />
-                  <div className="UserProfile-menu-item"><button className="botaoLog" onClick={handleLogout}>Sair</button></div>
-                </>
-              )}
+              <>
+  <div className="user-profile-header">
+    <div className="user-profile-name">
+      {loggedUser.userName}
+      {loggedUser.middleName ? ` ${loggedUser.middleName}` : ""}
+    </div>
+
+    <div className="user-profile-email">
+      {loggedUser.mail}
+    </div>
+  </div>
+
+  <hr className="UserProfile-menu-divider" />
+
+  <div className="UserProfile-menu-item">
+    <button className="botaoLog" onClick={() => setMenuView("edicao")}>
+      Editar Perfil
+    </button>
+  </div>
+
+  <div className="UserProfile-menu-item">
+    <button
+      className="botaoLog"
+      onClick={() => {
+        setShowDeleteModal(true);
+        setDeleteConfirmationInput("");
+      }}
+    >
+      Excluir Conta
+    </button>
+  </div>
+
+  <hr className="UserProfile-menu-divider" />
+
+  <div className="UserProfile-menu-item">
+    <button className="botaoLog" onClick={handleLogout}>
+      Sair
+    </button>
+  </div>
+</>
 
               {menuView === "edicao" && (
                 <form className="inline-dropdown-form" onSubmit={handleUpdateProfile}>
