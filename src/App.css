@@ -83,6 +83,7 @@
   cursor: pointer;
   display: flex;
   align-items: center;
+  transform: translateY(-5px);
 }
 
 .Logo svg path {
@@ -164,7 +165,7 @@
 .main-footer {
   text-align: center;
   padding: 50px 20px 15px 10px;
-  font-size: 10px;
+  font-size: 13px; /* Aumentado na v4.9 */
   font-weight: 500;
   color: #666666;
   background-color: #ffffff;
@@ -257,6 +258,17 @@
 }
 
 .Hero .hero-video-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  z-index: 0;
+}
+
+.Hero .hero-img-bg {
   position: absolute;
   top: 0;
   left: 0;
@@ -1970,6 +1982,10 @@
     align-items: center;
     flex: 1;
     min-width: 0;
+  }
+
+  .Logo {
+    display: none !important; /* NOVO v4.9: Ajuste 6 */
   }
 
   .Header-right {
