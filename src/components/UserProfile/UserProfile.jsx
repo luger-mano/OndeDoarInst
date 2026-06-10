@@ -290,7 +290,7 @@ export default function UserProfile() {
     try {
       setLoading(true);
       setError("");
-      
+
       const response = await loginRequest({ mail: emailLogin, password: senhaLogin });
       console.log("Resposta do Login no Front:", response);
 
@@ -636,7 +636,13 @@ export default function UserProfile() {
             <>
               {menuView === "menu" && (
                 <>
-                  <div className="UserProfile-menu-item user-email-display">{loggedUser.mail}</div>
+                  <div className="UserProfile-menu-item user-email-display">
+                    <strong>
+                      {loggedUser.userName} {loggedUser.middleName}
+                    </strong>
+                    <br />
+                    {loggedUser.mail}
+                  </div>
                   <div className="UserProfile-menu-item">
                     <button className="botaoLog" onClick={() => setMenuView("edicao")}>Editar Perfil</button>
                   </div>
