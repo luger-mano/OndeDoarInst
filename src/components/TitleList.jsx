@@ -191,8 +191,17 @@ export default function TitleList({
             }`}
           >
 
-            {visible.map((t) => (
+            {visible.map((t) => {
+              // Calculate zoneCount for Adjustment 4
+              const contagemPorZona = initialItems.reduce((acc, h) => {
+                const z = h.address?.zone;
+                if (z) {
+                  acc[z] = (acc[z] || 0) + 1;
+                }
+                return acc;
+              }, {});
 
+              return (
               <Item
                 key={t.bloodCenterId}
 
@@ -219,9 +228,13 @@ export default function TitleList({
                 }
 
                 onOpen={() => onOpen(t)}
-              />
 
-            ))}
+                zoneCount={contagemPorZona[t.address?.zone]}
+
+                showZoneBadge={false}
+              />
+              );
+            })}
 
           </div>
 

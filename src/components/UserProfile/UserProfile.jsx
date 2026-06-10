@@ -290,7 +290,7 @@ export default function UserProfile() {
     try {
       setLoading(true);
       setError("");
-      
+
       const response = await loginRequest({ mail: emailLogin, password: senhaLogin });
       console.log("Resposta do Login no Front:", response);
 

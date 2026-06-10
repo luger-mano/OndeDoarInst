@@ -1,9 +1,14 @@
 import React from "react";
-
 import "./Item.css";
 
-const PLACEHOLDER =
-  "https://via.placeholder.com/400x225?text=Hemocentro";
+const PLACEHOLDER = "https://via.placeholder.com/400x225?text=Hemocentro";
+
+const formatOperationStatusOnly = (opString) => {
+  if (!opString) return "";
+  
+  const firstDash = opString.indexOf(" - ");
+  return firstDash !== -1 ? opString.slice(0, firstDash).trim() : opString.trim();
+};
 
 export default function Item({
   title,
@@ -14,7 +19,9 @@ export default function Item({
   facadeImageUrl,
   municipalityImageUrl,
   neighborhoodImageUrl,
-  onOpen
+  onOpen,
+  zoneCount,
+  showZoneBadge
 }) {
   const op = operation || "";
 
@@ -39,7 +46,6 @@ export default function Item({
   const getExclusiveLocation = () => {
     if (!address) return "Localização não informada";
 
-
     const { bairro, municipio, zone } = address;
     const hasBairro = bairro && bairro.toLowerCase() !== "s/b";
     const hasMunicipio = municipio && municipio.toLowerCase() !== "s/m";
@@ -55,14 +61,23 @@ export default function Item({
     return location ? `${location}${zoneText}` : "Localização disponível";
   };
 
+  const displayOperation = formatOperationStatusOnly(operation);
+
   return (
     <div className="Item" onClick={() => onOpen && onOpen()}>
+      {showZoneBadge && zoneCount && zoneCount >= 2 && (
+        <div className="item-zone-badge">
+          <img src="/mynaui_hospital-solid.svg" alt="hemocentro" />
+          <span>{zoneCount}</span>
+        </div>
+      )}
       <div className="thumb-wrapper">
         <img className="thumb" src={bg} alt={title} loading="lazy" />
 
-        {operation && !operation.toLowerCase().startsWith("unidade aberta") && (
+        {/* Alterado para renderizar apenas a parte limpa do status extraído */}
+        {displayOperation && !displayOperation.toLowerCase().startsWith("unidade aberta") && (
           <div className="status-bar">
-            {operation}
+            {displayOperation}
           </div>
         )}
       </div>

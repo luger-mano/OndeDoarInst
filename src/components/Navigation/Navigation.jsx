@@ -20,7 +20,7 @@ export default function Navigation() {
   const handleMouseEnter = (menu) => {
     if (window.innerWidth > 768) setOpenMenu(menu);
   };
-  
+
   const handleMouseLeave = () => {
     if (window.innerWidth > 768) setOpenMenu(null);
   };
@@ -79,9 +79,9 @@ export default function Navigation() {
           {/* A lista principal de links é ocultada se uma subpágina estiver aberta no mobile */}
           <ul>
             {/* ── POR QUE DOAR ── */}
-            <li 
+            <li
               className={openMenu === "doar" ? "active-subpage" : ""}
-              onMouseEnter={() => handleMouseEnter("doar")} 
+              onMouseEnter={() => handleMouseEnter("doar")}
               onMouseLeave={handleMouseLeave}
             >
               <button
@@ -113,9 +113,9 @@ export default function Navigation() {
             </li>
 
             {/* ── REQUISITOS ── */}
-            <li 
+            <li
               className={openMenu === "requisitos" ? "active-subpage" : ""}
-              onMouseEnter={() => handleMouseEnter("requisitos")} 
+              onMouseEnter={() => handleMouseEnter("requisitos")}
               onMouseLeave={handleMouseLeave}
             >
               <button
@@ -152,12 +152,12 @@ export default function Navigation() {
             </li>
 
             {/* ── PRECISA DE SANGUE ── */}
-            <li 
+            <li
               className={openMenu === "sangue" ? "active-subpage" : ""}
-              onMouseEnter={() => handleMouseEnter("sangue")} 
+              onMouseEnter={() => handleMouseEnter("sangue")}
               onMouseLeave={handleMouseLeave}
             >
-             <button
+              <button
                 className="nav-link nav-button need-blood-btn"
                 onClick={() => openMobileModal("sangue")}
               >

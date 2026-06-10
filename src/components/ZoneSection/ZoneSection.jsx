@@ -6,7 +6,7 @@ const VISIBLE = 5;
 function ZoneSection({ title, bairros, onOpenNeighborhood }) {
   const [offset, setOffset] = useState(0);
   const containerRef = useRef(null);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(typeof window !== "undefined" ? window.innerWidth <= 768 : false);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
@@ -17,20 +17,17 @@ function ZoneSection({ title, bairros, onOpenNeighborhood }) {
   const canPrev = offset > 0;
   const canNext = offset + VISIBLE < bairros.length;
 
-  // Em mobile rendera todos para permitir o swipe nativo via CSS
-  // Em desktop mantem a logica de slice original
-  // v2.5: Restaurado + 1 para mostrar o próximo hemocentro (peek)
+ 
   const visibleBairros = isMobile ? bairros : bairros.slice(offset, offset + VISIBLE + 1);
 
-  const deveExibirZona = title && !["INTERIOR", "METROPOLIS", "METROPOLE"].includes(title.toUpperCase());
-
-  // v2.1: Renomear titulos especificos
   let displayTitle = title;
   if (title?.toUpperCase() === "METROPOLIS" || title?.toUpperCase() === "METROPOLE") {
     displayTitle = "GRANDE SÃO PAULO";
   } else if (title?.toUpperCase() === "INTERIOR") {
     displayTitle = "INTERIOR DE SÃO PAULO";
   }
+
+  const deveExibirZona = title && !["INTERIOR", "METROPOLIS", "METROPOLE"].includes(title.toUpperCase());
 
   return (
     <div className="TitleList" data-loaded="true">
@@ -43,10 +40,7 @@ function ZoneSection({ title, bairros, onOpenNeighborhood }) {
         </div>
 
         {/* SLIDER */}
-        <div
-          className="slider-wrap"
-          ref={containerRef}
-        >
+        <div className="slider-wrap" ref={containerRef}>
           {/* BOTÃO ESQUERDA - Oculto via CSS no mobile */}
           <button
             className={`slider-btn prev ${!canPrev ? "hidden" : ""}`}
@@ -60,40 +54,42 @@ function ZoneSection({ title, bairros, onOpenNeighborhood }) {
           <div className="slider-viewport">
             {/* TRACK */}
             <div className="titles-wrapper">
-              {visibleBairros.map((bairro) => (
-                <div
-                  key={bairro.bairro}
-                  className="Item"
-                  onClick={() => onOpenNeighborhood(bairro)}
-                >
-                  <img
-                    className="thumb"
-                    src={bairro.neighborhoodImageUrl || PLACEHOLDER}
-                    alt={bairro.bairro}
-                  />
+              {visibleBairros.map((bairro) => {
+                // Calcula a quantidade específica deste bairro
+                const totalCentrosNoBairro = bairro.bloodCenters?.length || 0;
 
-                  <div className="bairro-cover">
-                    <span className="bairro-cover-title">{bairro.bairro}</span>
-                  </div>
+                return (
+                  <div
+                    key={bairro.bairro}
+                    className="Item"
+                    onClick={() => onOpenNeighborhood(bairro)}
+                  >
+                    {/* Alterado aqui: Só renderiza se o BAIRRO tiver MAIS QUE 2 hemocentros */}
+                    {totalCentrosNoBairro > 1 && (
+                      <div className="item-zone-badge">
+                        <img src="/mynaui_hospital-solid.svg" alt="hemocentro" />
+                        <span>{totalCentrosNoBairro}</span>
+                      </div>
+                    )}
 
-                  <div className="overlay">
-                    <div className="rating">
-                      <img
-                        src="/mynaui_hospital-solid.svg"
-                        alt="Ícone de Hospital"
-                        className="plot-icon"
-                      />
-                      <span className="match">
-                        {bairro.bloodCenters?.length || 0} {bairro.bloodCenters?.length === 1 ? "hemocentro" : "hemocentros"}
-                      </span>
+                    <img
+                      className="thumb"
+                      src={bairro.neighborhoodImageUrl || PLACEHOLDER}
+                      alt={bairro.bairro}
+                    />
+
+                    <div className="bairro-cover">
+                      <span className="bairro-cover-title">{bairro.bairro}</span>
                     </div>
 
-                    <div className="plot">
-                      <span>Clique para visualizar os hemocentros deste bairro.</span>
+                    <div className="overlay">
+                      <div className="plot">
+                        <span>Clique para visualizar os hemocentros.</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 

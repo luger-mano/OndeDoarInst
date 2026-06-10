@@ -9,7 +9,7 @@ export default function MapModal({ onClose }) {
   }, []);
 
   return (
-    <div className="Modal-overlay map-modal-overlay" onClick={onClose}>
+    <div className="Modal-overlay map-modal-overlay">
       <div className="MapModal-container" onClick={(e) => e.stopPropagation()}>
         <button className="modal-close map-modal-close" onClick={onClose} aria-label="Fechar mapa">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
