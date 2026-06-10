@@ -499,11 +499,6 @@ export default function UserProfile() {
 
       {/* USER TRIGGER */}
       <div className="User" onClick={() => setOpen((v) => !v)}>
-        {loggedUser && (
-          <span className="user-name">
-            {loggedUser.userName || loggedUser.mail.split("@")[0]}
-          </span>
-        )}
         <div className="image blood-avatar">
           {loggedUser ? (
             bloodType === "?" ? (
@@ -546,6 +541,12 @@ export default function UserProfile() {
                 <>
                   <div className="UserProfile-menu-item"><button className="botaoLog" onClick={() => setMenuView("login")}>Entrar</button></div>
                   <div className="UserProfile-menu-item"><button className="botaoLog" onClick={() => setMenuView("cadastro")}>Cadastrar-se</button></div>
+                  <a
+                    href="mailto:contato@hugosevero.com?cc=kaiquidejesus%40gmail.com%2Cgermanoluc890%40gmail.com%2Criokirobson%40gmail.com&subject=Parceria%20%2F%20Imprensa%20%2F%20Bug"
+                    className="contact-link-btn"
+                  >
+                    Parceria • Imprensa • Bug
+                  </a>
                 </>
               )}
 
@@ -636,19 +637,25 @@ export default function UserProfile() {
             <>
               {menuView === "menu" && (
                 <>
-                 <div className="UserProfile-menu-item user-email-display">
-  <strong>
-    {loggedUser.userName} {loggedUser.middleName}
-  </strong>
-  <br />
-  {loggedUser.mail}
-</div>
+                  <div className="UserProfile-menu-item user-email-display">
+                    <strong>
+                      {loggedUser.userName} {loggedUser.middleName}
+                    </strong>
+                    <br />
+                    {loggedUser.mail}
+                  </div>
                   <div className="UserProfile-menu-item">
                     <button className="botaoLog" onClick={() => setMenuView("edicao")}>Editar Perfil</button>
                   </div>
                   <div className="UserProfile-menu-item">
                     <button className="botaoLog" onClick={() => { setShowDeleteModal(true); setDeleteConfirmationInput(""); }}>Excluir Conta</button>
                   </div>
+                  <a
+                    href="mailto:contato@hugosevero.com?cc=kaiquidejesus%40gmail.com%2Cgermanoluc890%40gmail.com%2Criokirobson%40gmail.com&subject=Parceria%20%2F%20Imprensa%20%2F%20Bug"
+                    className="contact-link-btn"
+                  >
+                    Parceria • Imprensa • Bug
+                  </a>
                   <hr className="UserProfile-menu-divider" />
                   <div className="UserProfile-menu-item"><button className="botaoLog" onClick={handleLogout}>Sair</button></div>
                 </>
