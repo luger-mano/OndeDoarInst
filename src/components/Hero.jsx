@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import HeroButton from "./HeroButton";
 import Search from "./Search";
 
@@ -6,19 +6,27 @@ import Search from "./Search";
 const HERO_ITEMS = [
   {
     id: 1,
-    videoSrc: "/doacao_um.jpg",
-    title: "Doe Sangue, Salve Vidas",
-    description: "Cada doação pode salvar até 4 vidas.",
+    type: "video",
+    src: "/Info.mp4"
   },
   {
     id: 2,
-    videoSrc: "/doacao_dois.jpg",
+    type: "image",
+    src: "/doacao_dois.jpg",
     title: "Unidades Abertas Agora",
     description: "Verifique as unidades operando neste exato momento.",
   },
   {
     id: 3,
-    videoSrc: "/doacao_tres.jpg",
+    type: "image",
+    src: "/doacao_tres.jpg",
+    title: "Unidades Abertas Agora",
+    description: "Verifique as unidades operando neste exato momento.",
+  },
+  {
+    id: 4,
+    type: "image",
+    src: "/doacao_um.jpg",
     title: "Unidades Abertas Agora",
     description: "Verifique as unidades operando neste exato momento.",
   }
@@ -41,27 +49,33 @@ export default function Hero({ onMoreInfo, onSearch, onFilterChange, onOpenMap }
   const videoRef = useRef(null);
   const menuRef = useRef(null);
 
+  const handleNext = useCallback(() => {
+    setIdx((i) => (i + 1) % HERO_ITEMS.length);
+  }, []);
+
   // LÓGICA DO SLIDER (CARROSSEL)
   useEffect(() => {
-    timerRef.current = setInterval(() => {
-      setIdx((i) => (i + 1) % HERO_ITEMS.length);
-    }, 8000);
+    const item = HERO_ITEMS[idx];
+    
+    // Se for vídeo, o avanço é pelo onEnded, senão por timer
+    if (item.type !== "video") {
+      timerRef.current = setInterval(handleNext, 8000);
+    }
 
-    return () => clearInterval(timerRef.current);
-  }, []);
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [idx, handleNext]);
 
   // LÓGICA DE CLIQUE NA BOLINHA
   function goTo(i) {
     setIdx(i);
-    clearInterval(timerRef.current);
-    timerRef.current = setInterval(() => {
-      setIdx((prevIdx) => (prevIdx + 1) % HERO_ITEMS.length);
-    }, 8000);
+    if (timerRef.current) clearInterval(timerRef.current);
   }
 
   // VELOCIDADE DO VÍDEO
   useEffect(() => {
-    if (videoRef.current) {
+    if (videoRef.current && HERO_ITEMS[idx].type === "video") {
       videoRef.current.playbackRate = 0.75;
     }
   }, [idx]);
@@ -103,29 +117,43 @@ export default function Hero({ onMoreInfo, onSearch, onFilterChange, onOpenMap }
   return (
     <div className="Hero">
       {/* VÍDEO / IMAGEM DE FUNDO */}
-      <img
-        key={item.videoSrc}
-        ref={videoRef}
-        className="bg hero-video-bg"
-        src={item.videoSrc}
-        alt=""
-      />
+      {item.type === "video" ? (
+        <video
+          key={item.src}
+          ref={videoRef}
+          className="bg hero-video-bg"
+          src={item.src}
+          autoPlay
+          muted
+          playsInline
+          onEnded={handleNext}
+        />
+      ) : (
+        <img
+          key={item.src}
+          className="bg hero-img-bg"
+          src={item.src}
+          alt=""
+        />
+      )}
 
       <div className="vignette" />
 
-      <div className="content">
-        <h1 className="hero-title">
-          {item.title === "Doe Sangue, Salve Vidas" ? (
-            <>
-              <span className="text-red">Doe Sangue</span>
-              <span className="text-white">, <span className="salve-vidas">Salve Vidas</span></span>
-            </>
-          ) : (
-            <span className="text-white">{item.title}</span>
-          )}
-        </h1>
-        <p style={{ marginBottom: "50px", fontSize: "1.2rem", maxWidth: "600px" }}>{item.description}</p>
-      </div>
+      {item.type !== "video" && (
+        <div className="content">
+          <h1 className="hero-title">
+            {item.title === "Doe Sangue, Salve Vidas" ? (
+              <>
+                <span className="text-red">Doe Sangue</span>
+                <span className="text-white">, <span className="salve-vidas">Salve Vidas</span></span>
+              </>
+            ) : (
+              <span className="text-white">{item.title}</span>
+            )}
+          </h1>
+          <p style={{ marginBottom: "50px", fontSize: "1.2rem", maxWidth: "600px" }}>{item.description}</p>
+        </div>
+      )}
 
       <div className="button-wrapper">
         {/* SEARCH */}
