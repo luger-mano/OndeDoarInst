@@ -24,18 +24,12 @@ export default function Navigation() {
   const handleMouseLeave = () => {
     if (window.innerWidth > 768) setOpenMenu(null);
   };
-
-  const handleNavClick = (menu) => {
-    if (window.innerWidth <= 768) {
-      // Em vez de fechar o hambúrguer, apenas define a página interna
-      setOpenMenu(menu);
-    }
-  };
-
-  // Botão Voltar para a navegação interna
-  const handleBackClick = () => {
-    setOpenMenu(null);
-  };
+  const openMobileModal = (menu) => {
+  if (window.innerWidth <= 768) {
+    setIsHamburgerOpen(true);
+    setOpenMenu(menu);
+  }
+};
 
   // Fechar menu ao clicar fora (Apenas Desktop v4.3)
   useEffect(() => {
@@ -48,11 +42,10 @@ export default function Navigation() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
   return (
     <div className="navigation-wrapper" ref={wrapperRef}>
       {/* Botão Hambúrguer de 4 linhas */}
-      <button 
+      {/* <button 
         className={`hamburger-button ${isHamburgerOpen ? "open" : ""}`}
         onClick={() => {
           setIsHamburgerOpen(!isHamburgerOpen);
@@ -64,15 +57,18 @@ export default function Navigation() {
         <span></span>
         <span></span>
         <span></span>
-      </button>
+      </button> */}
 
       {/* Overlay de fundo para Mobile (Apenas quando o hambúrguer está aberto) */}
       {isHamburgerOpen && (
-        <div 
-          className="nav-mobile-overlay" 
-          /* Fechamento removido do overlay no mobile v4.3 - fechar somente no botão X */
-        />
-      )}
+  <div
+    className="nav-mobile-overlay"
+    onClick={() => {
+      setIsHamburgerOpen(false);
+      setOpenMenu(null);
+    }}
+  />
+)}
       
       {/* ───────── MENU DE NAVEGAÇÃO ───────── */}
       <div className={`Navigation ${isHamburgerOpen ? "hamburger-visible" : ""}`}>
@@ -96,7 +92,7 @@ export default function Navigation() {
 
         <nav aria-label="Main navigation">
           {/* A lista principal de links é ocultada se uma subpágina estiver aberta no mobile */}
-          <ul className={openMenu && window.innerWidth <= 768 ? "hidden-mobile" : ""}>
+          <ul>
             {/* ── POR QUE DOAR ── */}
             <li 
               className={openMenu === "doar" ? "active-subpage" : ""}
@@ -105,20 +101,12 @@ export default function Navigation() {
             >
               <button
                 className="nav-link nav-button"
-                onClick={() => handleNavClick("doar")}
+                onClick={() => openMobileModal("doar")}
               >
                 <span className="nav-icon-mobile"></span> Por quê?
               </button>
               <div className={`menuOp2 ${scrolled ? "menuScrolled" : ""} ${openMenu === "doar" ? "menuVisible" : ""}`}>
-                {/* Header exclusivo mobile v4.1 com botão de voltar */}
-                <div className="mobile-menu-header">
-                  <button className="mobile-menu-back" onClick={handleBackClick}>
-                     Voltar
-                  </button>
-                  <span className="menu-tag">IMPACTO</span>
-                </div>
-
-                <span className="menu-tag desktop-only">IMPACTO</span>
+                <span className="menu-tag">IMPACTO</span>
                 <h2>Sua doação pode salvar até 4 vidas</h2>
                 <div className="info-boxs">
                   <div className="cards horizontal-cards">
@@ -147,20 +135,12 @@ export default function Navigation() {
             >
               <button
                 className="nav-link nav-button"
-                onClick={() => handleNavClick("requisitos")}
+               onClick={() => openMobileModal("requisitos")}
               >
                 <span className="nav-icon-mobile"></span> Requisitos
               </button>
               <div className={`menuOp3 ${scrolled ? "menuScrolled" : ""} ${openMenu === "requisitos" ? "menuVisible" : ""}`}>
-                {/* Header exclusivo mobile v4.1 com botão de voltar */}
-                <div className="mobile-menu-header">
-                  <button className="mobile-menu-back" onClick={handleBackClick}>
-                     Voltar
-                  </button>
-                  <span className="menu-tag">REQUISITOS</span>
-                </div>
-
-                <span className="menu-tag desktop-only">REQUISITOS</span>
+                <span className="menu-tag">REQUISITOS</span>
                 <h2>Quem pode doar sangue?</h2>
                 <div className="info-boxs">
                   <div className="requirements-container">
@@ -194,19 +174,12 @@ export default function Navigation() {
             >
              <button
                 className="nav-link nav-button need-blood-btn"
-                onClick={() => handleNavClick("sangue")}
+                onClick={() => openMobileModal("sangue")}
               >
                 <span className="nav-icon-mobile"></span> Precisa de Sangue?
               </button>
               <div className={`menuOp4 ${scrolled ? "menuScrolled" : ""} ${openMenu === "sangue" ? "menuVisible" : ""}`}>
                 {/* Header exclusivo mobile v4.1 com botão de voltar */}
-                <div className="mobile-menu-header">
-                  <button className="mobile-menu-back" onClick={handleBackClick}>
-                     Voltar
-                  </button>
-                  <span className="menu-tag urgent-tag">URGENTE</span>
-                </div>
-
                 <span className="menu-tag urgent-tag desktop-only">URGENTE</span>
                 <h2>Precisa de Sangue?</h2>
                 <p>Está procurando doadores para um familiar, amigo ou paciente?</p>

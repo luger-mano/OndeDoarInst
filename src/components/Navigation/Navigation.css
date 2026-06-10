@@ -200,30 +200,9 @@
   display: inline-block;
 }
 
-/* NOVO v4.0: Estilos do Botão Hambúrguer de 4 Linhas */
-.hamburger-button {
-  display: none;
-  /* Escondido no desktop */
-  flex-direction: column;
-  justify-content: space-between;
-  width: 20px;
-  height: 15px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  margin-bottom: 8px;
-  z-index: 10006;
-  border-radius: 10px;
-}
 
-.hamburger-button span {
-  width: 100%;
-  height: 2px;
-  background-color: #ffffff;
-  border-radius: 2px;
-  transition: all 0.3s ease;
-}
+
+
 
 /* ───────── TITLES ───────── */
 
@@ -634,99 +613,35 @@
     align-items: center;
   }
 
-  /* NOVO v4.0: Hambúrguer de 4 linhas */
-  .hamburger-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    /* NOVO v4.8: Efeito Glassmorphism no hamburger */
-    background: #e50914;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.25);
-    border-radius: 50%;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
-    padding: 8px;
-    box-sizing: border-box;
-    margin-bottom: 8px;
-    margin-left: 5px;
-  }
-
-  /* NOVO v4.4: Ajuste do tamanho das linhas internas do hamburger */
-  .hamburger-button span {
-    width: 20px;
-    margin: 1px 0;
-  }
-
-  /* NOVO v4.3: Esconde o botão hamburger quando ele está aberto (X) para não sobrepor a modal */
-  .hamburger-button.open {
-    display: none !important;
-  }
-
-  .hamburger-button.open span:nth-child(1) {
-    transform: translateY(11px) rotate(45deg);
-  }
-
-  .hamburger-button.open span:nth-child(2) {
-    opacity: 0;
-  }
-
-  .hamburger-button.open span:nth-child(3) {
-    opacity: 0;
-  }
-
-  .hamburger-button.open span:nth-child(4) {
-    transform: translateY(-11px) rotate(-45deg);
-  }
-
   /* NOVO v4.0: Menu Vertical Flutuante */
-  .Navigation {
-    position: fixed;
-    top: 70px;
-    left: 20px;
-    right: 20px;
-    background: white;
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-20px);
-    transition: all 0.3s ease;
-    z-index: 10005;
-    margin-left: 0;
-    width: auto;
-  }
+.Navigation {
+  display: flex !important;
+  position: static !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin-left: 8px !important;
+  width: auto !important;
+}
 
-  .Navigation.hamburger-visible {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-    justify-content: flex-start;
-    align-items: flex-start;
-  }
 
-  .Navigation nav ul {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
 
-  .nav-link {
-    width: 100%;
-    padding: 12px 16px;
-    font-size: 15px;
-    background: #f8fafc;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: #1e293b;
-    border: 1px solid #f1f5f9;
-    box-sizing: border-box;
-  }
+.Navigation nav ul {
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+ .nav-link {
+  width: auto;
+  padding: 4px 6px;
+  font-size: 11px;
+  background: transparent;
+  border: none;
+}
 
   .nav-icon-mobile {
     display: inline-block;
@@ -784,17 +699,6 @@
     flex-shrink: 0;
   }
 
-  .nav-mobile-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
-    z-index: 10004;
-    display: block !important;
-  }
 
   .mobile-menu-header {
     display: flex;
@@ -823,87 +727,11 @@
     cursor: pointer;
   }
 
-  .desktop-only {
-    display: none !important;
-  }
+
 
   /* Reset de posicionamento v4.0 */
   .navigation-wrapper {
     position: static;
-  }
-
-  /* NOVO v4.1: Modal Única (Hamburger) */
-  .Navigation {
-    position: fixed;
-    top: 70px;
-    left: 20px;
-    right: 20px;
-    background: white;
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-20px);
-    transition: all 0.3s ease;
-    z-index: 10005;
-    margin-left: 0;
-    width: auto;
-    /* Ajustes para conteúdo interno dinâmico v4.1 */
-    max-height: 85vh;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    /* NOVO v4.3: Prevenir overflow e quebra de palavras */
-    overflow-x: hidden !important;
-    overflow-wrap: break-word;
-    word-break: break-word;
-    box-sizing: border-box;
-  }
-
-  .Navigation.hamburger-visible {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-    justify-content: flex-start;
-    align-items: flex-start;
-  }
-
-  .Navigation nav ul {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-    width: 100%;
-    /* Ocupar todo espaço interno */
-    transition: opacity 0.2s ease;
-  }
-
-  /* NOVO v4.2: Oculta apenas os itens não ativos quando na subpágina */
-  .Navigation nav ul.hidden-mobile li:not(.active-subpage) {
-    display: none !important;
-  }
-
-  .Navigation nav ul.hidden-mobile li.active-subpage {
-    display: block !important;
-    width: 100% !important;
-  }
-
-  .Navigation nav ul.hidden-mobile li.active-subpage .nav-button {
-    display: none !important;
-  }
-
-  .nav-link {
-    width: 100%;
-    padding: 12px 16px;
-    font-size: 15px;
-    background: #f8fafc;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: #1e293b;
-    border: 1px solid #f1f5f9;
-    box-sizing: border-box;
   }
 
   .nav-icon-mobile {
@@ -919,28 +747,11 @@
     box-sizing: border-box;
   }
 
-  /* NOVO v4.3: Ajuste do botão fechar para não cobrir tags e seguir padrão Modal.jsx */
-  .navigation-close-mobile {
-    display: flex !important;
-    position: absolute;
-    top: 20px !important;
-    right: 20px !important;
-    z-index: 10010 !important;
-    width: 36px !important;
-    height: 36px !important;
-    background: rgba(0, 0, 0, 0.05) !important;
-    border-radius: 50%;
-    border: none !important;
-    color: #333 !important;
-    align-items: center;
-    justify-content: center;
-  }
 
-  /* NOVO v4.1: Subpáginas internas na Modal Única */
-  .menuOp2,
+  /* .menuOp2,
   .menuOp3,
   .menuOp4 {
-    /* Reseta comportamentos absolutos/fixos da v3.9 e do desktop */
+   
     position: static !important;
     width: 100% !important;
     max-width: none !important;
@@ -954,16 +765,16 @@
     z-index: auto !important;
 
     display: none !important;
-    /* Escondido por padrão */
+
     flex-direction: column !important;
     align-items: flex-start !important;
-    /* NOVO v4.4: Alinhamento à esquerda */
+  
     text-align: left !important;
-    /* NOVO v4.4: Alinhamento à esquerda */
+
     opacity: 0;
     transform: translateX(10px);
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
+  } */
 
   /* Exibe a subpágina ativa */
   .menuVisible {
@@ -972,47 +783,12 @@
     transform: translateX(0) !important;
   }
 
-  .mobile-menu-header {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start !important;
-    /* NOVO v4.3: Tags para esquerda para não bater no Close */
-    gap: 15px !important;
-    /* NOVO v4.3 */
-    width: 100% !important;
-    /* NOVO v4.4 */
-    padding-bottom: 15px;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #f0f0f0;
-    background: #fff;
-    position: sticky;
-    top: -20px;
-    /* Gruda no topo interno do padding da Navigation */
-    z-index: 5;
-    padding-top: 10px;
-    /* Compensação visual */
-    padding-right: 45px;
-    /* NOVO v4.3: Espaço para o botão Close */
-  }
 
   .menu-tag {
     margin-bottom: 0 !important;
     /* NOVO v4.3: Alinha melhor no header */
   }
 
-  /* NOVO v4.1: Estilo do botão voltar */
-  .mobile-menu-back {
-    background: transparent;
-    border: none;
-    font-size: 15px;
-    color: #181818;
-    /* Azul para indicar link/ação */
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    padding: 0;
-  }
 
   .mobile-menu-back::before {
     content: "←";
@@ -1124,5 +900,15 @@
     /* Reduzido v4.2 */
     text-align: left !important;
     /* NOVO v4.4 */
+  }
+}
+
+@media (max-width: 768px) {
+  .menuOp2 .menu-tag,
+  .menuOp3 .menu-tag,
+  .menuOp4 .menu-tag {
+    width: fit-content !important;
+    flex: none !important;
+    align-self: flex-start !important;
   }
 }
