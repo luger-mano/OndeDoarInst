@@ -14,7 +14,9 @@ export default function TeamCard({
 
   photo,
 
-  photoDonation
+  photoDonation,
+
+  bloodType
 
 }) {
 
@@ -67,8 +69,11 @@ export default function TeamCard({
 
   </div>
 
-  <div className="blood-drop">
-    🩸
+  <div className="blood-drop-container">
+    <div className="blood-drop">
+      🩸
+    </div>
+    <span className="footer-blood-type">{bloodType}</span>
   </div>
 
 </div>

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 
 const PLACEHOLDER = "https://via.placeholder.com/400x225?text=Bairro";
-const VISIBLE = 5; 
+const VISIBLE = 5;
 
 function ZoneSection({ title, bairros, onOpenNeighborhood }) {
   const [offset, setOffset] = useState(0);
@@ -17,7 +17,7 @@ function ZoneSection({ title, bairros, onOpenNeighborhood }) {
   const canPrev = offset > 0;
   const canNext = offset + VISIBLE < bairros.length;
 
- 
+
   const visibleBairros = isMobile ? bairros : bairros.slice(offset, offset + VISIBLE + 1);
 
   let displayTitle = title;
@@ -72,6 +72,7 @@ function ZoneSection({ title, bairros, onOpenNeighborhood }) {
                       </div>
                     )}
 
+
                     <img
                       className="thumb"
                       src={bairro.neighborhoodImageUrl || PLACEHOLDER}
@@ -83,6 +84,17 @@ function ZoneSection({ title, bairros, onOpenNeighborhood }) {
                     </div>
 
                     <div className="overlay">
+
+                      <div className="rating">
+                        <img
+                          src="/mynaui_hospital-solid.svg"
+                          alt="Ícone de Hospital"
+                          className="plot-icon"
+                        />
+                        <span className="match">
+                          {bairro.bloodCenters?.length || 0} {bairro.bloodCenters?.length === 1 ? "hemocentro" : "hemocentros"}
+                        </span>
+                      </div>
                       <div className="plot">
                         <span>Clique para visualizar os hemocentros.</span>
                       </div>

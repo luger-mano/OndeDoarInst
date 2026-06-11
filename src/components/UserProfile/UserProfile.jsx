@@ -87,6 +87,16 @@ export default function UserProfile() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
 
+  // ESTADOS DE VISIBILIDADE DE SENHA (VERSÃO 5.5)
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [showRegisterPassword, setShowRegisterPassword] = useState(false);
+  const [showRegisterConfirmPassword, setShowRegisterConfirmPassword] = useState(false);
+  const [showEditCurrentPassword, setShowEditCurrentPassword] = useState(false);
+  const [showEditNewPassword, setShowEditNewPassword] = useState(false);
+  const [showEditConfirmPassword, setShowEditConfirmPassword] = useState(false);
+  const [showResetNewPassword, setShowResetNewPassword] = useState(false);
+  const [showResetConfirmPassword, setShowResetConfirmPassword] = useState(false);
+
   const bloodType =
     loggedUser?.bloodType && loggedUser.bloodType !== "IDK"
       ? loggedUser.bloodType
@@ -117,7 +127,29 @@ export default function UserProfile() {
     const action = params.get("action");
 
     if (token) {
-      if (action === "reset") {
+      let isResetToken = action === "reset";
+
+      if (!isResetToken) {
+        try {
+          const base64Url = token.split('.')[1];
+          const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+          const jsonPayload = decodeURIComponent(
+            atob(base64)
+              .split('')
+              .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+              .join('')
+          );
+
+          const payload = JSON.parse(jsonPayload);
+          if (payload.type === "PASSWORD_RESET") {
+            isResetToken = true;
+          }
+        } catch (e) {
+          console.error("Erro ao decodificar token da URL:", e);
+        }
+      }
+
+      if (isResetToken) {
         setResetToken(token);
         setMenuView("redefinirSenha");
         setOpen(true);
@@ -367,7 +399,7 @@ export default function UserProfile() {
 
       await registerRequest(payload);
 
-      setSuccess(`Um e-mail de confirmação de criação de conta foi enviado para ${registerForm.email}. Verifique sua caixa de entrada para ativar sua conta.`);
+      setSuccess(`Quase pronto! Enviamos um link de confirmação para ${registerForm.email}`);
     } catch (err) {
       console.error("Erro no cadastro:", err);
       setError("Erro ao cadastrar usuário.");
@@ -549,12 +581,18 @@ export default function UserProfile() {
                 <>
                   <div className="UserProfile-menu-item"><button className="botaoLog" onClick={() => setMenuView("login")}>Entrar</button></div>
                   <div className="UserProfile-menu-item"><button className="botaoLog" onClick={() => setMenuView("cadastro")}>Cadastrar-se</button></div>
+                  <span className="contact-link-btn-contact">Contato</span>
                   <a
                     href="mailto:contato@hugosevero.com?cc=kaiquidejesus%40gmail.com%2Cgermanoluc890%40gmail.com%2Criokirobson%40gmail.com&subject=Parceria%20%2F%20Imprensa%20%2F%20Bug"
                     className="contact-link-btn"
                   >
                     Parceria • Imprensa • Bug
                   </a>
+                  <span
+                    className="contact-link-btn-mail"
+                  >
+                    contato@ondedoar.org
+                  </span>
                 </>
               )}
 
@@ -562,7 +600,28 @@ export default function UserProfile() {
                 <form className="inline-dropdown-form" onSubmit={handleLogin}>
                   <h3>Entrar</h3>
                   <input type="email" placeholder="Email" value={emailLogin} onChange={(e) => setEmailLogin(e.target.value)} required />
-                  <input type="password" placeholder="Senha" value={senhaLogin} onChange={(e) => setSenhaLogin(e.target.value)} required />
+                  <div className="password-input-wrapper">
+                    <input
+                      type={showLoginPassword ? "text" : "password"}
+                      placeholder="Senha"
+                      value={senhaLogin}
+                      onChange={(e) => setSenhaLogin(e.target.value)}
+                      required
+                    />
+                    <button
+                      type="button"
+                      className="password-toggle-btn"
+                      onClick={() => setShowLoginPassword(!showLoginPassword)}
+                      tabIndex={-1}
+                      aria-label={showLoginPassword ? "Ocultar senha" : "Mostrar senha"}
+                    >
+                      {showLoginPassword ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                      ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      )}
+                    </button>
+                  </div>
                   <button type="button" className="forgot-password-link" onClick={() => setMenuView("esqueceuSenha")}>Esqueceu a senha?</button>
                   {error && <p className="inline-form-error">{error}</p>}
                   <button type="submit" className="inline-form-btn" disabled={loading}>Entrar</button>
@@ -584,8 +643,50 @@ export default function UserProfile() {
               {menuView === "redefinirSenha" && (
                 <form className="inline-dropdown-form" onSubmit={handleResetPassword}>
                   <h3>Nova Senha</h3>
-                  <input type="password" placeholder="Nova senha" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required />
-                  <input type="password" placeholder="Confirmar senha" value={confirmNewPassword} onChange={(e) => setConfirmNewPassword(e.target.value)} required />
+                  <div className="password-input-wrapper">
+                    <input
+                      type={showResetNewPassword ? "text" : "password"}
+                      placeholder="Nova senha"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      required
+                    />
+                    <button
+                      type="button"
+                      className="password-toggle-btn"
+                      onClick={() => setShowResetNewPassword(!showResetNewPassword)}
+                      tabIndex={-1}
+                      aria-label={showResetNewPassword ? "Ocultar senha" : "Mostrar senha"}
+                    >
+                      {showResetNewPassword ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                      ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      )}
+                    </button>
+                  </div>
+                  <div className="password-input-wrapper">
+                    <input
+                      type={showResetConfirmPassword ? "text" : "password"}
+                      placeholder="Confirmar senha"
+                      value={confirmNewPassword}
+                      onChange={(e) => setConfirmNewPassword(e.target.value)}
+                      required
+                    />
+                    <button
+                      type="button"
+                      className="password-toggle-btn"
+                      onClick={() => setShowResetConfirmPassword(!showResetConfirmPassword)}
+                      tabIndex={-1}
+                      aria-label={showResetConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
+                    >
+                      {showResetConfirmPassword ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                      ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      )}
+                    </button>
+                  </div>
                   {error && <p className="inline-form-error">{error}</p>}
                   <button type="submit" className="inline-form-btn" disabled={loading}>Pronto</button>
                   <button type="button" className="inline-back-link" onClick={resetAllViews}>Cancelar</button>
@@ -630,8 +731,52 @@ export default function UserProfile() {
 
                     ))}
                   </select>
-                  <input type="password" name="senha" placeholder="Senha" value={registerForm.senha} onChange={handleRegisterChange} required />
-                  <input type="password" name="confirmarSenha" placeholder="Confirmar" value={registerForm.confirmarSenha} onChange={handleRegisterChange} required />
+                  <div className="password-input-wrapper">
+                    <input
+                      type={showRegisterPassword ? "text" : "password"}
+                      name="senha"
+                      placeholder="Senha"
+                      value={registerForm.senha}
+                      onChange={handleRegisterChange}
+                      required
+                    />
+                    <button
+                      type="button"
+                      className="password-toggle-btn"
+                      onClick={() => setShowRegisterPassword(!showRegisterPassword)}
+                      tabIndex={-1}
+                      aria-label={showRegisterPassword ? "Ocultar senha" : "Mostrar senha"}
+                    >
+                      {showRegisterPassword ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                      ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      )}
+                    </button>
+                  </div>
+                  <div className="password-input-wrapper">
+                    <input
+                      type={showRegisterConfirmPassword ? "text" : "password"}
+                      name="confirmarSenha"
+                      placeholder="Confirmar"
+                      value={registerForm.confirmarSenha}
+                      onChange={handleRegisterChange}
+                      required
+                    />
+                    <button
+                      type="button"
+                      className="password-toggle-btn"
+                      onClick={() => setShowRegisterConfirmPassword(!showRegisterConfirmPassword)}
+                      tabIndex={-1}
+                      aria-label={showRegisterConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
+                    >
+                      {showRegisterConfirmPassword ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                      ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      )}
+                    </button>
+                  </div>
                   {error && <p className="inline-form-error">{error}</p>}
                   <button type="submit" className="inline-form-btn" disabled={loading}>Cadastrar</button>
                   <button type="button" className="inline-back-link" onClick={resetAllViews}>Voltar</button>
@@ -708,9 +853,72 @@ export default function UserProfile() {
                   </select>
 
                   <hr className="inline-form-divider-pills" />
-                  <input type="password" name="senhaAtual" placeholder="Senha atual (se for alterar)" value={editForm.senhaAtual} onChange={handleEditChange} />
-                  <input type="password" name="novaSenha" placeholder="Nova senha" value={editForm.novaSenha} onChange={handleEditChange} />
-                  <input type="password" name="confirmarNovaSenha" placeholder="Confirmar nova" value={editForm.confirmarNovaSenha} onChange={handleEditChange} />
+                  <div className="password-input-wrapper">
+                    <input
+                      type={showEditCurrentPassword ? "text" : "password"}
+                      name="senhaAtual"
+                      placeholder="Senha atual (se for alterar)"
+                      value={editForm.senhaAtual}
+                      onChange={handleEditChange}
+                    />
+                    <button
+                      type="button"
+                      className="password-toggle-btn"
+                      onClick={() => setShowEditCurrentPassword(!showEditCurrentPassword)}
+                      tabIndex={-1}
+                      aria-label={showEditCurrentPassword ? "Ocultar senha" : "Mostrar senha"}
+                    >
+                      {showEditCurrentPassword ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                      ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      )}
+                    </button>
+                  </div>
+                  <div className="password-input-wrapper">
+                    <input
+                      type={showEditNewPassword ? "text" : "password"}
+                      name="novaSenha"
+                      placeholder="Nova senha"
+                      value={editForm.novaSenha}
+                      onChange={handleEditChange}
+                    />
+                    <button
+                      type="button"
+                      className="password-toggle-btn"
+                      onClick={() => setShowEditNewPassword(!showEditNewPassword)}
+                      tabIndex={-1}
+                      aria-label={showEditNewPassword ? "Ocultar senha" : "Mostrar senha"}
+                    >
+                      {showEditNewPassword ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                      ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      )}
+                    </button>
+                  </div>
+                  <div className="password-input-wrapper">
+                    <input
+                      type={showEditConfirmPassword ? "text" : "password"}
+                      name="confirmarNovaSenha"
+                      placeholder="Confirmar nova"
+                      value={editForm.confirmarNovaSenha}
+                      onChange={handleEditChange}
+                    />
+                    <button
+                      type="button"
+                      className="password-toggle-btn"
+                      onClick={() => setShowEditConfirmPassword(!showEditConfirmPassword)}
+                      tabIndex={-1}
+                      aria-label={showEditConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
+                    >
+                      {showEditConfirmPassword ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                      ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      )}
+                    </button>
+                  </div>
 
                   {error && <p className="inline-form-error">{error}</p>}
                   <button type="submit" className="inline-form-btn" disabled={loading}>
