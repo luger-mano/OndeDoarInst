@@ -183,9 +183,17 @@
   transition: color 0.2s ease;
 }
 
-.footer-text.active,
-.footer-text:hover {
+.footer-text.active {
   color: #e21221; /* Vermelho v2.1 */
+}
+
+.footer-doadores {
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.footer-doadores:hover {
+  color: #e21221;
 }
 
 .footer-team-dropup {
@@ -286,7 +294,6 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(to top, rgba(255, 255, 255, 1) 5%, rgba(255, 255, 255, 0.5) 35%, rgba(109, 109, 109, 0.51) 50%, rgba(62, 62, 62, 0.51) 80%, rgba(0, 0, 0, 0.51) 100%);
   pointer-events: none;
 }
 
@@ -1874,6 +1881,11 @@
     padding: 0 30px 100px;
   }
 
+  .Hero .button-wrapper {
+    bottom: 40px; /* v5.6: Movido levemente para baixo (original 50px) */
+    margin-top: 10px; /* v5.6 */
+  }
+
   .Hero .maturity {
     right: 30px;
   }
@@ -2090,22 +2102,26 @@
   .Hero .button-wrapper {
     width: calc(100% - 32px);
     flex-wrap: nowrap;
-    flex-direction: row;
-    gap: 10px;
+    flex-direction: column;
+    gap: 4px;
     left: 16px;
     right: 16px;
-    bottom: 30px;
+    bottom: 0px; /* Movido de 30px para 20px (v5.6) */
+    margin-top: 15px; /* v5.6 */
     pointer-events: auto;
     align-items: stretch;
   }
 
   .Hero .button-wrapper > * {
-    flex: 1 1 0%;
+    width: 100%;
+    flex: none;
     min-width: 0;
   }
 
   .Hero .button-wrapper > .map-icon-button {
-    flex: 0 0 auto !important;
+    flex: none !important;
+    align-self: flex-end;
+    width: fit-content;
   }
 
   .Hero .button-wrapper .Search.open {

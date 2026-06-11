@@ -391,16 +391,16 @@ useEffect(() => {
                   unindo nossas habilidades para facilitar a doação de sangue.
                 </p>
                 <div className="team-grid">
-                  <TeamCard name="Hugo Severo" role="CEO" email="contato@hugosevero.com" linkedin="https://www.linkedin.com/in/hugosevero/" photo={hug} photoDonation={hug2} />
-                  <TeamCard name="Kaiqui Petty" role="Cloud Engineer" email="kaiquidejesus@gmail.com" linkedin="https://www.linkedin.com/in/kaiqui-petty-6b9299217/" photo={kai} photoDonation={kai2} />
-                  <TeamCard name="Lucas Germano" role="CTO e Desenvolvedor Full-Stack" email="germanoluc890@gmail.com" linkedin="https://www.linkedin.com/in/lucas-germano-dev/" photo={luc} photoDonation={luc2} />
-                  <TeamCard name="Robson Rioki" role="Desenvolvedor Front-End" email="riokirobson@gmail.com" linkedin="https://www.linkedin.com/in/riokirobson/" photo={rob} photoDonation={rob2} />
+                  <TeamCard name="Hugo Severo" role="CEO" email="contato@hugosevero.com" linkedin="https://www.linkedin.com/in/hugosevero/" photo={hug} photoDonation={hug2} bloodType="O+" />
+                  <TeamCard name="Lucas Germano" role="CTO e Desenvolvedor Full-Stack" email="germanoluc890@gmail.com" linkedin="https://www.linkedin.com/in/lucas-germano-dev/" photo={luc} photoDonation={luc2} bloodType="Desconhecido" />
+                  <TeamCard name="Kaiqui Petty" role="Cloud Engineer" email="kaiquidejesus@gmail.com" linkedin="https://www.linkedin.com/in/kaiqui-petty-6b9299217/" photo={kai} photoDonation={kai2} bloodType="Desconhecido" />
+                  <TeamCard name="Robson Rioki" role="Desenvolvedor Front-End" email="riokirobson@gmail.com" linkedin="https://www.linkedin.com/in/riokirobson/" photo={rob} photoDonation={rob2} bloodType="AB+" />
                 </div>
               </div>
             </div>
           )}
           <span className={`footer-text ${showTeam ? 'active' : ''}`}>
-            Desenvolvido por doadores &copy; Onde Doar 2026
+            Desenvolvido por <span className="footer-doadores">doadores</span> &copy; Onde Doar 2026
           </span>
         </footer>
       </div>
