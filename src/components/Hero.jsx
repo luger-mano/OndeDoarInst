@@ -8,41 +8,20 @@ const HERO_ITEMS = [
     id: 1,
     type: "video",
     src: "/Info.mp4"
-  },
-  {
-    id: 2,
-    type: "image",
-    src: "/doacao_dois.jpg",
-    title: "Unidades Abertas Agora",
-    description: "Verifique as unidades operando neste exato momento.",
-  },
-  {
-    id: 3,
-    type: "image",
-    src: "/doacao_tres.jpg",
-    title: "Unidades Abertas Agora",
-    description: "Verifique as unidades operando neste exato momento.",
-  },
-  {
-    id: 4,
-    type: "image",
-    src: "/doacao_um.jpg",
-    title: "Unidades Abertas Agora",
-    description: "Verifique as unidades operando neste exato momento.",
   }
 ];
 
 const FILTER_OPTIONS = [
-  { id: "zona", name: "Zona" },
-  { id: "abertos", name: "Abertos" },
-  { id: "proximos", name: "Mais próximos" }
+  { id: "zona", name: "Regiões de São Paulo" },
+  { id: "abertos", name: "Unidades Abertas" },
+  { id: "proximos", name: "Unidades Mais próximas" }
 ];
 
 export default function Hero({ onMoreInfo, onSearch, onFilterChange, onOpenMap }) {
   // ESTADOS - Agora o estado inicial padrão é "zona" em vez de vazio
-  const [idx, setIdx] = useState(0); 
-  const [open, setOpen] = useState(false); 
-  const [selectedFilter, setSelectedFilter] = useState("zona"); 
+  const [idx, setIdx] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState("zona");
 
   // REFS
   const timerRef = useRef(null);
@@ -56,7 +35,7 @@ export default function Hero({ onMoreInfo, onSearch, onFilterChange, onOpenMap }
   // LÓGICA DO SLIDER (CARROSSEL)
   useEffect(() => {
     const item = HERO_ITEMS[idx];
-    
+
     // Se for vídeo, o avanço é pelo onEnded, senão por timer
     if (item.type !== "video") {
       timerRef.current = setInterval(handleNext, 8000);
@@ -95,7 +74,7 @@ export default function Hero({ onMoreInfo, onSearch, onFilterChange, onOpenMap }
   // LÓGICA DE SELEÇÃO EXCLUSIVA COM PADRÃO "ZONA"
   const handleCheckboxChange = (filterId) => {
     let newFilter;
-    
+
     if (selectedFilter === filterId) {
       newFilter = "zona";
     } else {
@@ -103,7 +82,7 @@ export default function Hero({ onMoreInfo, onSearch, onFilterChange, onOpenMap }
     }
 
     setSelectedFilter(newFilter);
-    setOpen(false); 
+    setOpen(false);
 
     if (onFilterChange) {
       onFilterChange(newFilter);
@@ -125,8 +104,9 @@ export default function Hero({ onMoreInfo, onSearch, onFilterChange, onOpenMap }
           src={item.src}
           autoPlay
           muted
+          loop
           playsInline
-          onEnded={handleNext}
+          onEnded={HERO_ITEMS.length > 1 ? handleNext : undefined}
         />
       ) : (
         <img
@@ -171,21 +151,21 @@ export default function Hero({ onMoreInfo, onSearch, onFilterChange, onOpenMap }
 
           {/* MENU DE FILTROS COM CHECKBOX */}
           <div className="UserProfile-menu hero-menu-adjust">
-            
+
             <div className="UserProfileSwitch">
               {FILTER_OPTIONS.map((opt) => {
                 const isChecked = selectedFilter === opt.id;
                 return (
-                  <label 
-                    key={opt.id} 
+                  <label
+                    key={opt.id}
                     className={`UserProfile-menu-item hero-checkbox-label ${isChecked ? "active-filter" : ""}`}
                   >
                     {/* Checkbox Oculto nativo controlado via onChange */}
-                    <input 
+                    <input
                       type="checkbox"
                       className="hero-native-checkbox"
                       checked={isChecked}
-                      onChange={() => handleCheckboxChange(opt.id)} 
+                      onChange={() => handleCheckboxChange(opt.id)}
                     />
 
                     {/* Custom UI da caixa do Checkbox */}
