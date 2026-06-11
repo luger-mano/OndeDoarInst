@@ -23,7 +23,19 @@ export default function NeighborhoodModal({
         </button>
 
         <div className="modal-hero">
-          <img src={item.neighborhoodImageUrl} alt={item.bairro} className="hero-image" />
+          {item.bairro === "Liberdade" ? (
+            <video
+              src="/liberdade.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="hero-image"
+              style={{ objectFit: "cover" }}
+            />
+          ) : (
+            <img src={item.neighborhoodImageUrl} alt={item.bairro} className="hero-image" />
+          )}
           <div className="modal-hero-overlay" />
           <div className="modal-hero-content">
             <h2 className="modal-title">{item.bairro}</h2>

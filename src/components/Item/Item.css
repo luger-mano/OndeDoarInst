@@ -12,17 +12,18 @@
 .item-zone-badge {
   position: absolute;
   top: 0;
-  right: 0;
+  right: 10px;
   background-color: #E21221;
   color: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 8px 10px;
+  padding: 8px 10px 16px 10px;
   gap: 10px;
-  z-index: 6; /* Acima da imagem e do gradiente */
-  border-radius: 0 4px 0 4px;
+  z-index: 6;
+
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 50% 85%, 0% 100%);
 }
 
 .item-zone-badge img {
@@ -151,7 +152,8 @@
   right: 0;
   width: 100%;
   transform: translateY(-50%);
-  background-color: #E21221; /* Cor vermelha do projeto */
+  background-color: #E21221;
+  /* Cor vermelha do projeto */
   color: #ffffff;
   text-align: center;
   padding: 6px 12px;
