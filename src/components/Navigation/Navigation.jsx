@@ -97,15 +97,15 @@ export default function Navigation() {
                   <div className="cards horizontal-cards">
                     <div className="card">
                       <h3>❤️ Salva vidas</h3>
-                      <p>Uma única doação pode beneficiar até 4 pessoas que dependem de transfusões em situações de emergência, cirurgias ou tratamentos.</p>
+                      <p>Uma única doação pode beneficiar até 4 pessoas que dependem de transfusões em situação de emergência, cirurgias ou tratamentos.</p>
                     </div>
                     <div className="card">
                       <h3>🏥 Sempre necessário</h3>
-                      <p>Os estoques de sangue precisam ser constantemente repostos. Sua doação faz diferença todos os dias.</p>
+                      <p>Os estoques de sangue precisam ser constantemente repostos. Sua doação faz diferença.</p>
                     </div>
                     <div className="card">
                       <h3>🔄 Ciclo de ajuda</h3>
-                      <p>Hoje você doa, amanhã alguém pode doar por você. A doação mantém esse ciclo funcionando.</p>
+                      <p>Hoje você doa, amanhã alguém pode doar por você. A doação mantém o ciclo.</p>
                     </div>
                   </div>
                 </div>
@@ -132,19 +132,19 @@ export default function Navigation() {
                     <div className="requirements-top">
                       <div className="card requirement-small">
                         <strong>Faixa Etária</strong>
-                        <p>Entre 16 e 69 anos.</p>
+                        <p className="requirement-small">Entre 16 e 69 anos.</p>
                       </div>
                       <div className="card requirement-small">
                         <strong>Peso Mínimo</strong>
-                        <p>50kg ou mais.</p>
+                        <p className="requirement-small">50kg ou mais.</p>
                       </div>
                     </div>
                     <hr className="requirements-divider" />
                     <div className="requirements-info">
                       <h3>Saúde Geral e Alimentação</h3>
-                      <p>Estar em boas condições de saúde e não apresentar sintomas gripais.</p>
-                      <p>Estar alimentado e não comparecer em jejum.</p>
-                      <p>Dormir ao menos 6 horas antes da doação.</p>
+                      <p>- Estar em boas condições de saúde e não apresentar sintomas gripais.</p>
+                      <p>- Estar alimentado e não comparecer em jejum.</p>
+                      <p>- Dormir ao menos 6 horas antes da doação.</p>
                     </div>
                   </div>
                 </div>
@@ -163,22 +163,37 @@ export default function Navigation() {
               >
                 <span className="nav-icon-mobile"></span> Precisa de Sangue?
               </button>
-              <div className={`menuOp4 ${scrolled ? "menuScrolled" : ""} ${openMenu === "sangue" ? "menuVisible" : ""}`}>
-                {/* Header exclusivo mobile v4.1 com botão de voltar */}
-                <span className="menu-tag urgent-tag desktop-only">URGENTE</span>
-                <h2>Precisa de Sangue?</h2>
-                <p>Está procurando doadores para um familiar, amigo ou paciente?</p>
-                <p>Preencha nosso formulário e envie as informações da solicitação.</p>
-                <p>Nossa equipe analisará os dados enviados e entrará em contato quando necessário.</p>
-                <a
-                  href="https://docs.google.com/forms/d/1ef0D_3q29SHkY5J3gLzrxaW2X44yvQiHThqAnOUI8vU/viewform?edit_requested=true"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="need-blood-action"
-                >
-                  SOLICITAR DOADORES
-                </a>
-              </div>
+              <div
+  className={`menuOp4 ${scrolled ? "menuScrolled" : ""} ${
+    openMenu === "sangue" ? "menuVisible" : ""
+  }`}
+>
+  <span className="menu-tag urgent-tag desktop-only">URGENTE</span>
+
+  <h2>Precisa de Sangue?</h2>
+
+  <p>
+    Você está a procura de doadores de algum tipo sanguíneo específico
+    (para algum familiar, amigo ou paciente)?
+  </p>
+
+  <ul className="blood-request-list">
+    <li>Preencha nosso formulário para solicitação*</li>
+  </ul>
+
+  <p className="blood-request-note">
+    *Cada solicitação é analisada no prazo de 1-2 dias corridos.
+  </p>
+
+  <a
+    href="https://docs.google.com/forms/d/1ef0D_3q29SHkY5J3gLzrxaW2X44yvQiHThqAnOUI8vU/viewform?edit_requested=true"
+    target="_blank"
+    rel="noreferrer"
+    className="need-blood-action"
+  >
+    SOLICITAR DOADORES
+  </a>
+</div>
             </li>
           </ul>
         </nav>

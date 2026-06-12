@@ -19,6 +19,18 @@
   padding: 0;
 }
 
+.requirement-small p{
+  color: #3b82f6 !important;
+}
+
+.requirement-small p{
+  min-height: 70px !important;
+}
+
+.requirements-divider {
+  margin: 12px 0 !important;
+}
+
 .Navigation nav ul li {
   margin: 0;
   position: relative;

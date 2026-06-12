@@ -366,47 +366,76 @@ export default function UserProfile() {
   }
 
   // REQUISIÇÃO: CADASTRO
-  async function handleRegister(e) {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      setError("");
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+async function handleRegister(e) {
+  e.preventDefault();
+  try {
+    setLoading(true);
+    setError("");
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-      if (!registerForm.nome || !registerForm.sobrenome || !registerForm.email || !registerForm.whatsapp || !registerForm.estado || !registerForm.senha) {
-        return setError("Preencha todos os campos obrigatórios.");
-      }
-      if (!emailRegex.test(registerForm.email)) return setError("Digite um email válido.");
-      if (registerForm.senha.length < 8) return setError("A senha deve ter no mínimo 8 caracteres.");
-      if (registerForm.senha !== registerForm.confirmarSenha) return setError("As senhas não coincidem.");
-
-      const payload = {
-        userName: registerForm.nome,
-        middleName: registerForm.sobrenome,
-        phone: registerForm.whatsapp.replace(/\D/g, ""),
-        mail: registerForm.email,
-        password: registerForm.senha,
-        state: registerForm.estado,
-        bloodType:
-          registerForm.tipoSanguineo === "IDK"
-            ? "IDK"
-            : registerForm.tipoSanguineo
-              ? registerForm.tipoSanguineo
-                .replace("+", "_POSITIVE")
-                .replace("-", "_NEGATIVE")
-              : null
-      };
-
-      await registerRequest(payload);
-
-      setSuccess(`Quase pronto! Enviamos um link de confirmação para ${registerForm.email}`);
-    } catch (err) {
-      console.error("Erro no cadastro:", err);
-      setError("Erro ao cadastrar usuário.");
-    } finally {
-      setLoading(false);
+    if (
+      !registerForm.nome ||
+      !registerForm.sobrenome ||
+      !registerForm.email ||
+      !registerForm.whatsapp ||
+      !registerForm.estado ||
+      !registerForm.senha
+    ) {
+      return setError("Preencha todos os campos obrigatórios.");
     }
+
+    if (registerForm.nome.trim().length < 3 || registerForm.nome.trim().length > 12) {
+      return setError("O nome deve ter entre 3 e 12 caracteres.");
+    }
+
+    if (
+      registerForm.sobrenome.trim().length < 3 ||
+      registerForm.sobrenome.trim().length > 42
+    ) {
+      return setError("O sobrenome deve ter entre 3 e 42 caracteres.");
+    }
+
+    if (!emailRegex.test(registerForm.email)) {
+      return setError("Digite um email válido.");
+    }
+
+    if (registerForm.senha.length < 3) {
+      return setError("A senha deve ter no mínimo 3 caracteres.");
+    }
+
+    if (registerForm.senha !== registerForm.confirmarSenha) {
+      return setError("As senhas não coincidem.");
+    }
+
+    const payload = {
+      userName: registerForm.nome,
+      middleName: registerForm.sobrenome,
+      phone: registerForm.whatsapp.replace(/\D/g, ""),
+      mail: registerForm.email,
+      password: registerForm.senha,
+      state: registerForm.estado,
+      bloodType:
+        registerForm.tipoSanguineo === "IDK"
+          ? "IDK"
+          : registerForm.tipoSanguineo
+          ? registerForm.tipoSanguineo
+              .replace("+", "_POSITIVE")
+              .replace("-", "_NEGATIVE")
+          : null
+    };
+
+    await registerRequest(payload);
+
+    setSuccess(
+      `Quase pronto! Enviamos um link de confirmação para ${registerForm.email}`
+    );
+  } catch (err) {
+    console.error("Erro no cadastro:", err);
+    setError("Erro ao cadastrar usuário.");
+  } finally {
+    setLoading(false);
   }
+}
 
   // REQUISIÇÃO: ESQUECEU SENHA
   async function handleForgot(e) {
@@ -583,7 +612,7 @@ export default function UserProfile() {
                   <div className="UserProfile-menu-item"><button className="botaoLog" onClick={() => setMenuView("cadastro")}>Cadastrar-se</button></div>
                   <span className="contact-link-btn-contact">Contato</span>
                   <a
-                    href="mailto:contatoondedoar@gmail.com?cc=&subject=Parceria%20%2F%20Imprensa%20%2F%20Bug"
+                    href="mailto:contato@ondedoar.org?cc=&subject=Parceria%20%2F%20Imprensa%20%2F%20Bug"
                     className="contact-link-btn"
                   >
                     Parceria • Imprensa • Bug
@@ -591,7 +620,7 @@ export default function UserProfile() {
                   <span
                     className="contact-link-btn-mail"
                   >
-                    contatoondedoar@gmail.com
+                    contato@ondedoar.org
                   </span>
                 </>
               )}
@@ -697,8 +726,8 @@ export default function UserProfile() {
                 <form className="inline-dropdown-form" onSubmit={handleRegister}>
                   <h3>Criar conta</h3>
                   <div className="inline-form-grid">
-                    <input name="nome" placeholder="Nome" value={registerForm.nome} onChange={handleRegisterChange} required />
-                    <input name="sobrenome" placeholder="Sobrenome" value={registerForm.sobrenome} onChange={handleRegisterChange} required />
+                    <input name="nome" placeholder="Nome" maxLength={12} value={registerForm.nome} onChange={handleRegisterChange} required />
+                    <input name="sobrenome" placeholder="Sobrenome" maxLength={42} value={registerForm.sobrenome} onChange={handleRegisterChange} required />
                   </div>
                   <input name="email" type="email" placeholder="Email" value={registerForm.email} onChange={handleRegisterChange} required />
                   <select name="tipoSanguineo" value={registerForm.tipoSanguineo} onChange={handleRegisterChange}>
@@ -800,17 +829,20 @@ export default function UserProfile() {
                   <div className="UserProfile-menu-item">
                     <button className="botaoLog" onClick={() => setMenuView("edicao")}>Editar Perfil</button>
                   </div>
-                  <div className="UserProfile-menu-item">
-                    <button className="botaoLog" onClick={() => { setShowDeleteModal(true); setDeleteConfirmationInput(""); }}>Excluir Conta</button>
-                  </div>
-                  <a
-                    href="mailto:contatoondedoar@gmail.com?cc=&subject=Parceria%20%2F%20Imprensa%20%2F%20Bug"
+                  <div className="UserProfile-menu-item"><button className="botaoLog" onClick={handleLogout}>Sair</button></div>
+                  <hr className="UserProfile-menu-divider" />
+                   <a
+                    href="mailto:contato@ondedoar.org?cc=&subject=Parceria%20%2F%20Imprensa%20%2F%20Bug"
                     className="contact-link-btn"
                   >
                     Parceria • Imprensa • Bug
                   </a>
-                  <hr className="UserProfile-menu-divider" />
-                  <div className="UserProfile-menu-item"><button className="botaoLog" onClick={handleLogout}>Sair</button></div>
+                  <span
+                    className="contact-link-btn-mail"
+                  >
+                    contato@ondedoar.org
+                  </span>
+                  
                 </>
               )}
 
@@ -818,8 +850,8 @@ export default function UserProfile() {
                 <form className="inline-dropdown-form" onSubmit={handleUpdateProfile}>
                   <h3>Editar Perfil</h3>
                   <div className="inline-form-grid">
-                    <input name="nome" placeholder="Nome" value={editForm.nome} onChange={handleEditChange} required />
-                    <input name="sobrenome" placeholder="Sobrenome" value={editForm.sobrenome} onChange={handleEditChange} />
+                    <input name="nome" placeholder="Nome" maxLength={12} value={editForm.nome} onChange={handleEditChange} required />
+                    <input name="sobrenome" placeholder="Sobrenome" maxLength={42} value={editForm.sobrenome} onChange={handleEditChange} />
                   </div>
                   <input name="email" type="email" placeholder="Email" value={editForm.email} onChange={handleEditChange} required />
                   <select name="tipoSanguineo" value={editForm.tipoSanguineo} onChange={handleEditChange}>
@@ -919,7 +951,9 @@ export default function UserProfile() {
                       )}
                     </button>
                   </div>
-
+<div className="UserProfile-menu-item">
+                    <button className="botaoLog" onClick={() => { setShowDeleteModal(true); setDeleteConfirmationInput(""); }}>Excluir Conta</button>
+                  </div>
                   {error && <p className="inline-form-error">{error}</p>}
                   <button type="submit" className="inline-form-btn" disabled={loading}>
                     {loading ? "Salvando..." : "Salvar"}
