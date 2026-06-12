@@ -583,7 +583,7 @@ export default function UserProfile() {
                   <div className="UserProfile-menu-item"><button className="botaoLog" onClick={() => setMenuView("cadastro")}>Cadastrar-se</button></div>
                   <span className="contact-link-btn-contact">Contato</span>
                   <a
-                    href="mailto:contato@hugosevero.com?cc=kaiquidejesus%40gmail.com%2Cgermanoluc890%40gmail.com%2Criokirobson%40gmail.com&subject=Parceria%20%2F%20Imprensa%20%2F%20Bug"
+                    href="mailto:contatoondedoar@gmail.com?cc=&subject=Parceria%20%2F%20Imprensa%20%2F%20Bug"
                     className="contact-link-btn"
                   >
                     Parceria • Imprensa • Bug
@@ -591,7 +591,7 @@ export default function UserProfile() {
                   <span
                     className="contact-link-btn-mail"
                   >
-                    contato@ondedoar.org
+                    contatoondedoar@gmail.com
                   </span>
                 </>
               )}
@@ -804,7 +804,7 @@ export default function UserProfile() {
                     <button className="botaoLog" onClick={() => { setShowDeleteModal(true); setDeleteConfirmationInput(""); }}>Excluir Conta</button>
                   </div>
                   <a
-                    href="mailto:contato@hugosevero.com?cc=kaiquidejesus%40gmail.com%2Cgermanoluc890%40gmail.com%2Criokirobson%40gmail.com&subject=Parceria%20%2F%20Imprensa%20%2F%20Bug"
+                    href="mailto:contatoondedoar@gmail.com?cc=&subject=Parceria%20%2F%20Imprensa%20%2F%20Bug"
                     className="contact-link-btn"
                   >
                     Parceria • Imprensa • Bug
