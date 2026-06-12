@@ -508,6 +508,34 @@
   /* Impede que a caixinha deforme em textos longos */
 }
 
+.team-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+
+  width: 36px;
+  height: 36px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: rgba(0, 0, 0, 0.08);
+  color: #333;
+
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+
+  transition: all 0.2s ease;
+}
+
+.team-close-btn:hover {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.footer-team-dropup .mobile-section-content {
+  position: relative;
+}
 
 /* Efeito de escala para fazer o check surgir de forma fluida */
 .hero-checkbox-checkmark {

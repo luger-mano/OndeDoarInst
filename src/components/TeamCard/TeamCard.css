@@ -82,7 +82,7 @@
 
 .team-role {
 
-  min-height: 60px;
+  min-height: 42px;
 
   display: flex;
 
@@ -186,4 +186,17 @@
   box-shadow:
     0 0 20px
     rgba(229,57,53,.35);
+}
+
+.team-linkedin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 12px;
+  text-decoration: none;
+  transition: transform .2s ease;
+}
+
+.team-linkedin:hover {
+  transform: scale(1.1);
 }

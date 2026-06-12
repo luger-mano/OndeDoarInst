@@ -345,32 +345,51 @@ export default function App() {
           </Routes>
         </div>
 
-        <footer 
-          ref={footerRef}
-          className="main-footer"
-          onMouseEnter={() => setShowTeam(true)}
-          onClick={() => setShowTeam(!showTeam)}
-        >
+       <footer
+  ref={footerRef}
+  className="main-footer"
+>
           {showTeam && (
             <div className="footer-team-dropup" onClick={(e) => e.stopPropagation()}>
-              <div id="footer-membros" className="mobile-section-content" style={{ padding: '30px', textAlign: 'left', background: '#fff', borderRadius: '24px 24px 0 0', boxShadow: '0 -10px 40px rgba(0,0,0,0.1)' }}>
-                <span className="menu-tag">EQUIPE ONDEDOAR</span>
+              <div
+  id="footer-membros"
+  className="mobile-section-content"
+  style={{
+    padding: '30px',
+    textAlign: 'left',
+    background: '#fff',
+    borderRadius: '24px 24px 0 0',
+    boxShadow: '0 -10px 40px rgba(0,0,0,0.1)'
+  }}
+>
+  <button
+    className="team-close-btn"
+    onClick={() => setShowTeam(false)}
+  >
+    ✕
+  </button>
+
+  <span className="menu-tag">EQUIPE ONDEDOAR</span>
                 <h2 style={{ margin: '10px 0' }}>Conheça nossa equipe</h2>
                 <p className="team-description" style={{ marginBottom: '20px', color: '#666' }}>
-                  Somos uma equipe de doadores apaixonada por tecnologia e impacto social,
-                  unindo nossas habilidades para facilitar a doação de sangue.
+                  Somos uma equipe de doadores apaixonada por tecnologia e impacto sociaL.
                 </p>
                 <div className="team-grid">
-                  <TeamCard name="Hugo Severo" role="CEO" email="contato@hugosevero.com" linkedin="https://www.linkedin.com/in/hugosevero/" photo={hug} photoDonation={hug2} bloodType="O+" />
-                  <TeamCard name="Lucas Germano" role="CTO e Desenvolvedor Full-Stack" email="germanoluc890@gmail.com" linkedin="https://www.linkedin.com/in/lucas-germano-dev/" photo={luc} photoDonation={luc2} bloodType="?" />
-                  <TeamCard name="Kaiqui Petty" role="Cloud Engineer" email="kaiquidejesus@gmail.com" linkedin="https://www.linkedin.com/in/kaiqui-petty-6b9299217/" photo={kai} photoDonation={kai2} bloodType="?" />
-                  <TeamCard name="Robson Rioki" role="Desenvolvedor Front-End" email="riokirobson@gmail.com" linkedin="https://www.linkedin.com/in/riokirobson/" photo={rob} photoDonation={rob2} bloodType="AB+" />
+                  <TeamCard name="Hugo Severo" role="CEO" linkedin="https://www.linkedin.com/in/hugosevero/" photo={hug} photoDonation={hug2} bloodType="O+" />
+                  <TeamCard name="Lucas Germano" role="CTO e Desenvolvedor Full-Stack" linkedin="https://www.linkedin.com/in/lucas-germano-dev/" photo={luc} photoDonation={luc2} bloodType="?" />
+                  <TeamCard name="Kaiqui Petty" role="Cloud Engineer" linkedin="https://www.linkedin.com/in/kaiqui-petty-6b9299217/" photo={kai} photoDonation={kai2} bloodType="?" />
+                  <TeamCard name="Robson Rioki" role="Desenvolvedor Front-End" linkedin="https://www.linkedin.com/in/riokirobson/" photo={rob} photoDonation={rob2} bloodType="AB+" />
                 </div>
               </div>
             </div>
           )}
           <span className={`footer-text ${showTeam ? 'active' : ''}`}>
-            Desenvolvido por <span className="footer-doadores">doadores</span> &copy; Onde Doar 2026
+            Desenvolvido por <span
+  className="footer-doadores"
+  onMouseEnter={() => setShowTeam(true)}
+>
+  doadores
+</span> &copy; Onde Doar 2026
           </span>
         </footer>
       </div>

@@ -532,7 +532,11 @@
   align-items: center;
   justify-content: center;
   z-index: 99999999;
+  display: flex;
   /* Garante que ficará sobre qualquer outro elemento */
+}
+.user-email-display {
+  line-height: 1.8;
 }
 
 .delete-modal-container {
