@@ -161,6 +161,24 @@
     rotateY(180deg);
 }
 
+
+.member-blood-badge {
+  position: absolute;
+  bottom: -6px;
+  right: -6px;
+  width: 32px;
+  height: 32px;
+  background-color: #e50914;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #ffffff;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(229, 9, 20, 0.25);
+  z-index: 10;
+}
 .team-photo-wrapper:hover .team-photo {
 
   border-color: #ff4d4f;

@@ -27,56 +27,64 @@ export default function TeamCard({
 
     <div className="team-card">
 
-     <div
-  className="team-photo-wrapper"
-  onClick={() =>
-    setShowDonationPhoto(
-      !showDonationPhoto
-    )
-  }
->
+      <div
+        className="team-photo-wrapper"
+        onClick={() =>
+          setShowDonationPhoto(
+            !showDonationPhoto
+          )
+        }
+      >
 
-  <div
-    className={`
+        <div
+          className={`
       photo-flip
-      ${
-        showDonationPhoto
-          ? "flipped"
-          : ""
-      }
+      ${showDonationPhoto
+              ? "flipped"
+              : ""
+            }
     `}
-  >
+        >
 
-    <div className="photo-face">
+          <div className="photo-face">
 
-      <img
-        src={photo}
-        alt={name}
-        className="team-photo"
-      />
+            <img
+              src={photo}
+              alt={name}
+              className="team-photo"
+            />
 
-    </div>
+          </div>
 
-    <div className="photo-face photo-back">
+          <div className="photo-face photo-back">
 
-      <img
-        src={photoDonation}
-        alt={name}
-        className="team-photo"
-      />
+            <img
+              src={photoDonation}
+              alt={name}
+              className="team-photo"
+            />
 
-    </div>
+          </div>
 
-  </div>
+        </div>
 
-  <div className="blood-drop-container">
-    <div className="blood-drop">
-      🩸
-    </div>
-    <span className="footer-blood-type">{bloodType}</span>
-  </div>
+        <div className="member-blood-badge">
+          {bloodType === "?" ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="white"
+            >
+              <path d="M12 2C12 2 5 10 5 15a7 7 0 0 0 14 0C19 10 12 2 12 2z" />
+            </svg>
+          ) : (
+            <span>{bloodType}</span>
+          )}
+        </div>
 
-</div>
+      </div>
 
       <h3>
         {name}
@@ -90,7 +98,7 @@ export default function TeamCard({
         href={`mailto:${email}`}
         className="team-link"
       >
-         {email}
+        {email}
       </a>
 
       <a
