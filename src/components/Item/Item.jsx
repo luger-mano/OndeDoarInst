@@ -5,7 +5,7 @@ const PLACEHOLDER = "https://via.placeholder.com/400x225?text=Hemocentro";
 
 const formatOperationStatusOnly = (opString) => {
   if (!opString) return "";
-  
+
   const firstDash = opString.indexOf(" - ");
   return firstDash !== -1 ? opString.slice(0, firstDash).trim() : opString.trim();
 };
@@ -77,7 +77,7 @@ export default function Item({
         {/* Alterado para renderizar apenas a parte limpa do status extraído */}
         {displayOperation && !displayOperation.toLowerCase().startsWith("unidade aberta") && (
           <div className="status-bar">
-            {displayOperation}
+            {displayOperation.split(':')[0].trim()}
           </div>
         )}
       </div>

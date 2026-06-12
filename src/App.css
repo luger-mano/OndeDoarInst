@@ -21,7 +21,8 @@
   font-size: 12px;
   letter-spacing: 0.5px;
 }
-.regions-container{
+
+.regions-container {
   background: #fcfcfc;
 }
 
@@ -168,12 +169,13 @@
 .main-footer {
   text-align: center;
   padding: 50px 20px 15px 10px;
-  font-size: 13px; /* Aumentado na v4.9 */
+  font-size: 13px;
+  /* Aumentado na v4.9 */
   font-weight: 500;
   color: #666666;
   background-color: #fcfcfc;
   margin-top: 40px;
-  position: relative; 
+  position: relative;
   /* z-index: 1 removido na v2.6 para permitir que o dropup fixo sobreponha a Hero corretamente */
 }
 
@@ -184,43 +186,52 @@
 }
 
 .footer-text.active {
-  color: #e21221; /* Vermelho v2.1 */
+  color: #e21221;
+  /* Vermelho v2.1 */
 }
 
 .footer-doadores {
   cursor: pointer;
   transition: color 0.2s ease;
-}
-
-.footer-doadores:hover {
   color: #e21221;
 }
 
 .footer-team-dropup {
-  position: fixed; /* Grudado no final da tela v2.1 */
+  position: fixed;
+  /* Grudado no final da tela v2.1 */
   bottom: 0;
   left: 0;
   width: 100%;
   z-index: 1001;
-  pointer-events: none; /* Deixa passar clique para o footer se necessario, mas o menu interno tem pointer-events auto */
+  pointer-events: none;
+  /* Deixa passar clique para o footer se necessario, mas o menu interno tem pointer-events auto */
   display: flex;
   justify-content: center;
   animation: dropupSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes dropupSlideUp {
-  from { transform: translateY(100%); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .footer-team-dropup .mobile-section-content {
   pointer-events: auto;
   width: 95vw;
   max-width: 1100px;
-  border-radius: 24px 24px 0 0 !important; /* Bordas do topo arredondadas v2.1 */
-  box-shadow: 0 -20px 50px rgba(0,0,0,0.15) !important;
+  border-radius: 24px 24px 0 0 !important;
+  /* Bordas do topo arredondadas v2.1 */
+  box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.15) !important;
   margin-bottom: 0;
-  padding-bottom: 60px !important; /* Espaço para o texto do footer não cobrir */
+  padding-bottom: 60px !important;
+  /* Espaço para o texto do footer não cobrir */
 }
 
 @media (max-width: 768px) {
@@ -753,7 +764,8 @@
 }
 
 .slider-wrap:hover .slider-btn {
-  opacity: 0; /* v2.5: Default hover on wrap is now hidden */
+  opacity: 0;
+  /* v2.5: Default hover on wrap is now hidden */
 }
 
 /* v2.5: Seta aparece apenas quando o usuário passa o mouse sobre algum Item */
@@ -764,7 +776,8 @@
 .slider-btn:hover {
   background: rgba(0, 0, 0, 0.85);
   color: var(--white);
-  opacity: 1 !important; /* v2.5: Garante visibilidade ao interagir com a seta */
+  opacity: 1 !important;
+  /* v2.5: Garante visibilidade ao interagir com a seta */
 }
 
 .slider-btn.prev {
@@ -1114,7 +1127,8 @@
 .map-modal-overlay {
   padding: 0;
   background: #000;
-  overflow: hidden; /* v2.9: Evita scrolls na overlay */
+  overflow: hidden;
+  /* v2.9: Evita scrolls na overlay */
 }
 
 .MapModal-container {
@@ -1128,21 +1142,24 @@
   display: flex;
   flex-direction: column;
   animation: modalScaleIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  overflow: hidden; /* v2.9: Elimina qualquer scroll do container */
+  overflow: hidden;
+  /* v2.9: Elimina qualquer scroll do container */
 }
 
 .map-wrapper {
   flex: 1;
   width: 100%;
   height: 100%;
-  overflow: hidden; /* v2.9: Garante que o iframe não cause scroll */
+  overflow: hidden;
+  /* v2.9: Garante que o iframe não cause scroll */
 }
 
 .map-wrapper iframe {
   width: 100%;
   height: 100%;
   border: none;
-  display: block; /* Remove possíveis espaços extras na base */
+  display: block;
+  /* Remove possíveis espaços extras na base */
 }
 
 .map-modal-close {
@@ -1152,7 +1169,8 @@
   color: #000;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   border: 1px solid rgba(0, 0, 0, 0.1);
-  z-index: 99999 !important; /* Garantir que o botão fique sempre acima do iframe */
+  z-index: 99999 !important;
+  /* Garantir que o botão fique sempre acima do iframe */
 }
 
 .map-modal-close:hover {
@@ -1567,18 +1585,103 @@
 }
 
 .modal-units {
-  padding: 0 40px 30px; /* Alinhado com o título v2.2 */
+  padding: 0 40px 30px;
+  /* Alinhado com o título v2.2 */
 }
 
 .modal-units h3 {
-  font-size: 15px; /* Reduzido levemente v2.2 */
+  font-size: 15px;
+  /* Reduzido levemente v2.2 */
   margin-top: 24px;
   margin-bottom: 20px;
   font-weight: 600;
-  color: #8e8e8e; /* Cinza mais claro v2.2 */
+  color: #484848;
+  /* Cinza mais claro v2.2 */
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
+
+.neighborhood-header-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.neighborhood-description {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #475569;
+  max-width: 55%;
+}
+
+.neighborhood-info-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 12px;
+  color: #3d4755;
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  .neighborhood-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .neighborhood-description {
+    max-width: 100%;
+  }
+
+  .neighborhood-info-panel {
+    width: 100%;
+  }
+}
+
+/* Novo contêiner para alinhar o botão e o texto lado a lado */
+.neighborhood-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;              
+  margin-bottom: 20px; 
+}
+
+.neighborhood-units-btn {
+  display: inline-block;
+  padding: 6px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: transparent;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  /* margin-bottom: 20px;  <-- REMOVIDO DAQUI para não desalinharem */
+}
+
+.neighborhood-units-btn:hover {
+  background: #e11d48;
+  color: #ffffff;
+  border-color: #e11d48;
+}
+
+/* Nova estilização para o texto ao lado */
+.neighborhood-units-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  white-space: nowrap;
+}
+
+
 
 /* ── UNIDADES E CARDS DO MODAL (v2.5: MAIS COMPACTO) ── */
 .unit-card {
@@ -1586,12 +1689,13 @@
   border: 1px solid #eef0f2;
   border-radius: 16px;
   display: flex;
-  flex-direction: row; 
+  flex-direction: row;
   overflow: hidden;
   transition: all 0.3s ease;
-  height: auto; /* Garantir que o card cresça com o conteúdo v2.6 */
-  min-height: 140px; 
-  margin-bottom: 16px; 
+  height: auto;
+  /* Garantir que o card cresça com o conteúdo v2.6 */
+  min-height: 140px;
+  margin-bottom: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
@@ -1602,7 +1706,8 @@
 }
 
 .unit-thumb-wrapper {
-  width: 220px; /* Reduzido de 320px v2.5 */
+  width: 220px;
+  /* Reduzido de 320px v2.5 */
   height: auto;
   min-height: 140px;
   overflow: hidden;
@@ -1624,36 +1729,44 @@
 }
 
 .unit-card-body {
-  padding: 12px 18px; /* Reduzido v2.7: Mais espaço interno */
+  padding: 12px 18px;
+  /* Reduzido v2.7: Mais espaço interno */
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-width: 0; /* Evita quebra de flex */
+  min-width: 0;
+  /* Evita quebra de flex */
 }
 
 .unit-card-header strong {
-  font-size: 16px; /* Reduzido v2.7: Ajuste para nomes longos (Iamspe) */
+  font-size: 16px;
+  /* Reduzido v2.7: Ajuste para nomes longos (Iamspe) */
   color: #1a1a1a;
   font-weight: 700;
   margin-bottom: 2px;
   display: block;
   cursor: pointer;
   transition: color 0.2s ease;
-  line-height: 1.15; /* v2.7: Mais compacto */
-  word-break: break-word; /* v2.4/v2.5: Evita quebra de layout por nomes longos */
+  line-height: 1.15;
+  /* v2.7: Mais compacto */
+  word-break: break-word;
+  /* v2.4/v2.5: Evita quebra de layout por nomes longos */
 }
 
 .unit-card-header strong:hover {
-  color: #e21221; /* Vermelho v2.2 */
+  color: #e21221;
+  /* Vermelho v2.2 */
 }
 
 .unit-info-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 6px; /* Reduzido v2.7 */
-  gap: 10px; /* Reduzido v2.7 */
+  margin-top: 6px;
+  /* Reduzido v2.7 */
+  gap: 10px;
+  /* Reduzido v2.7 */
 }
 
 .unit-actions {
@@ -1663,10 +1776,12 @@
 .unit-actions button {
   background: #f8f9fa;
   border: 1px solid #dee2e6;
-  padding: 5px 12px; /* Reduzido v2.7 */
+  padding: 5px 12px;
+  /* Reduzido v2.7 */
   border-radius: 8px;
   color: #495057;
-  font-size: 12px; /* Reduzido v2.7 */
+  font-size: 12px;
+  /* Reduzido v2.7 */
   font-weight: 600;
   white-space: nowrap;
 }
@@ -1680,10 +1795,13 @@
 .units-grid {
   display: flex;
   flex-direction: column;
-  gap: 12px; /* Reduzido v2.5 */
-  max-height: 500px; /* Reduzido v2.5 para caber melhor na tela */
+  gap: 12px;
+  /* Reduzido v2.5 */
+  max-height: 500px;
+  /* Reduzido v2.5 para caber melhor na tela */
   overflow-y: auto;
-  padding: 10px 15px 15px 0; /* Padding lateral para scroll */
+  padding: 10px 15px 15px 0;
+  /* Padding lateral para scroll */
 }
 
 /* Scrollbar estilizada v2.3 */
@@ -1697,14 +1815,17 @@
 }
 
 @media (max-width: 768px) {
-  .Modal-container, .Modal {
+
+  .Modal-container,
+  .Modal {
     max-width: 100% !important;
     width: 100% !important;
-    height: 88vh !important; 
+    height: 88vh !important;
     border-radius: 20px 20px 0 0 !important;
     animation: modalSlideUp 0.3s ease-out;
     margin: 0 !important;
-    overflow-y: auto !important; /* Habilitar scroll vertical na modal v2.3 */
+    overflow-y: auto !important;
+    /* Habilitar scroll vertical na modal v2.3 */
     -webkit-overflow-scrolling: touch;
   }
 
@@ -1717,28 +1838,30 @@
   }
 
   .modal-units {
-    padding: 0 16px 40px !important; /* Padding ajustado v2.3 */
+    padding: 0 16px 40px !important;
+    /* Padding ajustado v2.3 */
   }
 
   .units-grid {
     display: flex !important;
     flex-direction: column !important;
-    overflow-y: visible !important; 
+    overflow-y: visible !important;
     max-height: none !important;
     gap: 20px !important;
     padding: 0 !important;
   }
 
   .unit-card {
-    flex-direction: column !important; 
+    flex-direction: column !important;
     min-height: auto;
     border-radius: 14px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   }
 
   .unit-thumb-wrapper {
     width: 100% !important;
-    height: 180px !important; /* Altura melhorada v2.3 */
+    height: 180px !important;
+    /* Altura melhorada v2.3 */
   }
 
   .unit-card-body {
@@ -1787,7 +1910,8 @@
   position: relative;
   display: inline-block;
   cursor: pointer;
-  word-break: break-word; /* v2.4/v2.5: Evita quebra de layout por endereços longos */
+  word-break: break-word;
+  /* v2.4/v2.5: Evita quebra de layout por endereços longos */
 }
 
 .address-link::after {
@@ -1827,7 +1951,8 @@
   height: 7px;
   border-radius: 50%;
   display: inline-block;
-  flex-shrink: 0; /* v2.4/v2.5: Evita que a bolinha seja achatada */
+  flex-shrink: 0;
+  /* v2.4/v2.5: Evita que a bolinha seja achatada */
 }
 
 .status-badge[data-status="aberto"] {
@@ -1882,8 +2007,10 @@
   }
 
   .Hero .button-wrapper {
-    bottom: 40px; /* v5.6: Movido levemente para baixo (original 50px) */
-    margin-top: 10px; /* v5.6 */
+    bottom: 40px;
+    /* v5.6: Movido levemente para baixo (original 50px) */
+    margin-top: 10px;
+    /* v5.6 */
   }
 
   .Hero .maturity {
@@ -1929,6 +2056,7 @@
   .Hero .button-wrapper {
     gap: 8px;
   }
+
 
   .TitleList {
     padding: 0 20px;
@@ -1988,7 +2116,8 @@
     justify-content: space-between;
     gap: 10px;
     overflow: visible;
-    position: absolute; /* Mudado de fixed para absolute na v1.1 */
+    position: absolute;
+    /* Mudado de fixed para absolute na v1.1 */
     z-index: 9999;
   }
 
@@ -2000,7 +2129,8 @@
   }
 
   .Logo {
-    display: none !important; /* NOVO v4.9: Ajuste 6 */
+    display: none !important;
+    /* NOVO v4.9: Ajuste 6 */
   }
 
   .Header-right {
@@ -2011,13 +2141,14 @@
     flex-shrink: 0;
     position: relative;
     z-index: 9999;
-    padding-right: 0; /* Removido v1.2: hambúrguer agora está junto à logo */
+    padding-right: 0;
+    /* Removido v1.2: hambúrguer agora está junto à logo */
   }
 
   .Search {
     padding: 4px 6px;
     background: #fff;
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
   }
 
   .Search.open input {
@@ -2074,10 +2205,12 @@
     padding: 0 16px 60px;
     left: 0;
     top: auto;
-    bottom: 120px; /* Ajustado v1.3: mais para baixo e fixo em relação ao bottom */
-    transform: none; 
+    bottom: 120px;
+    /* Ajustado v1.3: mais para baixo e fixo em relação ao bottom */
+    transform: none;
     max-width: 100%;
-    text-align: left; /* Centralizado à esquerda v1.2/v1.3 */
+    text-align: left;
+    /* Centralizado à esquerda v1.2/v1.3 */
     pointer-events: none;
   }
 
@@ -2106,19 +2239,21 @@
     gap: 4px;
     left: 16px;
     right: 16px;
-    bottom: 0px; /* Movido de 30px para 20px (v5.6) */
-    margin-top: 15px; /* v5.6 */
+    bottom: 0px;
+    /* Movido de 30px para 20px (v5.6) */
+    margin-top: 15px;
+    /* v5.6 */
     pointer-events: auto;
     align-items: stretch;
   }
 
-  .Hero .button-wrapper > * {
+  .Hero .button-wrapper>* {
     width: 100%;
     flex: none;
     min-width: 0;
   }
 
-  .Hero .button-wrapper > .map-icon-button {
+  .Hero .button-wrapper>.map-icon-button {
     flex: none !important;
     align-self: flex-end;
     width: fit-content;
@@ -2127,11 +2262,15 @@
   .Hero .button-wrapper .Search.open {
     width: 100%;
     height: auto;
-    padding: 6px 4px; /* Ajustado para bater EXATAMENTE com o padding de 10px 4px do botão Filtro */
+    padding: 6px 4px;
+    /* Ajustado para bater EXATAMENTE com o padding de 10px 4px do botão Filtro */
     box-sizing: border-box;
-    border-radius: 5px; /* Botões usam 5px */
+    border-radius: 5px;
+    /* Botões usam 5px */
     display: flex;
     align-items: center;
+    background-color: white;
+    border-color: rgba(86, 86, 86, 0.8);
   }
 
   .Hero .button-wrapper .Search input {
@@ -2139,7 +2278,8 @@
   }
 
   .Hero .button-wrapper .Search input::placeholder {
-    font-size: 12px; /* Aumentado para bater mais com a fonte do botão (12px) */
+    font-size: 12px;
+    /* Aumentado para bater mais com a fonte do botão (12px) */
     letter-spacing: normal;
   }
 
@@ -2163,9 +2303,11 @@
   .Hero .button-wrapper .Button {
     width: 100%;
     padding: 10px 4px;
-    font-size: 11px; /* Reduzido v4.5 para caber "Mais próximos" */
+    font-size: 11px;
+    /* Reduzido v4.5 para caber "Mais próximos" */
     justify-content: center;
-    margin-top: 4px; /* Adicionado na v3.3 para alinhamento simétrico com o campo de busca */
+    margin-top: 4px;
+    /* Adicionado na v3.3 para alinhamento simétrico com o campo de busca */
     /* NOVO v4.5: Tratamento de overflow */
     white-space: nowrap;
     overflow: hidden;
@@ -2177,7 +2319,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 60%; /* Impede que quebre o layout no mobile */
+    max-width: 60%;
+    /* Impede que quebre o layout no mobile */
     display: inline-block;
     vertical-align: bottom;
   }
@@ -2206,7 +2349,8 @@
     overflow-x: auto !important;
     scroll-snap-type: x mandatory !important;
     -webkit-overflow-scrolling: touch !important;
-    gap: 10px !important; /* Ajustado gap */
+    gap: 10px !important;
+    /* Ajustado gap */
     padding: 10px 0 20px !important;
     animation: none !important;
     scrollbar-width: none;
@@ -2218,7 +2362,8 @@
   }
 
   .Item {
-    flex: 0 0 calc(50% - 10px) !important; /* 2 bairros por tela na v1.1 */
+    flex: 0 0 calc(50% - 10px) !important;
+    /* 2 bairros por tela na v1.1 */
     min-width: calc(50% - 10px) !important;
     scroll-snap-align: start !important;
     scroll-snap-stop: always !important;
@@ -2239,22 +2384,30 @@
     align-items: flex-end;
   }
 
-  .Modal-container, .Modal {
+  .Modal-container,
+  .Modal {
     max-width: 100% !important;
     width: 100% !important;
-    height: 88vh !important; /* Reduzido v2.0 para evitar barra do navegador */
+    height: 88vh !important;
+    /* Reduzido v2.0 para evitar barra do navegador */
     border-radius: 20px 20px 0 0 !important;
     animation: modalSlideUp 0.3s ease-out;
     margin: 0 !important;
   }
 
   @keyframes modalSlideUp {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
+    from {
+      transform: translateY(100%);
+    }
+
+    to {
+      transform: translateY(0);
+    }
   }
 
   .modal-hero {
-    height: 150px; /* Reduzido v2.0 */
+    height: 150px;
+    /* Reduzido v2.0 */
   }
 
   .modal-title {
@@ -2277,14 +2430,16 @@
   .units-grid {
     display: flex !important;
     flex-direction: column !important;
-    overflow-y: visible !important; /* Scroll será no corpo da modal */
+    overflow-y: visible !important;
+    /* Scroll será no corpo da modal */
     max-height: none !important;
     gap: 16px !important;
     padding: 0 !important;
   }
 
   .unit-card {
-    flex-direction: column !important; /* Imagem no topo no mobile v2.0 */
+    flex-direction: column !important;
+    /* Imagem no topo no mobile v2.0 */
     min-height: auto;
   }
 
@@ -2309,10 +2464,13 @@
   }
 
   .map-modal-close {
-    top: 50%; /* Movido para o centro da tela verticalmente na v3.3 */
+    top: 50%;
+    /* Movido para o centro da tela verticalmente na v3.3 */
     transform: translateY(-50%);
-    right: 20px; /* Mantido próximo ao canto da tela no lado direito */
-    z-index: 999999 !important; /* Incrementado o z-index para garantir sobreposição do popup de erro */
+    right: 20px;
+    /* Mantido próximo ao canto da tela no lado direito */
+    z-index: 999999 !important;
+    /* Incrementado o z-index para garantir sobreposição do popup de erro */
   }
 }
 
@@ -2321,7 +2479,7 @@
   .Hero .content h1 {
     font-size: 1.4rem;
   }
-  
+
   .Hero .hero-title .salve-vidas {
     font-size: 1.8rem;
   }

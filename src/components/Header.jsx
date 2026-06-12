@@ -4,7 +4,7 @@ import Navigation from "./Navigation/Navigation";
 import UserProfile from "./UserProfile/UserProfile";
 import MapModal from "./MapModal";
 
-export default function Header({ onSearch }) {
+export default function Header({ onSearch, onLogoClick }) {
   const [scrolled, setScrolled] = useState(false);
   const [showMap, setShowMap] = useState(false);
 
@@ -18,7 +18,7 @@ export default function Header({ onSearch }) {
     <>
       <header className={`Header ${scrolled ? "scrolled" : ""}`}>
         <div className="div-logo-nav">
-          <Logo onLogoClick={() => setShowMap(true)} />
+          <Logo onLogoClick={onLogoClick} />
           <Navigation />
         </div>
         <div className="Header-right">
