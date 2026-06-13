@@ -1264,7 +1264,7 @@
   font-weight: 800;
   color: #ffffff;
   margin: 0;
-  line-height: 1.1;
+  line-height: 1;
 }
 
 .modal-subtitle {
@@ -1625,7 +1625,7 @@
   font-weight: 600;
   color: #484848;
   /* Cinza mais claro v2.2 */
-  letter-spacing: 0.5px;
+  letter-spacing: 0.3px;
   text-transform: uppercase;
 }
 
@@ -1757,13 +1757,14 @@
 }
 
 .unit-card-body {
-  padding: 12px 18px;
+  padding: 15px 18px;
   /* Reduzido v2.7: Mais espaço interno */
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   min-width: 0;
+  margin-bottom: 10px;
   /* Evita quebra de flex */
 }
 
@@ -2030,6 +2031,22 @@
     padding: 0 30px;
   }
 
+  .Hero {
+    margin-top: 0;
+    padding-top: 0;
+    box-sizing: border-box;
+  }
+
+  .Hero .hero-video-bg {
+    top: 12px;
+    left: 12px;
+    width: calc(100% - 24px);
+    height: calc(100% - 24px);
+    object-fit: cover;
+    object-position: center top;
+    z-index: 0;
+  }
+
   .Hero .content {
     padding: 0 30px 100px;
   }
@@ -2039,6 +2056,12 @@
     /* v5.6: Movido levemente para baixo (original 50px) */
     margin-top: 10px;
     /* v5.6 */
+  }
+
+  .Hero .button-wrapper .Search.open {
+    background-color: white;
+    border-radius: 5px;
+    border-color: rgba(86, 86, 86, 0.8);
   }
 
   .Hero .maturity {
@@ -2227,6 +2250,19 @@
   .Hero {
     height: 65vh;
     min-height: 400px;
+    margin-top: 0;
+    padding-top: 0;
+    box-sizing: border-box;
+  }
+
+  .Hero .hero-video-bg {
+    top: 50px;
+    left: 0;
+    width:100%;
+    height: 100% ;
+    object-fit: contain;
+    object-position: center top;
+    z-index: 0;
   }
 
   .Hero .content {

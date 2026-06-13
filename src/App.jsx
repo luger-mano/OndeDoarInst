@@ -372,7 +372,7 @@ export default function App() {
   <span className="menu-tag">EQUIPE ONDEDOAR</span>
                 <h2 style={{ margin: '10px 0' }}>Conheça nossa equipe</h2>
                 <p className="team-description" style={{ marginBottom: '20px', color: '#666' }}>
-                  Somos uma equipe de doadores apaixonada por tecnologia e impacto sociaL.
+                  Somos uma equipe de doadores apaixonada por tecnologia e impacto social.
                 </p>
                 <div className="team-grid">
                   <TeamCard name="Hugo Severo" role="CEO" linkedin="https://www.linkedin.com/in/hugosevero/" photo={hug} photoDonation={hug2} bloodType="O+" />

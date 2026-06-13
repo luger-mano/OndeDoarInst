@@ -228,20 +228,22 @@ export default function UserProfile() {
   }
 
   // CARREGA DADOS DE EDIÇÃO QUANDO ENTRA NA TELA (BLINDADO CONTRA EXPIRAÇÃO)
+  // Dentro do useEffect no UserProfile.jsx:
   useEffect(() => {
     async function loadUserDataForEdit() {
       if (menuView !== "edicao" || !loggedUser?.id) return;
+
+      let token = localStorage.getItem("token");
+
+      if (!token) {
+        setError("Sessão expirada. Faça login novamente.");
+        handleLogout();
+        return;
+      }
+
       try {
         setLoading(true);
         setError("");
-
-        let token = localStorage.getItem("token");
-
-        if (!token) {
-          setError("Sessão expirada. Faça login novamente.");
-          handleLogout();
-          return;
-        }
 
         const userData = await getUserById(loggedUser.id, token);
 
@@ -249,14 +251,7 @@ export default function UserProfile() {
           nome: userData.userName || "",
           sobrenome: userData.middleName || "",
           email: userData.mail || "",
-          tipoSanguineo:
-            userData.bloodType === "IDK"
-              ? "IDK"
-              : userData.bloodType
-                ? userData.bloodType
-                  .replace("_POSITIVE", "+")
-                  .replace("_NEGATIVE", "-")
-                : "",
+          tipoSanguineo: userData.bloodType === "IDK" ? "IDK" : userData.bloodType?.replace("_POSITIVE", "+").replace("_NEGATIVE", "-") || "",
           whatsapp: userData.phone || "",
           estado: userData.state || "",
           senhaAtual: "",
@@ -265,13 +260,19 @@ export default function UserProfile() {
         });
       } catch (err) {
         console.error("Erro detalhado na busca:", err);
-        setError("Não foi possível carregar seus dados. Tente novamente.");
+        // Se a API retornar 401 de fato, limpa a sessão para não prender o usuário num estado quebrado
+        if (err.message.includes("401") || err.message.includes("buscar usuário")) {
+          setError("Sua sessão expirou. Por favor, entre novamente.");
+        } else {
+          setError("Não foi possível carregar seus dados. Tente novamente.");
+        }
       } finally {
         setLoading(false);
       }
     }
+
     loadUserDataForEdit();
-  }, [menuView, loggedUser]);
+  }, [menuView]);
 
   // FECHAR MENU AO CLICAR FORA
   useEffect(() => {
@@ -366,76 +367,76 @@ export default function UserProfile() {
   }
 
   // REQUISIÇÃO: CADASTRO
-async function handleRegister(e) {
-  e.preventDefault();
-  try {
-    setLoading(true);
-    setError("");
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  async function handleRegister(e) {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      setError("");
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (
-      !registerForm.nome ||
-      !registerForm.sobrenome ||
-      !registerForm.email ||
-      !registerForm.whatsapp ||
-      !registerForm.estado ||
-      !registerForm.senha
-    ) {
-      return setError("Preencha todos os campos obrigatórios.");
+      if (
+        !registerForm.nome ||
+        !registerForm.sobrenome ||
+        !registerForm.email ||
+        !registerForm.whatsapp ||
+        !registerForm.estado ||
+        !registerForm.senha
+      ) {
+        return setError("Preencha todos os campos obrigatórios.");
+      }
+
+      if (registerForm.nome.trim().length < 3 || registerForm.nome.trim().length > 12) {
+        return setError("O nome deve ter entre 3 e 12 caracteres.");
+      }
+
+      if (
+        registerForm.sobrenome.trim().length < 3 ||
+        registerForm.sobrenome.trim().length > 42
+      ) {
+        return setError("O sobrenome deve ter entre 3 e 42 caracteres.");
+      }
+
+      if (!emailRegex.test(registerForm.email)) {
+        return setError("Digite um email válido.");
+      }
+
+      if (registerForm.senha.length < 3) {
+        return setError("A senha deve ter no mínimo 3 caracteres.");
+      }
+
+      if (registerForm.senha !== registerForm.confirmarSenha) {
+        return setError("As senhas não coincidem.");
+      }
+
+      const payload = {
+        userName: registerForm.nome,
+        middleName: registerForm.sobrenome,
+        phone: registerForm.whatsapp.replace(/\D/g, ""),
+        mail: registerForm.email,
+        password: registerForm.senha,
+        state: registerForm.estado,
+        bloodType:
+          registerForm.tipoSanguineo === "IDK"
+            ? "IDK"
+            : registerForm.tipoSanguineo
+              ? registerForm.tipoSanguineo
+                .replace("+", "_POSITIVE")
+                .replace("-", "_NEGATIVE")
+              : null
+      };
+
+      await registerRequest(payload);
+
+      setSuccess(
+        `Quase pronto! Enviamos um link de confirmação para ${registerForm.email}`
+      );
+    } catch (err) {
+      console.error("Erro no cadastro:", err);
+      setError("Erro ao cadastrar usuário.");
+    } finally {
+      setLoading(false);
     }
-
-    if (registerForm.nome.trim().length < 3 || registerForm.nome.trim().length > 12) {
-      return setError("O nome deve ter entre 3 e 12 caracteres.");
-    }
-
-    if (
-      registerForm.sobrenome.trim().length < 3 ||
-      registerForm.sobrenome.trim().length > 42
-    ) {
-      return setError("O sobrenome deve ter entre 3 e 42 caracteres.");
-    }
-
-    if (!emailRegex.test(registerForm.email)) {
-      return setError("Digite um email válido.");
-    }
-
-    if (registerForm.senha.length < 3) {
-      return setError("A senha deve ter no mínimo 3 caracteres.");
-    }
-
-    if (registerForm.senha !== registerForm.confirmarSenha) {
-      return setError("As senhas não coincidem.");
-    }
-
-    const payload = {
-      userName: registerForm.nome,
-      middleName: registerForm.sobrenome,
-      phone: registerForm.whatsapp.replace(/\D/g, ""),
-      mail: registerForm.email,
-      password: registerForm.senha,
-      state: registerForm.estado,
-      bloodType:
-        registerForm.tipoSanguineo === "IDK"
-          ? "IDK"
-          : registerForm.tipoSanguineo
-          ? registerForm.tipoSanguineo
-              .replace("+", "_POSITIVE")
-              .replace("-", "_NEGATIVE")
-          : null
-    };
-
-    await registerRequest(payload);
-
-    setSuccess(
-      `Quase pronto! Enviamos um link de confirmação para ${registerForm.email}`
-    );
-  } catch (err) {
-    console.error("Erro no cadastro:", err);
-    setError("Erro ao cadastrar usuário.");
-  } finally {
-    setLoading(false);
   }
-}
 
   // REQUISIÇÃO: ESQUECEU SENHA
   async function handleForgot(e) {
@@ -446,7 +447,7 @@ async function handleRegister(e) {
       await forgotPasswordRequest(emailForgot);
       setSuccess(`Um e-mail foi enviado para ${emailForgot} para alteração de senha.`);
     } catch (err) {
-      setError("Erro ao solicitar redefinição de senha. Verifique o e-mail digitado.");
+      setError("Verifique o e-mail digitado.");
     } finally {
       setLoading(false);
     }
@@ -456,7 +457,7 @@ async function handleRegister(e) {
   async function handleResetPassword(e) {
     e.preventDefault();
     if (newPassword !== confirmNewPassword) return setError("As senhas não coincidem.");
-    if (newPassword.length < 8) return setError("A senha deve ter no mínimo 8 caracteres.");
+    if (newPassword.length < 4) return setError("A senha deve ter no mínimo 4 caracteres.");
 
     try {
       setLoading(true);
@@ -484,7 +485,7 @@ async function handleRegister(e) {
 
       if (editForm.senhaAtual || editForm.novaSenha || editForm.confirmarNovaSenha) {
         if (!editForm.senhaAtual || !editForm.novaSenha || !editForm.confirmarNovaSenha) return setError("Preencha todos os campos de senha.");
-        if (editForm.novaSenha.length < 8) return setError("A nova senha deve ter no mínimo 8 caracteres.");
+        if (editForm.novaSenha.length < 4) return setError("A nova senha deve ter no mínimo 4 caracteres.");
         if (editForm.novaSenha !== editForm.confirmarNovaSenha) return setError("As novas senhas não coincidem.");
       }
 
@@ -519,6 +520,12 @@ async function handleRegister(e) {
       };
 
       localStorage.setItem("user", JSON.stringify(updatedUserSession));
+      setEditForm(prevState => ({
+        ...prevState,
+        senhaAtual: "",
+        novaSenha: "",
+        confirmarNovaSenha: ""
+      }));
       setLoggedUser(updatedUserSession);
 
       setSuccess("Informações atualizadas com sucesso!");
@@ -645,9 +652,9 @@ async function handleRegister(e) {
                       aria-label={showLoginPassword ? "Ocultar senha" : "Mostrar senha"}
                     >
                       {showLoginPassword ? (
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
                       ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
                       )}
                     </button>
                   </div>
@@ -688,9 +695,9 @@ async function handleRegister(e) {
                       aria-label={showResetNewPassword ? "Ocultar senha" : "Mostrar senha"}
                     >
                       {showResetNewPassword ? (
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
                       ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
                       )}
                     </button>
                   </div>
@@ -710,9 +717,9 @@ async function handleRegister(e) {
                       aria-label={showResetConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
                     >
                       {showResetConfirmPassword ? (
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
                       ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
                       )}
                     </button>
                   </div>
@@ -777,9 +784,9 @@ async function handleRegister(e) {
                       aria-label={showRegisterPassword ? "Ocultar senha" : "Mostrar senha"}
                     >
                       {showRegisterPassword ? (
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
                       ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
                       )}
                     </button>
                   </div>
@@ -800,9 +807,9 @@ async function handleRegister(e) {
                       aria-label={showRegisterConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
                     >
                       {showRegisterConfirmPassword ? (
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
                       ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
                       )}
                     </button>
                   </div>
@@ -831,7 +838,7 @@ async function handleRegister(e) {
                   </div>
                   <div className="UserProfile-menu-item"><button className="botaoLog" onClick={handleLogout}>Sair</button></div>
                   <hr className="UserProfile-menu-divider" />
-                   <a
+                  <a
                     href="mailto:contato@ondedoar.org?cc=&subject=Parceria%20%2F%20Imprensa%20%2F%20Bug"
                     className="contact-link-btn"
                   >
@@ -842,7 +849,7 @@ async function handleRegister(e) {
                   >
                     contato@ondedoar.org
                   </span>
-                  
+
                 </>
               )}
 
@@ -901,9 +908,9 @@ async function handleRegister(e) {
                       aria-label={showEditCurrentPassword ? "Ocultar senha" : "Mostrar senha"}
                     >
                       {showEditCurrentPassword ? (
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
                       ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
                       )}
                     </button>
                   </div>
@@ -923,9 +930,9 @@ async function handleRegister(e) {
                       aria-label={showEditNewPassword ? "Ocultar senha" : "Mostrar senha"}
                     >
                       {showEditNewPassword ? (
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
                       ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
                       )}
                     </button>
                   </div>
@@ -945,13 +952,13 @@ async function handleRegister(e) {
                       aria-label={showEditConfirmPassword ? "Ocultar senha" : "Mostrar senha"}
                     >
                       {showEditConfirmPassword ? (
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" /><line x1="1" y1="1" x2="23" y2="23" /></svg>
                       ) : (
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
                       )}
                     </button>
                   </div>
-<div className="UserProfile-menu-item">
+                  <div className="UserProfile-menu-item">
                     <button className="botaoLog" onClick={() => { setShowDeleteModal(true); setDeleteConfirmationInput(""); }}>Excluir Conta</button>
                   </div>
                   {error && <p className="inline-form-error">{error}</p>}

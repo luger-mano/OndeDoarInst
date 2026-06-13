@@ -181,33 +181,17 @@ export async function updateUserRequest(
   return response.json();
 }
 
-export async function getUserById(
-  userId,
-  token
-) {
-
-  const response =
-    await fetch(
-
-      `${API_URL}/user/${userId}`,
-
-      {
-
-        method: "GET",
-
-        headers: {
-
-          Authorization:
-            `Bearer ${token}`
-        }
-      }
-    );
+export async function getUserById(userId, token) {
+  const response = await fetch(`${API_URL}/user/${userId}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json"
+    }
+  });
 
   if (!response.ok) {
-
-    throw new Error(
-      "Erro ao buscar usuário"
-    );
+    throw new Error(`Erro ao buscar usuário: Status ${response.status}`);
   }
 
   return response.json();

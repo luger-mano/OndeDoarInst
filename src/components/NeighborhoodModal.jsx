@@ -58,9 +58,9 @@ export default function NeighborhoodModal({
               </p>
 
               <div className="neighborhood-info-panel">
-                <span>Município: São Paulo</span>
-                <span>Fundação: Dezembro 1985</span>
-                <span>População (aprox.): 70 mil hab</span>
+                <span>Município: <strong>São Paulo</strong></span>
+                <span>Fundação: <strong>Dezembro 1985</strong></span>
+                <span>População (aprox.): <strong>70 mil hab</strong></span>
               </div>
             </div>
           )}
@@ -70,7 +70,7 @@ export default function NeighborhoodModal({
               Unidades
             </button>
             <span className="neighborhood-units-text">
-              Bancos: {totalCentrosNoBairro === 1 ? "1 unidade" : `${totalCentrosNoBairro} unidades`}
+              Nesta localidade: {totalCentrosNoBairro} hemocentro(s)
             </span>
           </div>
 
