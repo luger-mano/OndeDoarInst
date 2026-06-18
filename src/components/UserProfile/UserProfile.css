@@ -466,8 +466,9 @@
   font-weight: 600;
   color: #1f2937;
   /* Grafite escuro elegante em vez de preto puro */
-  line-height: 1.4;
+  line-height: 1.6;
   letter-spacing: -0.2px;
+  white-space: pre-line;
 }
 
 /* ── BOTÃO ESTILIZADO ── */

@@ -23,7 +23,7 @@
 }
 
 .regions-container {
-  background: #fcfcfc;
+  background: #ffffff;
 }
 
 .skeleton {
@@ -71,9 +71,11 @@
   background-color: #fcfcfc;
 }
 
-.Header.scrolled,
+.Header.scrolled{
+  background-color: #fcfcfc;
+}
 .Header:not(.scrolled) {
-  background: #fcfcfc;
+  background: #ffffff00;
 }
 
 .div-logo-nav {
@@ -276,7 +278,7 @@
   object-fit: cover;
   object-position: center;
   z-index: 0;
-  filter: brightness(1.1) contrast(1.2);
+  filter: brightness(1.5) contrast(1.2);
 }
 
 .Hero .hero-video-bg {
@@ -1031,8 +1033,9 @@
   font-size: 16px;
   font-weight: 600;
   color: #1f2937;
-  line-height: 1.4;
+  line-height: 1.6;
   letter-spacing: -0.2px;
+  white-space: pre-line;
 }
 
 .global-success-popup button {
@@ -2261,7 +2264,7 @@
     width:100%;
     height: 100% ;
     object-fit: contain;
-    object-position: center top;
+    object-position: center center;
     z-index: 0;
   }
 

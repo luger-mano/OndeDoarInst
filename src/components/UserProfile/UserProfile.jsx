@@ -428,7 +428,7 @@ export default function UserProfile() {
       await registerRequest(payload);
 
       setSuccess(
-        `Quase pronto! Enviamos um link de confirmação para ${registerForm.email}`
+        `Quase pronto! Enviamos um link de confirmação para ${registerForm.email}\n⚠️ verifique a caixa de spam!`
       );
     } catch (err) {
       console.error("Erro no cadastro:", err);
